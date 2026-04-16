@@ -1,0 +1,17 @@
+{
+  "description": "Reaper audit-trail: logs all security events from all tools",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit|Read|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use/log-event.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

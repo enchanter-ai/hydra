@@ -1,0 +1,11 @@
+{
+  "name": "reaper-audit-trail",
+  "description": "Comprehensive security event logging with rotation and reporting.",
+  "version": "1.0.0",
+  "author": { "name": "enchanted-plugins" },
+  "license": "MIT",
+  "keywords": ["audit", "logging", "events", "trail", "compliance"],
+  "commands": ["./commands/audit.md"],
+  "skills": ["./skills/audit-awareness/"],
+  "agents": "./agents/"
+}
