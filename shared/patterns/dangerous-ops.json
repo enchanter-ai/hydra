@@ -1,0 +1,866 @@
+[
+  {
+    "id": "rm-recursive-force-root",
+    "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|--recursive)\\s+/($|\\s)",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Recursive force delete from filesystem root"
+  },
+  {
+    "id": "rm-recursive-force-home",
+    "pattern": "rm\\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r)\\s+(~|\\$HOME|/home|/Users)",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Recursive force delete of home directory"
+  },
+  {
+    "id": "rm-recursive-etc",
+    "pattern": "rm\\s+(-[a-zA-Z]*r)\\s+/etc",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Recursive delete of system config directory"
+  },
+  {
+    "id": "chmod-777",
+    "pattern": "chmod\\s+(-[rR]\\s+)?777\\s+/",
+    "severity": "high",
+    "category": "filesystem",
+    "action": "block",
+    "description": "World-writable permissions from root — security risk"
+  },
+  {
+    "id": "chmod-world-writable",
+    "pattern": "chmod\\s+(-[rR]\\s+)?[0-7][0-7]7\\s+",
+    "severity": "medium",
+    "category": "filesystem",
+    "action": "warn",
+    "description": "World-writable permissions — review necessity"
+  },
+  {
+    "id": "dd-write-device",
+    "pattern": "dd\\s+.*of=/dev/[a-z]",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Direct write to block device — can destroy filesystem"
+  },
+  {
+    "id": "mkfs-format",
+    "pattern": "mkfs\\.",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Filesystem format command — destructive"
+  },
+  {
+    "id": "git-force-push-main",
+    "pattern": "git\\s+push\\s+.*--force.*\\s+(main|master|production|release)($|\\s)",
+    "severity": "critical",
+    "category": "git",
+    "action": "block",
+    "description": "Force push to protected branch — can destroy shared history"
+  },
+  {
+    "id": "git-force-push",
+    "pattern": "git\\s+push\\s+.*--force",
+    "severity": "high",
+    "category": "git",
+    "action": "warn",
+    "description": "Force push — can overwrite remote history"
+  },
+  {
+    "id": "git-reset-hard",
+    "pattern": "git\\s+reset\\s+--hard",
+    "severity": "high",
+    "category": "git",
+    "action": "warn",
+    "description": "Hard reset — discards uncommitted changes permanently"
+  },
+  {
+    "id": "git-clean-force",
+    "pattern": "git\\s+clean\\s+.*-[a-zA-Z]*f",
+    "severity": "high",
+    "category": "git",
+    "action": "warn",
+    "description": "Force clean — removes untracked files permanently"
+  },
+  {
+    "id": "git-branch-delete-force",
+    "pattern": "git\\s+branch\\s+.*-D\\s+",
+    "severity": "medium",
+    "category": "git",
+    "action": "warn",
+    "description": "Force delete branch regardless of merge status"
+  },
+  {
+    "id": "git-checkout-discard",
+    "pattern": "git\\s+checkout\\s+--\\s+\\.",
+    "severity": "high",
+    "category": "git",
+    "action": "warn",
+    "description": "Discard all uncommitted changes"
+  },
+  {
+    "id": "drop-table",
+    "pattern": "DROP\\s+(TABLE|DATABASE|SCHEMA)\\s",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "SQL DROP TABLE/DATABASE — irreversible data loss"
+  },
+  {
+    "id": "truncate-table",
+    "pattern": "TRUNCATE\\s+TABLE\\s",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "SQL TRUNCATE — deletes all rows irreversibly"
+  },
+  {
+    "id": "delete-no-where",
+    "pattern": "DELETE\\s+FROM\\s+\\w+\\s*;",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "DELETE without WHERE clause — deletes all rows"
+  },
+  {
+    "id": "curl-pipe-bash",
+    "pattern": "curl\\s.*\\|\\s*(sudo\\s+)?bash",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Pipe remote content directly to bash — arbitrary code execution"
+  },
+  {
+    "id": "wget-pipe-bash",
+    "pattern": "wget\\s.*-O\\s*-\\s*\\|\\s*(sudo\\s+)?bash",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Pipe remote content directly to bash — arbitrary code execution"
+  },
+  {
+    "id": "curl-to-production",
+    "pattern": "curl\\s.*\\s+(https?://(?:api\\.|www\\.)?(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)\\S+)",
+    "severity": "medium",
+    "category": "network",
+    "action": "warn",
+    "description": "HTTP request to non-localhost URL — verify intent"
+  },
+  {
+    "id": "reverse-shell-bash",
+    "pattern": "bash\\s+-i\\s+>\\s*/dev/tcp/",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Bash reverse shell — backdoor attempt"
+  },
+  {
+    "id": "reverse-shell-nc",
+    "pattern": "(?:nc|ncat|netcat)\\s+.*-[a-zA-Z]*e\\s+",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Netcat with exec — reverse shell attempt"
+  },
+  {
+    "id": "shutdown-reboot",
+    "pattern": "(?:shutdown|reboot|init\\s+0|init\\s+6|halt|poweroff)",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "System shutdown/reboot command"
+  },
+  {
+    "id": "kill-all-processes",
+    "pattern": "kill\\s+-9\\s+(-1|1)($|\\s)",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Kill all processes — system destabilization"
+  },
+  {
+    "id": "sudo-rm",
+    "pattern": "sudo\\s+rm\\s+-[a-zA-Z]*r",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Recursive delete with elevated privileges"
+  },
+  {
+    "id": "chown-recursive-root",
+    "pattern": "chown\\s+(-[rR]\\s+)?root[:\\s]+.*(/|~|\\$HOME)",
+    "severity": "high",
+    "category": "system",
+    "action": "block",
+    "description": "Recursive chown to root — privilege escalation"
+  },
+  {
+    "id": "export-credentials",
+    "pattern": "(?:echo|printf|cat)\\s.*(?:password|secret|token|api.key|ANTHROPIC_API_KEY|OPENAI_API_KEY|AWS_SECRET)(?!=\\[REDACTED\\])",
+    "severity": "high",
+    "category": "exfiltration",
+    "action": "warn",
+    "description": "Printing/logging potential credentials"
+  },
+  {
+    "id": "env-dump",
+    "pattern": "(?:env|printenv|set)\\s*($|\\||>)",
+    "severity": "medium",
+    "category": "exfiltration",
+    "action": "warn",
+    "description": "Dumping environment variables — may contain secrets"
+  },
+  {
+    "id": "git-add-all-large",
+    "pattern": "git\\s+add\\s+(-A|--all|\\.)",
+    "severity": "low",
+    "category": "git",
+    "action": "warn",
+    "description": "Staging all files — may include sensitive files"
+  },
+  {
+    "id": "npm-publish",
+    "pattern": "npm\\s+publish",
+    "severity": "high",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Publishing to npm registry — verify package content"
+  },
+  {
+    "id": "pip-install-untrusted",
+    "pattern": "pip\\s+install\\s+--index-url\\s+(?!https://pypi\\.org)",
+    "severity": "high",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "pip install from untrusted index — supply chain risk"
+  },
+  {
+    "id": "sandbox-bypass",
+    "pattern": "dangerouslyDisableSandbox|dangerouslyOverrideSandbox|bypassPermissions|--no-verify|--no-sandbox",
+    "severity": "critical",
+    "category": "sandbox",
+    "action": "block",
+    "description": "Sandbox or safety bypass — security control evasion"
+  },
+  {
+    "id": "crontab-edit",
+    "pattern": "crontab\\s+-[er]",
+    "severity": "medium",
+    "category": "system",
+    "action": "warn",
+    "description": "Editing crontab — persistent background execution"
+  },
+  {
+    "id": "iptables-flush",
+    "pattern": "iptables\\s+-F",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Flushing firewall rules — removes network security"
+  },
+  {
+    "id": "ssh-keygen-overwrite",
+    "pattern": "ssh-keygen.*-f\\s+~/.ssh/id_",
+    "severity": "high",
+    "category": "crypto",
+    "action": "warn",
+    "description": "Overwriting SSH keys — verify intent"
+  },
+  {
+    "id": "docker-privileged",
+    "pattern": "docker\\s+run\\s+.*--privileged",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Docker with privileged mode — full host access"
+  },
+  {
+    "id": "kubectl-delete-namespace",
+    "pattern": "kubectl\\s+delete\\s+(?:namespace|ns)\\s",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Deleting Kubernetes namespace — destroys all resources in namespace"
+  },
+
+  {
+    "id": "kubectl-delete-deployment-all",
+    "pattern": "kubectl\\s+delete\\s+(?:deployment|deploy|pod|svc|service|statefulset|daemonset|job|cronjob|ingress|configmap|secret|pvc)\\s+--all",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Deleting all Kubernetes resources of a type — mass destruction"
+  },
+  {
+    "id": "kubectl-apply-url",
+    "pattern": "kubectl\\s+(?:apply|create)\\s+-f\\s+https?://",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Applying Kubernetes manifest from URL — supply chain risk"
+  },
+  {
+    "id": "kubectl-exec-privileged",
+    "pattern": "kubectl\\s+exec\\s+.*(?:--\\s+(?:bash|sh|/bin/sh|/bin/bash))",
+    "severity": "medium",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Interactive shell into Kubernetes pod — review necessity"
+  },
+  {
+    "id": "kubectl-delete-node",
+    "pattern": "kubectl\\s+(?:delete|drain|cordon)\\s+node",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Kubernetes node deletion/drain — removes compute capacity"
+  },
+  {
+    "id": "kubectl-edit-rbac",
+    "pattern": "kubectl\\s+(?:create|apply|edit|delete)\\s+(?:clusterrole|clusterrolebinding|role|rolebinding)",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Modifying Kubernetes RBAC — privilege escalation risk"
+  },
+  {
+    "id": "kubectl-port-forward",
+    "pattern": "kubectl\\s+port-forward\\s+.*0\\.0\\.0\\.0",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Kubernetes port-forward on all interfaces — exposes internal services"
+  },
+
+  {
+    "id": "docker-system-prune",
+    "pattern": "docker\\s+system\\s+prune\\s+.*-a",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Docker system prune all — removes all unused images, containers, networks"
+  },
+  {
+    "id": "docker-rmi-all",
+    "pattern": "docker\\s+rmi\\s+.*\\$\\(docker\\s+images",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Removing all Docker images — may break deployments"
+  },
+  {
+    "id": "docker-rm-force-all",
+    "pattern": "docker\\s+(?:rm|stop|kill)\\s+.*\\$\\(docker\\s+(?:ps|container)",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Stopping/removing all Docker containers — service disruption"
+  },
+  {
+    "id": "docker-volume-prune",
+    "pattern": "docker\\s+volume\\s+(?:prune|rm)\\s+.*(?:-a|--all|\\$\\()",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "Removing Docker volumes — permanent data loss"
+  },
+  {
+    "id": "docker-host-mount",
+    "pattern": "docker\\s+run\\s+.*-v\\s+/(?:etc|var|root|home):",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Docker mounting sensitive host directory — data exposure risk"
+  },
+  {
+    "id": "docker-host-network",
+    "pattern": "docker\\s+run\\s+.*--network\\s*=?\\s*host",
+    "severity": "medium",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Docker with host networking — container network isolation bypassed"
+  },
+  {
+    "id": "docker-host-pid",
+    "pattern": "docker\\s+run\\s+.*--pid\\s*=?\\s*host",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Docker with host PID namespace — can see/signal host processes"
+  },
+
+  {
+    "id": "terraform-destroy",
+    "pattern": "terraform\\s+destroy",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Terraform destroy — tears down all managed infrastructure"
+  },
+  {
+    "id": "terraform-destroy-auto-approve",
+    "pattern": "terraform\\s+(?:destroy|apply)\\s+.*-auto-approve",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Terraform with -auto-approve — skips confirmation prompt"
+  },
+  {
+    "id": "terraform-state-rm",
+    "pattern": "terraform\\s+state\\s+(?:rm|mv|replace-provider|push)",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Terraform state manipulation — can orphan or break resources"
+  },
+  {
+    "id": "terraform-force-unlock",
+    "pattern": "terraform\\s+force-unlock",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Terraform force-unlock — may cause state corruption if lock is legitimate"
+  },
+
+  {
+    "id": "aws-s3-rm-recursive",
+    "pattern": "aws\\s+s3\\s+(?:rm|rb)\\s+.*--recursive",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "AWS S3 recursive delete — permanent data loss from bucket"
+  },
+  {
+    "id": "aws-s3-rb-force",
+    "pattern": "aws\\s+s3(?:api)?\\s+(?:rb|delete-bucket)\\s+.*--force",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "AWS S3 force-delete bucket — removes bucket and all contents"
+  },
+  {
+    "id": "aws-ec2-terminate",
+    "pattern": "aws\\s+ec2\\s+terminate-instances",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "AWS EC2 terminate instances — permanent instance destruction"
+  },
+  {
+    "id": "aws-iam-delete",
+    "pattern": "aws\\s+iam\\s+(?:delete-user|delete-role|delete-policy|remove-role-from-instance-profile|detach-(?:user|role|group)-policy)",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "AWS IAM destructive operation — may break permissions/access"
+  },
+  {
+    "id": "aws-rds-delete",
+    "pattern": "aws\\s+rds\\s+delete-db-(?:instance|cluster)\\s+.*--skip-final-snapshot",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "AWS RDS delete without final snapshot — permanent data loss"
+  },
+  {
+    "id": "aws-cloudformation-delete",
+    "pattern": "aws\\s+cloudformation\\s+delete-stack",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "AWS CloudFormation stack deletion — destroys all stack resources"
+  },
+  {
+    "id": "aws-ec2-security-group-open",
+    "pattern": "aws\\s+ec2\\s+authorize-security-group-ingress.*0\\.0\\.0\\.0/0",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "AWS security group opened to all IPs — public exposure"
+  },
+  {
+    "id": "aws-lambda-delete",
+    "pattern": "aws\\s+lambda\\s+delete-function",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "AWS Lambda function deletion — service disruption"
+  },
+
+  {
+    "id": "mongo-drop-database",
+    "pattern": "(?:mongo|mongosh)\\s+.*(?:dropDatabase|db\\.dropDatabase)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "MongoDB drop database — irreversible data loss"
+  },
+  {
+    "id": "mongo-drop-collection",
+    "pattern": "(?:mongo|mongosh)\\s+.*(?:\\.drop\\(|dropCollection)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "MongoDB drop collection — irreversible data loss"
+  },
+  {
+    "id": "redis-flushall",
+    "pattern": "redis-cli\\s+.*(?:FLUSHALL|FLUSHDB|flushall|flushdb)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "Redis FLUSHALL/FLUSHDB — deletes all keys from all/current database"
+  },
+  {
+    "id": "redis-config-set",
+    "pattern": "redis-cli\\s+.*CONFIG\\s+SET",
+    "severity": "high",
+    "category": "data",
+    "action": "warn",
+    "description": "Redis CONFIG SET — runtime configuration change, potential data loss"
+  },
+  {
+    "id": "psql-drop",
+    "pattern": "(?:psql|pg_dump).*(?:dropdb|DROP\\s+DATABASE)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "PostgreSQL database drop — irreversible data loss"
+  },
+  {
+    "id": "mysql-drop",
+    "pattern": "(?:mysql|mysqladmin).*(?:DROP\\s+DATABASE|drop\\s+database)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "MySQL database drop — irreversible data loss"
+  },
+
+  {
+    "id": "iptables-policy-drop",
+    "pattern": "iptables\\s+.*-P\\s+(?:INPUT|FORWARD|OUTPUT)\\s+DROP",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "iptables default policy DROP — may lock out remote access"
+  },
+  {
+    "id": "ufw-disable",
+    "pattern": "(?:ufw|firewall-cmd)\\s+(?:disable|--permanent\\s+--remove)",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Disabling firewall — removes network security"
+  },
+  {
+    "id": "iptables-nat-redirect",
+    "pattern": "iptables\\s+.*-t\\s+nat\\s+.*REDIRECT",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "iptables NAT redirect — traffic interception"
+  },
+
+  {
+    "id": "systemctl-disable-critical",
+    "pattern": "systemctl\\s+(?:disable|stop|mask)\\s+(?:sshd|firewalld|iptables|fail2ban|auditd|apparmor|selinux)",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Disabling critical security service — degrades system security"
+  },
+  {
+    "id": "passwd-change",
+    "pattern": "(?:passwd|chpasswd|usermod\\s+.*-p)\\s+",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Changing user password — verify authorization"
+  },
+  {
+    "id": "useradd-sudo",
+    "pattern": "(?:useradd|adduser).*(?:sudo|wheel|admin|root)",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Creating user with elevated privileges — privilege escalation"
+  },
+  {
+    "id": "visudo-edit",
+    "pattern": "(?:visudo|sudoers|NOPASSWD)",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Editing sudoers — privilege escalation risk"
+  },
+  {
+    "id": "selinux-disable",
+    "pattern": "setenforce\\s+0|SELINUX=(?:disabled|permissive)",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Disabling SELinux — removes mandatory access controls"
+  },
+
+  {
+    "id": "pip-install-production",
+    "pattern": "pip\\s+install\\s+--(?:upgrade|force-reinstall)\\s+pip",
+    "severity": "medium",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Upgrading pip itself — may break production environment"
+  },
+  {
+    "id": "python-eval-exec",
+    "pattern": "python[23]?\\s+-c\\s+['\"].*(?:eval|exec|__import__|compile)\\s*\\(",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Python one-liner with eval/exec — arbitrary code execution"
+  },
+
+  {
+    "id": "unset-critical-env",
+    "pattern": "unset\\s+(?:PATH|HOME|USER|SHELL|LD_LIBRARY_PATH|LD_PRELOAD|JAVA_HOME|PYTHONPATH|NODE_PATH|GOPATH)",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Unsetting critical environment variable — may break system/tools"
+  },
+  {
+    "id": "overwrite-path",
+    "pattern": "(?:export\\s+)?PATH\\s*=\\s*['\"]?(?!/|\\$PATH)",
+    "severity": "high",
+    "category": "system",
+    "action": "warn",
+    "description": "Overwriting PATH without preserving existing — breaks command resolution"
+  },
+  {
+    "id": "ld-preload-inject",
+    "pattern": "(?:export\\s+)?LD_PRELOAD\\s*=",
+    "severity": "critical",
+    "category": "system",
+    "action": "block",
+    "description": "Setting LD_PRELOAD — library injection / privilege escalation"
+  },
+
+  {
+    "id": "shred-wipe",
+    "pattern": "(?:shred|wipe|srm)\\s+",
+    "severity": "high",
+    "category": "filesystem",
+    "action": "warn",
+    "description": "Secure file destruction — irrecoverable deletion"
+  },
+  {
+    "id": "overwrite-etc-hosts",
+    "pattern": "(?:>|tee|cp|mv)\\s+/etc/(?:hosts|resolv\\.conf|passwd|shadow|sudoers|fstab)",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Overwriting critical system file — may break system"
+  },
+  {
+    "id": "rm-var-log",
+    "pattern": "rm\\s+.*(?:-[rRf]\\s+)?/var/log",
+    "severity": "high",
+    "category": "filesystem",
+    "action": "warn",
+    "description": "Deleting system logs — destroys audit trail"
+  },
+  {
+    "id": "truncate-log",
+    "pattern": "(?:truncate|>\\s*)/var/log/",
+    "severity": "high",
+    "category": "filesystem",
+    "action": "warn",
+    "description": "Truncating system log — destroys forensic evidence"
+  },
+
+  {
+    "id": "git-push-protected-branch",
+    "pattern": "git\\s+push\\s+.*(?:origin|upstream)\\s+(?:main|master|production|release|develop)(?:\\s|$)",
+    "severity": "medium",
+    "category": "git",
+    "action": "warn",
+    "description": "Pushing directly to protected branch — use pull request workflow"
+  },
+  {
+    "id": "git-rebase-main",
+    "pattern": "git\\s+rebase\\s+.*(?:main|master|production|release)(?:\\s|$)",
+    "severity": "medium",
+    "category": "git",
+    "action": "warn",
+    "description": "Rebasing onto protected branch — may rewrite shared history"
+  },
+  {
+    "id": "modify-ci-config",
+    "pattern": "(?:>|tee|cp|mv|sed|vim|nano|code)\\s+.*(?:\\.github/workflows/|\\.gitlab-ci\\.yml|\\.circleci/|Jenkinsfile|azure-pipelines\\.yml|\\.travis\\.yml)",
+    "severity": "high",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Modifying CI/CD configuration — pipeline tampering risk"
+  },
+
+  {
+    "id": "npm-install-global-untrusted",
+    "pattern": "npm\\s+(?:install|i)\\s+(?:-g|--global)\\s+(?!@types/|typescript|npm|yarn|pnpm|eslint|prettier)",
+    "severity": "medium",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Global npm install — runs install scripts with user privileges"
+  },
+  {
+    "id": "pip-install-force",
+    "pattern": "pip\\s+install\\s+--(?:no-deps|force-reinstall|ignore-installed|break-system-packages)",
+    "severity": "medium",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "pip install with safety bypass flags — dependency risk"
+  },
+  {
+    "id": "gem-install-no-check",
+    "pattern": "gem\\s+install\\s+.*--no-verify",
+    "severity": "high",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Ruby gem install without verification — supply chain risk"
+  },
+  {
+    "id": "npm-config-registry",
+    "pattern": "npm\\s+(?:config\\s+set|set)\\s+registry\\s+(?!https://registry\\.npmjs\\.org)",
+    "severity": "high",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "Changing npm registry to non-default — supply chain risk"
+  },
+
+  {
+    "id": "gcloud-project-delete",
+    "pattern": "gcloud\\s+projects?\\s+delete",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "GCP project deletion — destroys all resources in project"
+  },
+  {
+    "id": "gcloud-iam-policy",
+    "pattern": "gcloud\\s+(?:iam|projects)\\s+(?:set-iam-policy|add-iam-policy-binding).*(?:allUsers|allAuthenticatedUsers)",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "GCP IAM public access — exposes resources to everyone"
+  },
+  {
+    "id": "az-group-delete",
+    "pattern": "az\\s+group\\s+delete",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "Azure resource group deletion — destroys all resources in group"
+  },
+
+  {
+    "id": "helm-delete-purge",
+    "pattern": "helm\\s+(?:delete|uninstall)\\s+.*(?:--purge|--no-hooks)",
+    "severity": "high",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Helm release deletion with purge — removes release history"
+  },
+
+  {
+    "id": "etcdctl-delete",
+    "pattern": "etcdctl\\s+(?:del|delete)\\s+.*(?:--prefix|/)",
+    "severity": "critical",
+    "category": "data",
+    "action": "block",
+    "description": "etcd prefix deletion — may destroy cluster state"
+  },
+
+  {
+    "id": "ssh-add-wildcard",
+    "pattern": "ssh-add\\s+(?:-D|--delete-all)",
+    "severity": "medium",
+    "category": "crypto",
+    "action": "warn",
+    "description": "Removing all SSH keys from agent — may break SSH access"
+  },
+
+  {
+    "id": "gpg-delete-keys",
+    "pattern": "gpg\\s+--delete-(?:secret-)?keys",
+    "severity": "high",
+    "category": "crypto",
+    "action": "warn",
+    "description": "Deleting GPG keys — may lose ability to decrypt data"
+  },
+
+  {
+    "id": "dd-if-dev-zero",
+    "pattern": "dd\\s+if=/dev/(?:zero|urandom)\\s+of=(?!/dev/null)",
+    "severity": "critical",
+    "category": "filesystem",
+    "action": "block",
+    "description": "Writing zeros/random to device/file — data destruction"
+  },
+
+  {
+    "id": "history-clear",
+    "pattern": "(?:history\\s+-c|>\\s*~/?\\.(?:bash_history|zsh_history)|HISTSIZE=0|unset\\s+HISTFILE)",
+    "severity": "medium",
+    "category": "system",
+    "action": "warn",
+    "description": "Clearing/disabling shell history — anti-forensics"
+  },
+
+  {
+    "id": "nc-listen",
+    "pattern": "(?:nc|ncat|netcat)\\s+.*-l\\s*.*-p",
+    "severity": "medium",
+    "category": "network",
+    "action": "warn",
+    "description": "Netcat listener — potential backdoor"
+  },
+
+  {
+    "id": "scp-to-external",
+    "pattern": "scp\\s+.*(?:/etc/|/var/|~/).*@(?!localhost|127\\.0\\.0\\.1)",
+    "severity": "medium",
+    "category": "exfiltration",
+    "action": "warn",
+    "description": "SCP sensitive files to external host — data exfiltration risk"
+  },
+
+  {
+    "id": "aws-s3-public-acl",
+    "pattern": "aws\\s+s3(?:api)?\\s+(?:put-bucket-acl|put-object-acl).*(?:public-read|public-read-write|authenticated-read)",
+    "severity": "critical",
+    "category": "infrastructure",
+    "action": "block",
+    "description": "AWS S3 public ACL — exposes data to the internet"
+  },
+
+  {
+    "id": "docker-exec-root",
+    "pattern": "docker\\s+exec\\s+.*(?:-u\\s+root|--user\\s+root)",
+    "severity": "medium",
+    "category": "infrastructure",
+    "action": "warn",
+    "description": "Docker exec as root — elevated container privileges"
+  },
+
+  {
+    "id": "npm-audit-fix-force",
+    "pattern": "npm\\s+audit\\s+fix\\s+--force",
+    "severity": "medium",
+    "category": "supply-chain",
+    "action": "warn",
+    "description": "npm audit fix --force — may install breaking major version changes"
+  }
+]
