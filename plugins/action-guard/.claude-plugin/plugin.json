@@ -2,16 +2,22 @@
   "name": "reaper-action-guard",
   "description": "Pre-execution classification and blocking of dangerous Bash commands.",
   "version": "1.0.0",
-  "author": { "name": "enchanted-plugins" },
+  "author": {
+    "name": "enchanted-plugins"
+  },
   "license": "MIT",
-  "keywords": ["bash", "guard", "blocking", "commands", "safety"],
-  "commands": ["./commands/safety.md"],
-  "skills": ["./skills/safety-awareness/"],
-  "agents": "./agents/",
-  "dependencies": [
-    "reaper-audit-trail",
-    "reaper-config-shield",
-    "reaper-secret-scanner",
-    "reaper-vuln-detector"
-  ]
+  "keywords": [
+    "bash",
+    "guard",
+    "blocking",
+    "commands",
+    "safety"
+  ],
+  "commands": [
+    "./commands/safety.md"
+  ],
+  "skills": [
+    "./skills/safety-awareness/"
+  ],
+  "agents": "./agents/"
 }

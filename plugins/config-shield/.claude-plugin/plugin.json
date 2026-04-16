@@ -2,16 +2,22 @@
   "name": "reaper-config-shield",
   "description": "Session-start scanning for malicious repository configuration files.",
   "version": "1.0.0",
-  "author": { "name": "enchanted-plugins" },
+  "author": {
+    "name": "enchanted-plugins"
+  },
   "license": "MIT",
-  "keywords": ["config", "poisoning", "repository", "malicious", "detection"],
-  "commands": ["./commands/config-check.md"],
-  "skills": ["./skills/config-awareness/"],
-  "agents": "./agents/",
-  "dependencies": [
-    "reaper-action-guard",
-    "reaper-audit-trail",
-    "reaper-secret-scanner",
-    "reaper-vuln-detector"
-  ]
+  "keywords": [
+    "config",
+    "poisoning",
+    "repository",
+    "malicious",
+    "detection"
+  ],
+  "commands": [
+    "./commands/config-check.md"
+  ],
+  "skills": [
+    "./skills/config-awareness/"
+  ],
+  "agents": "./agents/"
 }

@@ -2,16 +2,22 @@
   "name": "reaper-secret-scanner",
   "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
   "version": "1.0.0",
-  "author": { "name": "enchanted-plugins" },
+  "author": {
+    "name": "enchanted-plugins"
+  },
   "license": "MIT",
-  "keywords": ["secrets", "scanning", "aho-corasick", "entropy", "detection"],
-  "commands": ["./commands/secrets.md"],
-  "skills": ["./skills/secret-awareness/"],
-  "agents": "./agents/",
-  "dependencies": [
-    "reaper-action-guard",
-    "reaper-audit-trail",
-    "reaper-config-shield",
-    "reaper-vuln-detector"
-  ]
+  "keywords": [
+    "secrets",
+    "scanning",
+    "aho-corasick",
+    "entropy",
+    "detection"
+  ],
+  "commands": [
+    "./commands/secrets.md"
+  ],
+  "skills": [
+    "./skills/secret-awareness/"
+  ],
+  "agents": "./agents/"
 }

@@ -9,6 +9,12 @@
   },
   "plugins": [
     {
+      "name": "full",
+      "source": "./plugins/full",
+      "description": "Meta-plugin. One install pulls in all 5 Reaper plugins via dependency resolution.",
+      "category": "meta"
+    },
+    {
       "name": "reaper-secret-scanner",
       "source": "./plugins/secret-scanner",
       "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",

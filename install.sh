@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Reaper installer. The 5 plugins are a coordinated bundle — they install
-# together or not at all (see .claude-plugin/plugin.json → dependencies).
+# Reaper installer. The 5 plugins are a coordinated defense stack; the
+# `full` meta-plugin pulls them all in via one dependency-resolution pass.
 set -euo pipefail
 
 REPO="https://github.com/enchanted-plugins/reaper"
@@ -31,27 +31,21 @@ ok "Hook scripts marked executable"
 cat <<'EOF'
 
 ─────────────────────────────────────────────────────────────────────────
-  Reaper is a bundle. The 5 plugins layer runtime defenses —
-  secret-scanner catches credentials in writes, vuln-detector flags
-  OWASP/CWE-mapped code defects, action-guard blocks dangerous Bash,
-  config-shield checks repo-level config poisoning at session start,
-  and audit-trail logs everything the other four do. Installing only
-  one leaves glaring holes in the defense-in-depth stack, so every
-  plugin.json lists the other four as dependencies and Claude Code
-  pulls them in together.
+  Reaper ships as 5 plugins layering runtime defenses — secret-scanner,
+  vuln-detector, action-guard, config-shield, and audit-trail. The
+  `full` meta-plugin lists all five as dependencies so one install
+  pulls in the whole defense stack.
 ─────────────────────────────────────────────────────────────────────────
 
   Finish in Claude Code with TWO commands:
 
     /plugin marketplace add enchanted-plugins/reaper
-    /plugin install reaper-secret-scanner@reaper
+    /plugin install full@reaper
 
-  The second command installs all 5 plugins via dependency resolution.
-  (Any of the 5 names works — they're peers. secret-scanner is the
-  natural entry point since credential leaks are the highest-impact
-  catch.)
+  That installs all 5 plugins via dependency resolution. To cherry-pick
+  a single plugin instead, use e.g. `/plugin install reaper-secret-scanner@reaper`.
 
   Verify with:   /plugin list
-  Expected:      5 plugins installed under the reaper marketplace.
+  Expected:      full + 5 plugins installed under the reaper marketplace.
 
 EOF

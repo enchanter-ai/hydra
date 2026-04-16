@@ -4,14 +4,14 @@ Comprehensive security event logging with rotation and reporting.
 
 ## Install
 
-Part of the [Reaper](../..) bundle — **all 5 plugins install together**. `audit-trail` only has events to log because `secret-scanner`, `vuln-detector`, `action-guard`, and `config-shield` emit them. Installing it alone gives you an empty JSONL file and a report with no findings. The manifest lists the other four as dependencies.
+Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Reaper plugins via dependency resolution:
 
 ```
 /plugin marketplace add enchanted-plugins/reaper
-/plugin install reaper-audit-trail@reaper
+/plugin install full@reaper
 ```
 
-Claude Code resolves the dependency chain and installs all 5.
+To install this plugin on its own: `/plugin install reaper-audit-trail@reaper`. `audit-trail` only has events to log because `secret-scanner`, `vuln-detector`, `action-guard`, and `config-shield` emit them. On its own, you get an empty JSONL file and a report with no findings.
 
 ## Algorithm
 - **R8: Bayesian Threat Convergence** — cross-session EMA of threat rates

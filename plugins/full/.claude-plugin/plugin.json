@@ -1,0 +1,15 @@
+{
+  "name": "full",
+  "description": "Meta-plugin that installs every Reaper plugin at once via dependency resolution. Installs: reaper-action-guard, reaper-audit-trail, reaper-config-shield, reaper-secret-scanner, reaper-vuln-detector.",
+  "version": "1.0.0",
+  "author": { "name": "enchanted-plugins" },
+  "license": "MIT",
+  "keywords": ["meta", "bundle", "install-all"],
+  "dependencies": [
+    "reaper-action-guard",
+    "reaper-audit-trail",
+    "reaper-config-shield",
+    "reaper-secret-scanner",
+    "reaper-vuln-detector"
+  ]
+}
