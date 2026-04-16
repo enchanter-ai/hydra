@@ -1,0 +1,1056 @@
+[
+  {
+    "id": "claude-hooks-shell",
+    "file_pattern": ".claude/settings.json",
+    "check": "hooks_with_commands",
+    "pattern": "\"type\"\\s*:\\s*\"command\"",
+    "cve": "CVE-2025-59536",
+    "severity": "critical",
+    "description": "Repo-level .claude/settings.json defines hooks that execute shell commands. Arbitrary code execution on clone."
+  },
+  {
+    "id": "claude-hooks-reverse-shell",
+    "file_pattern": ".claude/settings.json",
+    "check": "reverse_shell_in_hooks",
+    "pattern": "(?:curl|wget|bash|sh|nc|ncat|python|ruby|perl)\\s",
+    "cve": "CVE-2025-59536",
+    "severity": "critical",
+    "description": "Hook command contains network/interpreter call — potential reverse shell."
+  },
+  {
+    "id": "claudecode-base-url-override",
+    "file_pattern": ".claudecode/settings.json",
+    "check": "api_base_url_hijack",
+    "pattern": "ANTHROPIC_BASE_URL|api_base|base_url",
+    "cve": "CVE-2026-21852",
+    "severity": "critical",
+    "description": "Overrides ANTHROPIC_BASE_URL — can intercept API key before trust prompt."
+  },
+  {
+    "id": "claudecode-api-key-steal",
+    "file_pattern": ".claudecode/settings.json",
+    "check": "env_override",
+    "pattern": "ANTHROPIC_API_KEY|OPENAI_API_KEY|API_KEY",
+    "cve": "CVE-2026-21852",
+    "severity": "critical",
+    "description": "Repo-level config overrides API key environment variable."
+  },
+  {
+    "id": "mcp-enable-all-project",
+    "file_pattern": ".mcp.json",
+    "check": "blanket_mcp_trust",
+    "pattern": "enableAllProjectMcpServers",
+    "cve": null,
+    "severity": "high",
+    "description": "Enables all project MCP servers without explicit consent — MCP trust bypass."
+  },
+  {
+    "id": "mcp-suspicious-server",
+    "file_pattern": ".mcp.json",
+    "check": "unknown_mcp_server",
+    "pattern": "\"command\"\\s*:\\s*\"(?:npx|node|python|deno|bun)\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "MCP config specifies executable server — verify trust before connecting."
+  },
+  {
+    "id": "cursorrules-hidden-unicode",
+    "file_pattern": ".cursorrules",
+    "check": "hidden_unicode",
+    "pattern": "[\\x{200B}\\x{200C}\\x{200D}\\x{2060}\\x{FEFF}\\x{00AD}]",
+    "cve": null,
+    "severity": "high",
+    "description": "Rules file contains hidden Unicode characters — potential prompt injection via invisible text."
+  },
+  {
+    "id": "copilot-instructions-injection",
+    "file_pattern": ".github/copilot-instructions.md",
+    "check": "hidden_unicode",
+    "pattern": "[\\x{200B}\\x{200C}\\x{200D}\\x{2060}\\x{FEFF}\\x{00AD}]",
+    "cve": null,
+    "severity": "high",
+    "description": "Copilot instructions contain hidden Unicode — Rules File Backdoor attack."
+  },
+  {
+    "id": "vscode-tasks-shell-open",
+    "file_pattern": ".vscode/tasks.json",
+    "check": "auto_run_shell",
+    "pattern": "\"runOn\"\\s*:\\s*\"folderOpen\"",
+    "cve": null,
+    "severity": "critical",
+    "description": "VSCode task set to run automatically on folder open — arbitrary command execution."
+  },
+  {
+    "id": "vscode-tasks-shell-command",
+    "file_pattern": ".vscode/tasks.json",
+    "check": "shell_command",
+    "pattern": "\"command\"\\s*:\\s*\"[^\"]*(?:curl|wget|bash|sh|python|nc|ncat|ruby|perl)",
+    "cve": null,
+    "severity": "high",
+    "description": "VSCode task executes network/interpreter command."
+  },
+  {
+    "id": "vscode-settings-terminal",
+    "file_pattern": ".vscode/settings.json",
+    "check": "terminal_injection",
+    "pattern": "terminal\\.integrated\\.(?:shellArgs|profiles|defaultProfile|env)",
+    "cve": null,
+    "severity": "medium",
+    "description": "VSCode settings modify terminal shell configuration — verify intent."
+  },
+  {
+    "id": "devcontainer-post-command",
+    "file_pattern": ".devcontainer/devcontainer.json",
+    "check": "post_create_command",
+    "pattern": "\"(?:postCreateCommand|postStartCommand|postAttachCommand|initializeCommand)\"\\s*:\\s*\"[^\"]*(?:curl|wget|bash|sh|python)",
+    "cve": null,
+    "severity": "high",
+    "description": "Dev container lifecycle command executes network/interpreter call."
+  },
+  {
+    "id": "package-json-preinstall",
+    "file_pattern": "package.json",
+    "check": "lifecycle_scripts",
+    "pattern": "\"(?:preinstall|postinstall|preuninstall|postuninstall|prepare)\"\\s*:\\s*\"[^\"]*(?:curl|wget|bash|sh|python|nc|eval)",
+    "cve": null,
+    "severity": "critical",
+    "description": "package.json lifecycle script executes suspicious command — supply chain attack vector."
+  },
+  {
+    "id": "package-json-install-scripts",
+    "file_pattern": "package.json",
+    "check": "lifecycle_scripts",
+    "pattern": "\"(?:preinstall|postinstall)\"\\s*:\\s*\"[^\"]+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "package.json has install lifecycle scripts — review for suspicious behavior."
+  },
+  {
+    "id": "npmrc-registry-hijack",
+    "file_pattern": ".npmrc",
+    "check": "registry_override",
+    "pattern": "registry\\s*=\\s*(?!https://registry\\.npmjs\\.org)",
+    "cve": null,
+    "severity": "high",
+    "description": ".npmrc overrides default npm registry — potential supply chain attack."
+  },
+  {
+    "id": "pyproject-build-script",
+    "file_pattern": "pyproject.toml",
+    "check": "build_script",
+    "pattern": "\\[tool\\.setuptools\\.cmdclass\\]|build-backend.*(?!setuptools|flit|hatchling|poetry)",
+    "cve": null,
+    "severity": "medium",
+    "description": "pyproject.toml uses custom build backend or cmdclass — review for safety."
+  },
+  {
+    "id": "makefile-hidden-target",
+    "file_pattern": "Makefile",
+    "check": "hidden_target",
+    "pattern": "^\\.[A-Z]+:\\s*$",
+    "cve": null,
+    "severity": "medium",
+    "description": "Makefile has hidden target (dot-prefixed) — may execute unexpected commands."
+  },
+  {
+    "id": "env-command-substitution",
+    "file_pattern": ".env",
+    "check": "command_substitution",
+    "pattern": "\\$\\(|`[^`]+`",
+    "cve": null,
+    "severity": "high",
+    "description": ".env file contains command substitution — may execute on load in some shells."
+  },
+  {
+    "id": "github-workflow-injection",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "expression_injection",
+    "pattern": "\\$\\{\\{\\s*github\\.event\\.(?:issue|pull_request|comment)\\.(?:title|body)",
+    "cve": null,
+    "severity": "high",
+    "description": "GitHub Actions workflow uses untrusted event data in expression — injection risk."
+  },
+  {
+    "id": "claude-commands-injection",
+    "file_pattern": ".claude/commands/*.md",
+    "check": "prompt_injection",
+    "pattern": "(?:ignore|disregard|forget)\\s+(?:all\\s+)?(?:previous|prior|above)\\s+(?:instructions|rules|constraints)",
+    "cve": null,
+    "severity": "critical",
+    "description": "Claude command file contains prompt injection attempt."
+  },
+  {
+    "id": "cursor-mcp-override",
+    "file_pattern": ".cursor/mcp.json",
+    "check": "mcp_persistence",
+    "pattern": "\"command\"\\s*:\\s*\"",
+    "cve": "CVE-2025-54135",
+    "severity": "critical",
+    "description": "Repo-level Cursor MCP config — can persist malicious MCP server for RCE."
+  },
+
+  {
+    "id": "gitattributes-filter-smudge",
+    "file_pattern": ".gitattributes",
+    "check": "filter_command_exec",
+    "pattern": "filter\\s*=\\s*\\S+.*(?:clean|smudge)",
+    "cve": "CVE-2024-32002",
+    "severity": "critical",
+    "description": ".gitattributes defines filter clean/smudge — executes arbitrary commands on checkout/add. RCE on clone."
+  },
+  {
+    "id": "gitattributes-filter-process",
+    "file_pattern": ".gitattributes",
+    "check": "filter_process_exec",
+    "pattern": "filter=\\S+\\s+(?:clean|smudge|process)=",
+    "cve": "CVE-2024-32002",
+    "severity": "critical",
+    "description": ".gitattributes filter process attribute can execute commands during git operations."
+  },
+  {
+    "id": "gitattributes-export-subst",
+    "file_pattern": ".gitattributes",
+    "check": "export_subst_injection",
+    "pattern": "export-subst",
+    "cve": null,
+    "severity": "medium",
+    "description": ".gitattributes uses export-subst — can inject commit metadata into exported archives."
+  },
+  {
+    "id": "gitmodules-untrusted-url",
+    "file_pattern": ".gitmodules",
+    "check": "submodule_url_hijack",
+    "pattern": "url\\s*=\\s*(?!https://github\\.com/|https://gitlab\\.com/|https://bitbucket\\.org/)\\S+",
+    "cve": "CVE-2024-32002",
+    "severity": "high",
+    "description": ".gitmodules references submodule from untrusted host — attacker-controlled code pulled on recursive clone."
+  },
+  {
+    "id": "gitmodules-relative-path-traversal",
+    "file_pattern": ".gitmodules",
+    "check": "path_traversal",
+    "pattern": "path\\s*=\\s*\\.\\./",
+    "cve": "CVE-2024-32002",
+    "severity": "critical",
+    "description": ".gitmodules submodule path uses ../ traversal — RCE via symlink following on case-insensitive filesystems."
+  },
+  {
+    "id": "gitmodules-ssh-url",
+    "file_pattern": ".gitmodules",
+    "check": "ssh_submodule_url",
+    "pattern": "url\\s*=\\s*(?:ssh://|git@)",
+    "cve": null,
+    "severity": "medium",
+    "description": ".gitmodules uses SSH URL for submodule — may trigger SSH key auth to attacker server."
+  },
+  {
+    "id": "precommit-config-untrusted-repo",
+    "file_pattern": ".pre-commit-config.yaml",
+    "check": "untrusted_hook_repo",
+    "pattern": "repo:\\s*(?!https://github\\.com/pre-commit/|https://github\\.com/psf/|https://github\\.com/PyCQA/|https://github\\.com/commitizen-tools/|local)\\S+",
+    "cve": null,
+    "severity": "high",
+    "description": ".pre-commit-config.yaml references hooks from untrusted repository — arbitrary code execution on commit."
+  },
+  {
+    "id": "precommit-config-local-hook-shell",
+    "file_pattern": ".pre-commit-config.yaml",
+    "check": "local_hook_command",
+    "pattern": "entry:\\s*['\"]?(?:bash|sh|python|ruby|perl|curl|wget|nc)\\s",
+    "cve": null,
+    "severity": "high",
+    "description": ".pre-commit-config.yaml local hook executes shell/interpreter/network command."
+  },
+  {
+    "id": "precommit-config-rev-latest",
+    "file_pattern": ".pre-commit-config.yaml",
+    "check": "unpinned_hook_version",
+    "pattern": "rev:\\s*(?:master|main|HEAD|latest)",
+    "cve": null,
+    "severity": "medium",
+    "description": ".pre-commit-config.yaml hook pinned to mutable ref — vulnerable to upstream compromise."
+  },
+  {
+    "id": "dockerfile-untrusted-base",
+    "file_pattern": "Dockerfile",
+    "check": "untrusted_base_image",
+    "pattern": "FROM\\s+(?!(?:docker\\.io/)?(?:library/)?(?:node|python|golang|rust|alpine|ubuntu|debian|nginx|redis|postgres|mysql|eclipse-temurin|amazoncorretto|mcr\\.microsoft\\.com))[a-z0-9][a-z0-9._/-]+(?::\\S+)?",
+    "cve": null,
+    "severity": "high",
+    "description": "Dockerfile uses base image from untrusted/unknown source — potential backdoored image."
+  },
+  {
+    "id": "dockerfile-add-remote-url",
+    "file_pattern": "Dockerfile",
+    "check": "remote_add",
+    "pattern": "ADD\\s+https?://",
+    "cve": null,
+    "severity": "high",
+    "description": "Dockerfile ADD fetches content from remote URL — unverified code injection risk. Use COPY + verified download instead."
+  },
+  {
+    "id": "dockerfile-run-curl-pipe-sh",
+    "file_pattern": "Dockerfile",
+    "check": "curl_pipe_shell",
+    "pattern": "RUN\\s+.*(?:curl|wget)\\s+[^|]*\\|\\s*(?:bash|sh|python|perl)",
+    "cve": null,
+    "severity": "critical",
+    "description": "Dockerfile pipes remote content to shell — RCE if upstream is compromised."
+  },
+  {
+    "id": "dockerfile-no-user",
+    "file_pattern": "Dockerfile",
+    "check": "missing_user_directive",
+    "pattern": "^(?!.*\\bUSER\\b).*CMD\\s",
+    "cve": null,
+    "severity": "medium",
+    "description": "Dockerfile runs CMD without USER directive — container runs as root by default."
+  },
+  {
+    "id": "dockerfile-privileged-apt",
+    "file_pattern": "Dockerfile",
+    "check": "untrusted_apt_source",
+    "pattern": "RUN\\s+.*(?:add-apt-repository|apt-key\\s+adv)\\s+.*(?:keyserver|ppa:)",
+    "cve": null,
+    "severity": "medium",
+    "description": "Dockerfile adds untrusted APT repository or key — supply chain risk."
+  },
+  {
+    "id": "docker-compose-privileged",
+    "file_pattern": "docker-compose.yml",
+    "check": "privileged_container",
+    "pattern": "privileged:\\s*true",
+    "cve": null,
+    "severity": "critical",
+    "description": "docker-compose.yml runs container in privileged mode — full host access, container escape trivial."
+  },
+  {
+    "id": "docker-compose-docker-sock",
+    "file_pattern": "docker-compose.yml",
+    "check": "docker_socket_mount",
+    "pattern": "/var/run/docker\\.sock",
+    "cve": null,
+    "severity": "critical",
+    "description": "docker-compose.yml mounts Docker socket — container can control host Docker daemon, equivalent to root."
+  },
+  {
+    "id": "docker-compose-host-etc-mount",
+    "file_pattern": "docker-compose.yml",
+    "check": "sensitive_host_mount",
+    "pattern": "volumes:.*(?:/etc(?:/|\")|/root(?:/|\")|/home(?:/|\")|/var/log(?:/|\"))",
+    "cve": null,
+    "severity": "high",
+    "description": "docker-compose.yml mounts sensitive host directory — credential/data exfiltration risk."
+  },
+  {
+    "id": "docker-compose-pid-host",
+    "file_pattern": "docker-compose.yml",
+    "check": "host_namespace",
+    "pattern": "(?:pid|network_mode):\\s*[\"']?host",
+    "cve": null,
+    "severity": "high",
+    "description": "docker-compose.yml uses host PID/network namespace — breaks container isolation."
+  },
+  {
+    "id": "docker-compose-cap-add-all",
+    "file_pattern": "docker-compose.yml",
+    "check": "excessive_capabilities",
+    "pattern": "cap_add:.*(?:ALL|SYS_ADMIN|SYS_PTRACE|NET_ADMIN)",
+    "cve": null,
+    "severity": "high",
+    "description": "docker-compose.yml grants dangerous Linux capabilities — container escape risk."
+  },
+  {
+    "id": "docker-compose-security-opt-unconfined",
+    "file_pattern": "docker-compose.yml",
+    "check": "disabled_security",
+    "pattern": "security_opt:.*(?:seccomp:unconfined|apparmor:unconfined|no-new-privileges:false)",
+    "cve": null,
+    "severity": "high",
+    "description": "docker-compose.yml disables seccomp/apparmor — security sandbox removed."
+  },
+  {
+    "id": "gitlab-ci-script-injection",
+    "file_pattern": ".gitlab-ci.yml",
+    "check": "variable_injection",
+    "pattern": "script:.*\\$(?:CI_COMMIT_(?:TITLE|MESSAGE|REF_NAME)|CI_MERGE_REQUEST_(?:TITLE|DESCRIPTION))",
+    "cve": null,
+    "severity": "high",
+    "description": ".gitlab-ci.yml interpolates user-controlled CI variable in script — command injection via commit message/MR title."
+  },
+  {
+    "id": "gitlab-ci-untrusted-include",
+    "file_pattern": ".gitlab-ci.yml",
+    "check": "remote_include",
+    "pattern": "include:.*(?:remote:|https?://(?!gitlab\\.com/))",
+    "cve": null,
+    "severity": "high",
+    "description": ".gitlab-ci.yml includes remote config from untrusted URL — pipeline injection risk."
+  },
+  {
+    "id": "gitlab-ci-unprotected-secrets",
+    "file_pattern": ".gitlab-ci.yml",
+    "check": "secret_in_script",
+    "pattern": "(?:script|before_script|after_script):.*(?:echo|curl|wget).*\\$(?:CI_JOB_TOKEN|CI_REGISTRY_PASSWORD|PRIVATE_TOKEN)",
+    "cve": null,
+    "severity": "high",
+    "description": ".gitlab-ci.yml script logs or sends CI secrets to external endpoint."
+  },
+  {
+    "id": "travis-yml-script-injection",
+    "file_pattern": ".travis.yml",
+    "check": "command_injection",
+    "pattern": "(?:script|before_script|after_script|before_install|install):.*(?:curl|wget)\\s+[^|]*\\|\\s*(?:bash|sh)",
+    "cve": null,
+    "severity": "critical",
+    "description": ".travis.yml pipes remote content to shell — RCE if upstream compromised."
+  },
+  {
+    "id": "travis-yml-env-exfil",
+    "file_pattern": ".travis.yml",
+    "check": "env_exfiltration",
+    "pattern": "(?:script|after_success):.*(?:curl|wget|nc).*(?:\\$\\{|\\$[A-Z_]+)",
+    "cve": null,
+    "severity": "high",
+    "description": ".travis.yml script sends environment variables to external endpoint — secret exfiltration."
+  },
+  {
+    "id": "jenkinsfile-groovy-rce",
+    "file_pattern": "Jenkinsfile",
+    "check": "groovy_rce",
+    "pattern": "(?:Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder|\"[^\"]*\"\\.execute\\(\\)|evaluate\\(|GroovyShell|new\\s+File\\()",
+    "cve": null,
+    "severity": "critical",
+    "description": "Jenkinsfile contains Groovy code execution pattern — arbitrary command execution on Jenkins controller."
+  },
+  {
+    "id": "jenkinsfile-load-remote",
+    "file_pattern": "Jenkinsfile",
+    "check": "remote_script_load",
+    "pattern": "load\\s+['\"]https?://|libraryResource|httpRequest",
+    "cve": null,
+    "severity": "high",
+    "description": "Jenkinsfile loads remote script or resource — pipeline code injection from external source."
+  },
+  {
+    "id": "jenkinsfile-credentials-leak",
+    "file_pattern": "Jenkinsfile",
+    "check": "credentials_exfil",
+    "pattern": "withCredentials.*\\{[^}]*(?:echo|sh|bat).*(?:curl|wget|nc)",
+    "cve": null,
+    "severity": "high",
+    "description": "Jenkinsfile sends credentials to external endpoint inside withCredentials block."
+  },
+  {
+    "id": "circleci-untrusted-orb",
+    "file_pattern": ".circleci/config.yml",
+    "check": "untrusted_orb",
+    "pattern": "orbs:.*(?!circleci/|codecov/|cypress-io/|docker/)\\w+/\\w+@",
+    "cve": null,
+    "severity": "high",
+    "description": "CircleCI config uses orb from untrusted publisher — orb code executes in CI environment."
+  },
+  {
+    "id": "circleci-uncertified-orb",
+    "file_pattern": ".circleci/config.yml",
+    "check": "volatile_orb_version",
+    "pattern": "orbs:.*@volatile",
+    "cve": null,
+    "severity": "high",
+    "description": "CircleCI config uses volatile orb version — mutable reference, vulnerable to upstream replacement."
+  },
+  {
+    "id": "circleci-run-curl-pipe",
+    "file_pattern": ".circleci/config.yml",
+    "check": "curl_pipe_shell",
+    "pattern": "run:.*(?:curl|wget)\\s+[^|]*\\|\\s*(?:bash|sh)",
+    "cve": null,
+    "severity": "critical",
+    "description": "CircleCI config pipes remote content to shell — RCE if upstream compromised."
+  },
+  {
+    "id": "renovate-custom-registry",
+    "file_pattern": "renovate.json",
+    "check": "custom_registry",
+    "pattern": "\"registryUrls\"\\s*:\\s*\\[|\"registryAliases\"",
+    "cve": null,
+    "severity": "high",
+    "description": "renovate.json configures custom package registries — dependency confusion / supply chain attack vector."
+  },
+  {
+    "id": "renovate-post-upgrade",
+    "file_pattern": "renovate.json",
+    "check": "post_upgrade_command",
+    "pattern": "\"postUpgradeTasks\"\\s*:|\"allowedCommands\"",
+    "cve": "CVE-2024-39614",
+    "severity": "critical",
+    "description": "renovate.json defines post-upgrade tasks with command execution — RCE via crafted PR."
+  },
+  {
+    "id": "renovate-exec-manager",
+    "file_pattern": "renovate.json",
+    "check": "custom_manager_exec",
+    "pattern": "\"customManagers\".*\"customType\"\\s*:\\s*\"regex\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "renovate.json uses custom regex manager — review extraction patterns for correctness."
+  },
+  {
+    "id": "dependabot-custom-registry",
+    "file_pattern": ".github/dependabot.yml",
+    "check": "custom_registry",
+    "pattern": "registries:.*type:\\s*(?:npm-registry|python-index|docker-registry|maven-repository|nuget-feed)",
+    "cve": null,
+    "severity": "high",
+    "description": "dependabot.yml configures custom registries — verify registry URLs to prevent dependency confusion."
+  },
+  {
+    "id": "dependabot-private-registry-token",
+    "file_pattern": ".github/dependabot.yml",
+    "check": "hardcoded_token",
+    "pattern": "(?:token|password|key):\\s*['\"]?[A-Za-z0-9+/=_-]{20,}",
+    "cve": null,
+    "severity": "critical",
+    "description": "dependabot.yml contains hardcoded authentication token — credential exposure in version control."
+  },
+  {
+    "id": "cargo-toml-build-script-network",
+    "file_pattern": "Cargo.toml",
+    "check": "build_script_network",
+    "pattern": "build\\s*=\\s*\"build\\.rs\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "Cargo.toml specifies build.rs script — review for network calls, file system access, or code generation."
+  },
+  {
+    "id": "cargo-toml-untrusted-registry",
+    "file_pattern": "Cargo.toml",
+    "check": "custom_registry",
+    "pattern": "\\[registries\\.|registry\\s*=\\s*\"(?!crates-io)",
+    "cve": null,
+    "severity": "high",
+    "description": "Cargo.toml uses custom registry — supply chain risk if registry is untrusted."
+  },
+  {
+    "id": "cargo-toml-git-dependency",
+    "file_pattern": "Cargo.toml",
+    "check": "git_dependency",
+    "pattern": "git\\s*=\\s*\"(?!https://github\\.com/rust-lang/|https://github\\.com/tokio-rs/|https://github\\.com/serde-rs/)\\S+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "Cargo.toml references git dependency from non-standard source — verify repository trust."
+  },
+  {
+    "id": "go-mod-replace-directive",
+    "file_pattern": "go.mod",
+    "check": "replace_directive",
+    "pattern": "replace\\s+\\S+\\s+=>[^\\n]+(?:github\\.com|gitlab\\.com|bitbucket\\.org)",
+    "cve": null,
+    "severity": "high",
+    "description": "go.mod replace directive redirects module to different repository — dependency hijack vector."
+  },
+  {
+    "id": "go-mod-replace-local",
+    "file_pattern": "go.mod",
+    "check": "replace_local_path",
+    "pattern": "replace\\s+\\S+\\s+=>\\s+\\.\\.?/",
+    "cve": null,
+    "severity": "medium",
+    "description": "go.mod replace uses local path — may reference code outside repository boundary."
+  },
+  {
+    "id": "go-mod-retract-bypass",
+    "file_pattern": "go.mod",
+    "check": "retract_directive",
+    "pattern": "retract\\s+v",
+    "cve": null,
+    "severity": "medium",
+    "description": "go.mod contains retract directive — verify this is intentional version deprecation, not an attack to force downgrades."
+  },
+  {
+    "id": "gemfile-untrusted-source",
+    "file_pattern": "Gemfile",
+    "check": "untrusted_gem_source",
+    "pattern": "source\\s+['\"](?!https://rubygems\\.org)\\S+['\"]",
+    "cve": null,
+    "severity": "high",
+    "description": "Gemfile specifies non-rubygems.org source — gems may come from attacker-controlled server."
+  },
+  {
+    "id": "gemfile-git-source",
+    "file_pattern": "Gemfile",
+    "check": "git_gem_source",
+    "pattern": "gem\\s+['\"][^'\"]+['\"].*git:\\s*['\"](?!https://github\\.com/rails/|https://github\\.com/ruby/)\\S+",
+    "cve": null,
+    "severity": "medium",
+    "description": "Gemfile loads gem from git repository — verify repository trust and pin to specific commit."
+  },
+  {
+    "id": "gemfile-path-source",
+    "file_pattern": "Gemfile",
+    "check": "path_gem_source",
+    "pattern": "gem\\s+['\"][^'\"]+['\"].*path:\\s*['\"]\\.\\.[\\/]",
+    "cve": null,
+    "severity": "medium",
+    "description": "Gemfile loads gem from parent directory path — may reference code outside repository."
+  },
+  {
+    "id": "composer-untrusted-vcs",
+    "file_pattern": "composer.json",
+    "check": "untrusted_repository",
+    "pattern": "\"repositories\"\\s*:\\s*\\[.*\"type\"\\s*:\\s*\"(?:vcs|git|svn|hg)\"",
+    "cve": null,
+    "severity": "high",
+    "description": "composer.json adds VCS repository — packages fetched from potentially untrusted source."
+  },
+  {
+    "id": "composer-script-exec",
+    "file_pattern": "composer.json",
+    "check": "script_command_exec",
+    "pattern": "\"scripts\"\\s*:.*\"(?:post-install-cmd|post-update-cmd|pre-install-cmd)\"\\s*:\\s*\"[^\"]*(?:curl|wget|bash|sh|php\\s+-r|eval)",
+    "cve": null,
+    "severity": "critical",
+    "description": "composer.json lifecycle script executes suspicious command — supply chain attack vector."
+  },
+  {
+    "id": "composer-allow-plugins",
+    "file_pattern": "composer.json",
+    "check": "allow_all_plugins",
+    "pattern": "\"allow-plugins\"\\s*:\\s*true",
+    "cve": null,
+    "severity": "high",
+    "description": "composer.json allows all plugins — Composer plugins execute arbitrary PHP code during install."
+  },
+  {
+    "id": "tsconfig-paths-plugin",
+    "file_pattern": "tsconfig.json",
+    "check": "plugin_loading",
+    "pattern": "\"plugins\"\\s*:\\s*\\[",
+    "cve": null,
+    "severity": "high",
+    "description": "tsconfig.json loads TypeScript language service plugins — plugins execute arbitrary code in IDE."
+  },
+  {
+    "id": "tsconfig-paths-traversal",
+    "file_pattern": "tsconfig.json",
+    "check": "paths_traversal",
+    "pattern": "\"paths\"\\s*:.*\"\\.\\./\\.\\.[\\/]",
+    "cve": null,
+    "severity": "medium",
+    "description": "tsconfig.json paths maps to parent directories — potential code injection from outside project."
+  },
+  {
+    "id": "jsconfig-plugins",
+    "file_pattern": "jsconfig.json",
+    "check": "plugin_loading",
+    "pattern": "\"plugins\"\\s*:\\s*\\[",
+    "cve": null,
+    "severity": "high",
+    "description": "jsconfig.json loads language service plugins — plugins execute arbitrary code in IDE."
+  },
+  {
+    "id": "husky-precommit-suspicious",
+    "file_pattern": ".husky/pre-commit",
+    "check": "suspicious_hook_command",
+    "pattern": "(?:curl|wget|nc|ncat|python|ruby|perl|base64|eval)\\s",
+    "cve": null,
+    "severity": "critical",
+    "description": "Husky pre-commit hook executes network/interpreter/encoding command — potential code execution on commit."
+  },
+  {
+    "id": "husky-hook-download",
+    "file_pattern": ".husky/*",
+    "check": "hook_remote_download",
+    "pattern": "(?:curl|wget|fetch)\\s+https?://",
+    "cve": null,
+    "severity": "high",
+    "description": "Husky hook downloads content from remote URL — supply chain attack vector."
+  },
+  {
+    "id": "husky-hook-env-exfil",
+    "file_pattern": ".husky/*",
+    "check": "hook_env_exfiltration",
+    "pattern": "(?:curl|wget|nc).*(?:\\$\\{|\\$[A-Z_]+|env\\b)",
+    "cve": null,
+    "severity": "critical",
+    "description": "Husky hook sends environment variables to external endpoint — credential exfiltration."
+  },
+  {
+    "id": "changeset-post-publish",
+    "file_pattern": ".changeset/config.json",
+    "check": "lifecycle_command",
+    "pattern": "\"(?:commit|changelog)\"\\s*:\\s*\"[^\"]*(?:require|import|eval|exec)",
+    "cve": null,
+    "severity": "high",
+    "description": ".changeset config references executable module for commit/changelog — code execution during publish."
+  },
+  {
+    "id": "changeset-linked-packages",
+    "file_pattern": ".changeset/*.md",
+    "check": "changeset_injection",
+    "pattern": "---.*\\n.*\"[^\"]+\":\\s*(?:major|minor|patch).*\\n---",
+    "cve": null,
+    "severity": "medium",
+    "description": ".changeset markdown may inject unexpected version bumps — verify package names match repository."
+  },
+  {
+    "id": "turbo-json-global-deps",
+    "file_pattern": "turbo.json",
+    "check": "global_dependency_exec",
+    "pattern": "\"globalDependencies\"\\s*:\\s*\\[.*(?:\\$|\\{|`|\\|)",
+    "cve": null,
+    "severity": "high",
+    "description": "turbo.json globalDependencies contains shell expansion characters — potential command execution."
+  },
+  {
+    "id": "turbo-json-env-passthrough",
+    "file_pattern": "turbo.json",
+    "check": "env_passthrough",
+    "pattern": "\"globalPassThroughEnv\"\\s*:\\s*\\[.*(?:TOKEN|SECRET|KEY|PASSWORD|CREDENTIAL)",
+    "cve": null,
+    "severity": "medium",
+    "description": "turbo.json passes sensitive environment variables through to all tasks — secret exposure to build scripts."
+  },
+  {
+    "id": "turbo-json-remote-cache",
+    "file_pattern": "turbo.json",
+    "check": "remote_cache_hijack",
+    "pattern": "\"remoteCache\"\\s*:|\"teamId\"\\s*:",
+    "cve": null,
+    "severity": "medium",
+    "description": "turbo.json configures remote cache — verify cache endpoint is trusted to prevent cache poisoning."
+  },
+  {
+    "id": "nx-json-target-exec",
+    "file_pattern": "nx.json",
+    "check": "target_command_exec",
+    "pattern": "\"targetDefaults\"\\s*:.*\"command\"\\s*:\\s*\"[^\"]*(?:curl|wget|bash|sh|python|nc|eval)",
+    "cve": null,
+    "severity": "high",
+    "description": "nx.json targetDefaults contains suspicious command — executes during Nx task run."
+  },
+  {
+    "id": "nx-json-plugin-exec",
+    "file_pattern": "nx.json",
+    "check": "untrusted_plugin",
+    "pattern": "\"plugins\"\\s*:\\s*\\[.*(?!@nx/|@nrwl/)\"[^\"]+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "nx.json loads non-official Nx plugin — plugins execute arbitrary code during workspace operations."
+  },
+  {
+    "id": "nx-json-task-runner",
+    "file_pattern": "nx.json",
+    "check": "custom_task_runner",
+    "pattern": "\"tasksRunnerOptions\"\\s*:.*\"runner\"\\s*:\\s*\"(?!nx/tasks-runners/|@nrwl/)",
+    "cve": null,
+    "severity": "high",
+    "description": "nx.json uses custom task runner — arbitrary code execution during nx run commands."
+  },
+  {
+    "id": "deno-json-remote-import-map",
+    "file_pattern": "deno.json",
+    "check": "remote_import_map",
+    "pattern": "\"importMap\"\\s*:\\s*\"https?://",
+    "cve": null,
+    "severity": "high",
+    "description": "deno.json imports map from remote URL — attacker can remap all imports if URL is compromised."
+  },
+  {
+    "id": "deno-json-unstable-flags",
+    "file_pattern": "deno.json",
+    "check": "unstable_features",
+    "pattern": "\"unstable\"\\s*:\\s*\\[.*(?:ffi|net|read|write|run)",
+    "cve": null,
+    "severity": "medium",
+    "description": "deno.json enables unstable permissions — may weaken Deno's security sandbox."
+  },
+  {
+    "id": "deno-json-allow-all",
+    "file_pattern": "deno.json",
+    "check": "allow_all_permissions",
+    "pattern": "\"(?:permissions|allow)\"\\s*:.*\"allow-all\"\\s*:\\s*true|-A",
+    "cve": null,
+    "severity": "high",
+    "description": "deno.json grants all permissions — completely bypasses Deno's permission sandbox."
+  },
+  {
+    "id": "bun-lockb-binary-manipulation",
+    "file_pattern": "bun.lockb",
+    "check": "binary_lockfile",
+    "pattern": null,
+    "cve": null,
+    "severity": "medium",
+    "description": "bun.lockb is a binary lockfile — cannot be human-reviewed for tampered dependency resolutions. Compare with bun.lock (text) when available."
+  },
+  {
+    "id": "github-workflow-pull-request-target",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "pull_request_target_checkout",
+    "pattern": "pull_request_target.*\\n.*(?:actions/checkout.*ref.*\\$\\{\\{.*github\\.event\\.pull_request|head\\.ref)",
+    "cve": null,
+    "severity": "critical",
+    "description": "GitHub Actions uses pull_request_target with PR head checkout — attacker code runs with write permissions and secrets access."
+  },
+  {
+    "id": "github-workflow-script-injection",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "run_expression_injection",
+    "pattern": "run:.*\\$\\{\\{\\s*(?:github\\.event\\.|inputs\\.)",
+    "cve": null,
+    "severity": "high",
+    "description": "GitHub Actions run step interpolates event/input data — command injection via PR title, branch name, or workflow input."
+  },
+  {
+    "id": "github-workflow-unpinned-action",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "unpinned_action",
+    "pattern": "uses:\\s+[^@]+@(?:master|main|latest|v\\d+)\\s",
+    "cve": null,
+    "severity": "medium",
+    "description": "GitHub Actions uses mutable tag reference — vulnerable to upstream tag replacement attack."
+  },
+  {
+    "id": "github-workflow-artifact-poisoning",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "artifact_poisoning",
+    "pattern": "actions/download-artifact.*\\n.*(?:run:|bash|sh|python|node)",
+    "cve": null,
+    "severity": "high",
+    "description": "GitHub Actions downloads artifact then executes code — artifact poisoning if workflow_run trigger is used."
+  },
+  {
+    "id": "github-workflow-oidc-token-exfil",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "oidc_token_exfil",
+    "pattern": "ACTIONS_ID_TOKEN_REQUEST_TOKEN|id-token:\\s*write.*\\n.*curl",
+    "cve": null,
+    "severity": "critical",
+    "description": "GitHub Actions OIDC token may be exfiltrated — check for unauthorized cloud access via federated identity."
+  },
+  {
+    "id": "devcontainer-privileged",
+    "file_pattern": ".devcontainer/devcontainer.json",
+    "check": "privileged_container",
+    "pattern": "\"privileged\"\\s*:\\s*true|\"--privileged\"",
+    "cve": null,
+    "severity": "high",
+    "description": "Dev container runs in privileged mode — full host access from development container."
+  },
+  {
+    "id": "devcontainer-docker-socket",
+    "file_pattern": ".devcontainer/devcontainer.json",
+    "check": "docker_socket_mount",
+    "pattern": "/var/run/docker\\.sock",
+    "cve": null,
+    "severity": "high",
+    "description": "Dev container mounts Docker socket — container escape to host Docker daemon."
+  },
+  {
+    "id": "devcontainer-remote-features",
+    "file_pattern": ".devcontainer/devcontainer.json",
+    "check": "untrusted_feature",
+    "pattern": "\"features\"\\s*:.*\"(?!ghcr\\.io/devcontainers/)\\S+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "Dev container uses non-official feature — features execute as root during container creation."
+  },
+  {
+    "id": "setup-py-cmdclass",
+    "file_pattern": "setup.py",
+    "check": "setup_cmdclass",
+    "pattern": "cmdclass\\s*=|(?:os\\.system|subprocess|exec|eval)\\(",
+    "cve": null,
+    "severity": "high",
+    "description": "setup.py contains command execution — runs arbitrary code during pip install."
+  },
+  {
+    "id": "setup-cfg-egg-info",
+    "file_pattern": "setup.cfg",
+    "check": "custom_build",
+    "pattern": "\\[options\\.entry_points\\]|\\[bdist_egg\\]",
+    "cve": null,
+    "severity": "medium",
+    "description": "setup.cfg defines entry points or custom build — review for unexpected code execution hooks."
+  },
+  {
+    "id": "pip-conf-untrusted-index",
+    "file_pattern": "pip.conf",
+    "check": "untrusted_index",
+    "pattern": "index-url\\s*=\\s*(?!https://pypi\\.org/|https://files\\.pythonhosted\\.org)\\S+",
+    "cve": null,
+    "severity": "high",
+    "description": "pip.conf points to non-PyPI index — dependency confusion / supply chain attack via custom index."
+  },
+  {
+    "id": "gradle-init-script",
+    "file_pattern": "build.gradle",
+    "check": "init_script_exec",
+    "pattern": "(?:Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder|\"[^\"]*\"\\.execute\\(\\)|new\\s+URL\\()",
+    "cve": null,
+    "severity": "high",
+    "description": "build.gradle contains code execution pattern — arbitrary commands during Gradle build."
+  },
+  {
+    "id": "gradle-untrusted-repo",
+    "file_pattern": "build.gradle",
+    "check": "untrusted_repository",
+    "pattern": "repositories\\s*\\{.*maven\\s*\\{.*url\\s+['\"](?!https://repo\\.maven\\.apache\\.org|https://maven\\.google\\.com|https://plugins\\.gradle\\.org)",
+    "cve": null,
+    "severity": "high",
+    "description": "build.gradle uses untrusted Maven repository — supply chain attack via dependency confusion."
+  },
+  {
+    "id": "maven-untrusted-repo",
+    "file_pattern": "pom.xml",
+    "check": "untrusted_repository",
+    "pattern": "<repository>.*<url>(?!https://repo\\.maven\\.apache\\.org|https://repo1\\.maven\\.org)",
+    "cve": null,
+    "severity": "high",
+    "description": "pom.xml uses untrusted Maven repository — supply chain risk."
+  },
+  {
+    "id": "maven-exec-plugin",
+    "file_pattern": "pom.xml",
+    "check": "exec_plugin",
+    "pattern": "exec-maven-plugin.*<executable>(?:bash|sh|python|curl|wget)",
+    "cve": null,
+    "severity": "high",
+    "description": "pom.xml exec-maven-plugin runs shell commands — verify command intent."
+  },
+  {
+    "id": "github-actions-workflow-dispatch-no-validation",
+    "file_pattern": ".github/workflows/*.yml",
+    "check": "workflow_dispatch_injection",
+    "pattern": "workflow_dispatch:.*inputs:.*\\$\\{\\{\\s*github\\.event\\.inputs\\.",
+    "cve": null,
+    "severity": "high",
+    "description": "GitHub Actions workflow_dispatch input used in run step without validation — injection via manual trigger."
+  },
+  {
+    "id": "lerna-json-command-exec",
+    "file_pattern": "lerna.json",
+    "check": "command_lifecycle",
+    "pattern": "\"command\"\\s*:.*\"(?:prepublish|postpublish|preversion|postversion)\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "lerna.json defines lifecycle commands — review for unexpected code execution during publishing."
+  },
+  {
+    "id": "vscode-extensions-recommendations",
+    "file_pattern": ".vscode/extensions.json",
+    "check": "untrusted_extension",
+    "pattern": "\"recommendations\"\\s*:\\s*\\[",
+    "cve": null,
+    "severity": "medium",
+    "description": ".vscode/extensions.json recommends extensions — malicious extensions can execute code with full IDE privileges."
+  },
+  {
+    "id": "vscode-launch-env-injection",
+    "file_pattern": ".vscode/launch.json",
+    "check": "env_injection",
+    "pattern": "\"env\"\\s*:.*(?:LD_PRELOAD|DYLD_INSERT_LIBRARIES|NODE_OPTIONS|PYTHONSTARTUP)",
+    "cve": null,
+    "severity": "critical",
+    "description": ".vscode/launch.json sets dangerous environment variables — LD_PRELOAD/NODE_OPTIONS can inject code into debugged process."
+  },
+  {
+    "id": "codeql-config-untrusted-queries",
+    "file_pattern": ".github/codeql/codeql-config.yml",
+    "check": "untrusted_query_pack",
+    "pattern": "queries:.*(?:uses:|\\+)\\s*(?!codeql/|github/)\\S+",
+    "cve": null,
+    "severity": "medium",
+    "description": "CodeQL config loads queries from untrusted source — custom queries execute during analysis."
+  },
+  {
+    "id": "terraform-backend-override",
+    "file_pattern": "*.tf",
+    "check": "backend_override",
+    "pattern": "backend\\s+\"(?:s3|gcs|azurerm|http)\"\\s*\\{",
+    "cve": null,
+    "severity": "medium",
+    "description": "Terraform backend config — verify state storage endpoint is trusted to prevent state manipulation."
+  },
+  {
+    "id": "terraform-module-untrusted",
+    "file_pattern": "*.tf",
+    "check": "untrusted_module",
+    "pattern": "source\\s*=\\s*\"(?!registry\\.terraform\\.io/|hashicorp/)(?:https?://|git::)",
+    "cve": null,
+    "severity": "high",
+    "description": "Terraform module loaded from untrusted source — arbitrary code execution during plan/apply."
+  },
+  {
+    "id": "helm-chart-untrusted-repo",
+    "file_pattern": "Chart.yaml",
+    "check": "untrusted_dependency",
+    "pattern": "repository:\\s*(?!https://charts\\.helm\\.sh/|https://kubernetes-sigs\\.github\\.io/)\\S+",
+    "cve": null,
+    "severity": "high",
+    "description": "Helm Chart.yaml references untrusted chart repository — supply chain risk for Kubernetes deployments."
+  },
+  {
+    "id": "nuget-config-untrusted-feed",
+    "file_pattern": "nuget.config",
+    "check": "untrusted_feed",
+    "pattern": "<add\\s+key=\"[^\"]*\"\\s+value=\"(?!https://api\\.nuget\\.org/)\\S+\"",
+    "cve": null,
+    "severity": "high",
+    "description": "nuget.config adds non-nuget.org feed — dependency confusion attack vector for .NET packages."
+  },
+  {
+    "id": "swift-package-untrusted-url",
+    "file_pattern": "Package.swift",
+    "check": "untrusted_dependency",
+    "pattern": "\\.package\\(url:\\s*\"(?!https://github\\.com/apple/|https://github\\.com/swift-server/)\\S+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "Package.swift references Swift package from non-standard source — verify repository trust."
+  },
+  {
+    "id": "cocoapods-untrusted-source",
+    "file_pattern": "Podfile",
+    "check": "untrusted_source",
+    "pattern": "source\\s+['\"](?!https://cdn\\.cocoapods\\.org|https://github\\.com/CocoaPods/)\\S+",
+    "cve": null,
+    "severity": "high",
+    "description": "Podfile uses untrusted CocoaPods source — pods may come from attacker-controlled repository."
+  },
+  {
+    "id": "eslintrc-plugin-exec",
+    "file_pattern": ".eslintrc*",
+    "check": "plugin_code_exec",
+    "pattern": "\"plugins\"\\s*:\\s*\\[.*(?!@typescript-eslint|eslint-plugin-|@eslint/)\"[^\"]+\"",
+    "cve": null,
+    "severity": "medium",
+    "description": "ESLint config loads non-standard plugin — ESLint plugins execute arbitrary Node.js code during lint."
+  },
+  {
+    "id": "babel-config-plugin-exec",
+    "file_pattern": "babel.config.*",
+    "check": "plugin_code_exec",
+    "pattern": "\"plugins\"\\s*:\\s*\\[.*\"(?:\\.\\./|https?://|/)",
+    "cve": null,
+    "severity": "high",
+    "description": "Babel config loads plugin from path/URL — plugins execute arbitrary code during transpilation."
+  },
+  {
+    "id": "webpack-config-require-remote",
+    "file_pattern": "webpack.config.*",
+    "check": "remote_require",
+    "pattern": "require\\(['\"]https?://",
+    "cve": null,
+    "severity": "critical",
+    "description": "Webpack config requires remote module — arbitrary code execution during build."
+  },
+  {
+    "id": "docker-compose-env-file-traversal",
+    "file_pattern": "docker-compose.yml",
+    "check": "env_file_traversal",
+    "pattern": "env_file:.*\\.\\.[\\/]",
+    "cve": null,
+    "severity": "medium",
+    "description": "docker-compose.yml env_file references parent directory — may expose secrets from outside project."
+  }
+]
