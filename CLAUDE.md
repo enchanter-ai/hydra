@@ -1,103 +1,76 @@
-# Reaper — What You Need To Know
+# Reaper — Agent Contract
 
-You have Reaper installed. It guards your session against secrets, OWASP vulnerabilities, dangerous commands, poisoned configs, and hallucinated dependencies — intercepting at write-time and before Bash executes, not after the fact.
+Audience: Claude. Reaper intercepts secrets, OWASP vulnerabilities, dangerous commands, poisoned configs, and phantom dependencies — at write-time and before Bash executes, not after. Every rule is anchored in a real CVE, incident, or research paper.
 
-**5 plugins. 5 agents. 887 patterns. 8 named algorithms.** Every pattern backed by a real CVE, incident, or research paper.
+## Lifecycle
 
-## What's happening behind the scenes
+| Plugin | Hook | Purpose |
+|--------|------|---------|
+| config-shield | SessionStart | Scan repo configs for CVE-matched attack signatures (R5) |
+| action-guard | PreToolUse (Bash) | **Block** dangerous commands (exit 2); subcommand-overflow check (R4, R7) |
+| secret-scanner | PostToolUse (Write\|Edit\|MultiEdit) | 310 patterns + Shannon entropy (R1, R2) |
+| vuln-detector | PostToolUse (Write\|Edit\|MultiEdit) | OWASP Top 10 / CWE map, 156 patterns (R3) |
+| audit-trail | PostToolUse (all tools) | JSONL log + EMA posture (R8) |
 
-At session start:
-1. **config-shield** scans the repo for malicious config files across 117 signatures — `.claude/settings.json`, `.vscode/tasks.json`, `package.json`, `.npmrc`, `.mcp.json` (R5 — Config Poisoning Detection; CVE-2025-59536, CVE-2026-21852, CVE-2025-54135)
+## Algorithms
 
-Every time you use Write or Edit:
-2. **secret-scanner** runs 310 secret patterns (R1 — Aho-Corasick) + Shannon entropy check `H > 4.5` for unknown high-randomness strings (R2 — Shannon Entropy Analysis)
-3. **vuln-detector** scans for 156 CWE-mapped OWASP Top 10 patterns across 7 languages, comment-aware (R3 — OWASP Vulnerability Graph)
-4. **phantom-dependency check** (R6) cross-references new imports against 199 known hallucinated/typosquatted packages using Levenshtein distance ≤ 2
+R1 Aho-Corasick Pattern Engine · R2 Shannon Entropy Analysis · R3 OWASP Vulnerability Graph · R4 Markov Action Classification · R5 Config Poisoning Detection · R6 Phantom Dependency Detection · R7 Subcommand Overflow · R8 Bayesian Threat Convergence. Derivations: `docs/science/README.md`. Pattern databases: 310 secrets + 156 vulns + 105 dangerous ops + 117 config attacks + 199 phantom deps = **887 patterns**.
 
-Every time you use Bash:
-5. **action-guard** (PreToolUse) classifies the command as SAFE / WARN / BLOCK against 105 dangerous-op patterns (R4 — Markov Action Classification). Any command with >50 subcommand separators is blocked before pattern matching (R7 — Subcommand Overflow, Adversa AI bypass)
+## Behavioral contracts
 
-On every tool call:
-6. **audit-trail** logs to `audit.jsonl`. Cross-session EMA updates threat posture (R8 — Bayesian Threat Convergence, α=0.3).
+Markers: **[H]** hook-enforced · **[A]** advisory.
 
-## Severity levels — what they mean
+1. **[H] IMPORTANT — Acknowledge every `[Reaper]` stderr.** Name the category (secret / vuln / command / config / phantom dep) and the severity. Do not paraphrase it away.
+2. **[H] YOU MUST NOT bypass a BLOCKED command.** action-guard returns exit 2 — the command did not execute. Do not retry with subcommand splitting, base64, shell substitution, or `eval` wrappers. R7 specifically catches those evasions. Explain the block and suggest a safe alternative.
+3. **[H] YOU MUST NOT log full secret values.** Anywhere. stderr, chat, logs, reports, commits. Only the masked form (`first4...last4`) via `shared/sanitize.sh::mask_secret()`. This is enforced at the hook layer; defeating it is a contract violation.
+4. **[A] STOP on CRITICAL.** Tell the developer: "Reaper found a critical security issue. Here's what happened and what we should do." Do not continue the task until acknowledged.
+5. **[A] Verify phantom deps (R6).** If a new import is flagged as phantom/typosquat, do not install. 20% of AI-suggested packages don't exist (USENIX 2025); attackers register them. Verify the package on its registry and confirm ownership first.
+6. **[A] Honour config-shield at SessionStart.** If a config file was flagged (CVE-2025-59536, -21852, -54135, -54794), do not edit around it or silence it. Surface and ask.
+7. **[A] ESCALATE in strict mode.** If `plugins/action-guard/state/config.json` is `strict`, treat every WARN as BLOCK. In permissive, still surface findings — do not pretend they don't exist because the hook let them through.
 
-| Severity | Meaning | Your action |
-|----------|---------|-------------|
-| CRITICAL | Active threat — secrets exposed, dangerous command, malicious config | STOP. Tell the developer immediately. |
-| HIGH | Significant risk — API keys, OWASP vulnerabilities, CWE-mapped | Pause and explain |
-| MEDIUM | Potential issue — weak patterns, CORS wildcards, typosquat suspicion | Mention to the developer |
+## Severity response
+
+| Severity | Trigger | Action |
+|----------|---------|--------|
+| CRITICAL | Active threat (exposed secret, dangerous cmd, malicious config) | STOP; surface immediately |
+| HIGH | API keys, OWASP vulns with CWE | Pause; explain |
+| MEDIUM | Weak patterns, CORS wildcards, typosquat suspicion | Mention to developer |
 | LOW | Minor concern | Note if relevant |
-| INFO | Test fixtures, known example values, in-comment matches | Acknowledge only if asked |
+| INFO | Test fixtures, known examples, in-comment matches | Acknowledge only if asked |
 
-Test files (`test|spec|fixture|mock|example` in path) and `false_positive_hints` from pattern definitions auto-reduce severity. AKIAIOSFODNN7EXAMPLE in a test file = INFO, not CRITICAL.
-
-## What you MUST do
-
-1. **When you see `[Reaper]` in stderr**: Acknowledge it. Name what Reaper flagged, the severity, and the category (secret / vuln / command / config / phantom dep). Don't paraphrase it away.
-
-2. **When Reaper says CRITICAL**: Stop. Tell the developer: "Reaper found a critical security issue. Here's what happened and what we should do." Do not continue writing.
-
-3. **When a command is BLOCKED (exit 2)**: Do NOT try to bypass it. Do not split it across subcommands, obfuscate with base64, pipe through unusual shells, or rephrase to dodge the pattern. R7 specifically blocks that strategy. Explain why it was blocked and suggest a safe alternative.
-
-4. **When secrets are found**: NEVER repeat the full secret value in any output — stderr, logs, explanations, reports, commit messages, chat. Only the masked form (`first4...last4`, e.g. `AKIA...MPLE`). Suggest moving the secret to `.env` or a vault. `sanitize.sh::mask_secret()` is the only correct source of the masked value.
-
-5. **When a new dependency is flagged as phantom/typosquat (R6)**: Do not install it. 20% of AI-suggested packages don't exist (USENIX 2025); attackers register those names. Verify the package on its registry and confirm ownership before proceeding.
-
-6. **When config-shield flags a file at session start**: Do not edit around it or silence it. These are real CVEs (59536, 21852, 54135, 54794). Surface the finding and ask how the developer wants to proceed.
-
-7. **When the developer asks "is this safe"**: Check `plugins/audit-trail/state/audit.jsonl`. Give an honest assessment grouped by severity, with CWE/CVE references where applicable. Don't inflate, don't downplay.
-
-8. **When operating in strict mode**: Treat WARN as BLOCK. When in permissive mode, still surface findings — don't pretend they don't exist because the hook didn't block.
-
-## Commands the developer can use
-
-- `/reaper:secrets` — scan for secrets, credentials, API keys (310 patterns + entropy)
-- `/reaper:vulns` — OWASP vulnerability scan with CWE mapping (156 patterns)
-- `/reaper:safety` — show blocked/warned commands, change strictness mode
-- `/reaper:config-check` — scan repository config files for attack vectors (117 signatures)
-- `/reaper:audit` — security event timeline + HTML report
+Test files (`test|spec|fixture|mock|example` in path) and `false_positive_hints` from pattern definitions auto-reduce severity. `AKIAIOSFODNN7EXAMPLE` in a test file = INFO, not CRITICAL.
 
 ## Strictness modes
 
-Reaper runs in **balanced** mode by default. Mode lives in `plugins/action-guard/state/config.json`.
+| Mode | Block patterns | Warn patterns |
+|------|---------------|---------------|
+| strict | BLOCK | BLOCK |
+| balanced (default) | BLOCK | WARN (stderr) |
+| permissive | WARN | WARN |
 
-| Mode | Block patterns | Warn patterns | Use when |
-|------|---------------|---------------|----------|
-| strict | BLOCK | BLOCK | High-security environments, prod-adjacent repos |
-| balanced | BLOCK | WARN (stderr) | Default — recommended |
-| permissive | WARN | WARN | Trusted code, prototyping |
+Mode lives in `plugins/action-guard/state/config.json`.
 
-## State layout
+## State paths
 
 ```
-plugins/audit-trail/state/audit.jsonl        # all security events (JSONL, 10MB rotation)
-plugins/audit-trail/state/metrics.jsonl      # aggregate scan metrics
-plugins/secret-scanner/state/audit.jsonl     # secret findings (masked values only)
-plugins/action-guard/state/audit.jsonl       # blocked/warned commands
-plugins/action-guard/state/config.json       # strictness mode
-/tmp/reaper-report.html                       # generated security report
+plugins/audit-trail/state/audit.jsonl        (append-only, 10MB rotation)
+plugins/secret-scanner/state/audit.jsonl     (masked values only)
+plugins/action-guard/state/audit.jsonl       (blocked/warned cmds)
+plugins/action-guard/state/config.json       (mutable, mode)
+/tmp/reaper-report.html                       (generated report)
 ```
 
 ## Agent tiers
 
-| Agent | Model | Plugin | Role |
-|-------|-------|--------|------|
-| scanner | Haiku | secret-scanner | Fast 310-pattern sweep + entropy |
-| analyzer | Sonnet | vuln-detector | Context-aware CWE analysis |
-| guardian | Sonnet | action-guard | Command classification + judgment calls |
-| inspector | Sonnet | config-shield | CVE matching on config files |
-| chronicler | Haiku | audit-trail | Log aggregation + HTML report |
+All 5 agents in `./plugins/*/agents/*.md` with explicit output contracts. Tiers per `flux/docs/brand-guide.md`:
 
-Respect the tiering. Vuln analysis needs Sonnet because CWE disambiguation is context-heavy; secret scanning and audit aggregation stay on Haiku.
+- `scanner` (Haiku) · `chronicler` (Haiku) — validators
+- `guardian`, `inspector`, `analyzer` (Sonnet) — executors (CWE disambiguation and config-attack assessment need real reasoning)
 
-## What NOT to do
+## Anti-patterns
 
-- Don't suppress or dismiss Reaper warnings — they exist because something real happened to a real developer
-- Don't log full secret values anywhere — masked form only, always via `sanitize.sh::mask_secret()`
-- Don't try to bypass blocked commands with alternative syntax, subcommand splitting, base64 encoding, or shell substitution — R7 specifically catches those evasions
-- Don't ignore config-shield warnings about malicious repo files — hook execution on clone is a real attack class
-- Don't install a package flagged as phantom/typosquat without verifying its registry ownership
-- Don't modify Reaper state files (`audit.jsonl`, `config.json`) to silence findings
-- Don't override strict mode to get past a block — escalate to the developer instead
-- Don't write secrets to files — use `.env` or environment variables
+- **Command-block evasion.** Splitting `rm -rf /` across subcommands, base64-encoding, piping through `eval`, or wrapping in `bash -c`. R7 blocks >50 subcommand separators before pattern match; the evasion adds risk without benefit.
+- **Unmasked secret in any output.** Including stderr, chat, reports, commit messages. GitGuardian 2026: Claude-assisted commits leak at 3.2× baseline — the masking contract is the mitigation.
+- **Phantom install.** Installing a typosquat or hallucinated package to "unblock" a task. R6 catches edit-distance ≤ 2 typosquats and 199 known hallucinated names across npm / PyPI / Cargo / Go / RubyGems.
+- **Config-shield silence.** Editing around a flagged `.claude/settings.json`, `.vscode/tasks.json`, or `.mcp.json` without surfacing. Hook-on-clone is a real attack class (Check Point CVE-2025-59536).
+- **State mutation.** Editing `audit.jsonl` or `config.json` to dismiss findings or flip strictness without the developer's say-so. Breaks R8 posture tracking and the strict-mode contract.
