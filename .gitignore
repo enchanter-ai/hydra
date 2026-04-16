@@ -1,0 +1,14 @@
+plugins/*/state/audit.jsonl
+plugins/*/state/metrics.jsonl
+plugins/*/state/learnings.json
+plugins/*/state/config.json
+*.lock/
+*.tmp
+.env
+.env.*
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+*.pyo
+/tmp/reaper-*
