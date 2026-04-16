@@ -1,5 +1,13 @@
 # Reaper
 
+<p align="center">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-3fb950?style=for-the-badge"></a>
+  <img alt="5 plugins" src="https://img.shields.io/badge/Plugins-5-bc8cff?style=for-the-badge">
+  <img alt="2,011 security patterns" src="https://img.shields.io/badge/Patterns-2,011-58a6ff?style=for-the-badge">
+  <img alt="98 CWEs covered" src="https://img.shields.io/badge/CWEs-98-d29922?style=for-the-badge">
+  <img alt="Zero dependencies (bash plus jq)" src="https://img.shields.io/badge/Deps-0-f85149?style=for-the-badge">
+</p>
+
 > **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
 
 Named after the **Reaper Leviathan** from Subnautica — you hear it before you see it. It hunts in the dark. Nothing gets past it.
@@ -234,24 +242,24 @@ graph LR
 
 ## Install
 
-Reaper is a **bundle** — all 5 plugins install together. They layer defenses at runtime (secret-scanner on writes, vuln-detector on code changes, action-guard on Bash, config-shield at session start, audit-trail across all of them), so every plugin lists the other four as dependencies. Claude Code resolves the whole stack from one install.
+Reaper ships as 5 plugins layering defenses across SessionStart / PreToolUse / PostToolUse. One meta-plugin — `full` — lists all five as dependencies, so a single install pulls in the whole stack.
 
 **In Claude Code** (recommended):
 
 ```
 /plugin marketplace add enchanted-plugins/reaper
-/plugin install reaper-secret-scanner@reaper
+/plugin install full@reaper
 ```
 
-The second command installs all 5 via auto-resolved dependencies. Any of the 5 names works (`reaper-vuln-detector@reaper`, `reaper-action-guard@reaper`, `reaper-config-shield@reaper`, `reaper-audit-trail@reaper`) — they're peers. `secret-scanner` is the natural entry point since credential leaks are the highest-impact catch. Verify with `/plugin list` — you should see all 5.
+Claude Code resolves the dependency list and installs all 5 plugins. Verify with `/plugin list`.
+
+**Want to cherry-pick?** Individual plugins are still installable by name — e.g. `/plugin install reaper-secret-scanner@reaper` if you only need credential scanning. Each plugin covers a different attack surface, though, so `full@reaper` is the path we recommend for real defense-in-depth.
 
 **Via shell** (also installs `shared/*.sh` and `shared/scripts/*.py` locally so hooks work offline):
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/reaper/main/install.sh)
 ```
-
-> **Why no à la carte?** Each plugin covers a different attack surface — installing only `secret-scanner` leaves you blind to OWASP-class bugs, `rm -rf` damage, poisoned `.claude/settings.json`, and leaves every finding unlogged. Defense-in-depth only works in depth.
 
 ## 5 Plugins, 5 Agents, 2,011 Patterns
 
