@@ -2,6 +2,17 @@
 
 OWASP Top 10 and CWE-mapped vulnerability detection in code changes.
 
+## Install
+
+Part of the [Reaper](../..) bundle — **all 5 plugins install together**. `vuln-detector` flags injection/XSS/SSRF at the code layer — but the same bug pattern often stores credentials (`secret-scanner`), runs them via Bash (`action-guard`), lives in a config file (`config-shield`), and needs to be logged for review (`audit-trail`). Installing it alone gives you one layer of defense-in-depth instead of five. The manifest lists the other four as dependencies.
+
+```
+/plugin marketplace add enchanted-plugins/reaper
+/plugin install reaper-vuln-detector@reaper
+```
+
+Claude Code resolves the dependency chain and installs all 5.
+
 ## Algorithm
 - **R3: OWASP Vulnerability Graph** — language-aware pattern matching with CWE mapping
 

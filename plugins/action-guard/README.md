@@ -2,6 +2,17 @@
 
 Pre-execution classification and blocking of dangerous Bash commands.
 
+## Install
+
+Part of the [Reaper](../..) bundle — **all 5 plugins install together**. `action-guard` is the only Reaper plugin that actually *blocks* (exit 2 on Bash) — but its block decisions are only useful if `secret-scanner` catches the exfil payload on disk, `config-shield` catches the poisoned config that would disable it, `vuln-detector` catches the RCE bug upstream, and `audit-trail` records every block for incident review. Installing it alone leaves the rest of the kill chain open. The manifest lists the other four as dependencies.
+
+```
+/plugin marketplace add enchanted-plugins/reaper
+/plugin install reaper-action-guard@reaper
+```
+
+Claude Code resolves the dependency chain and installs all 5.
+
 ## Algorithms
 - **R4: Markov Action Classification** — classify commands as SAFE/WARN/BLOCK
 - **R7: Subcommand Overflow Detection** — block 50+ subcommand deny-rule bypass

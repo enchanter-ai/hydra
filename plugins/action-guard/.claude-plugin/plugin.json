@@ -7,5 +7,11 @@
   "keywords": ["bash", "guard", "blocking", "commands", "safety"],
   "commands": ["./commands/safety.md"],
   "skills": ["./skills/safety-awareness/"],
-  "agents": "./agents/"
+  "agents": "./agents/",
+  "dependencies": [
+    "reaper-audit-trail",
+    "reaper-config-shield",
+    "reaper-secret-scanner",
+    "reaper-vuln-detector"
+  ]
 }

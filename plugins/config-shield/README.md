@@ -2,6 +2,17 @@
 
 Session-start scanning for malicious repository configuration files.
 
+## Install
+
+Part of the [Reaper](../..) bundle — **all 5 plugins install together**. `config-shield` fires once at session start — it catches the poisoned `.claude/settings.json` that would silence `action-guard`, the hook that would exfil secrets past `secret-scanner`, the VS Code settings that would load backdoored code past `vuln-detector`, and it writes every finding to `audit-trail`. It's the first line; without the other four, there's no second line. The manifest lists the other four as dependencies.
+
+```
+/plugin marketplace add enchanted-plugins/reaper
+/plugin install reaper-config-shield@reaper
+```
+
+Claude Code resolves the dependency chain and installs all 5.
+
 ## Algorithm
 - **R5: Config Poisoning Detection** — CVE-mapped signature matching
 

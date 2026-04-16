@@ -2,6 +2,17 @@
 
 Real-time secret detection in every file write. 200+ patterns, Shannon entropy analysis, Aho-Corasick matching.
 
+## Install
+
+Part of the [Reaper](../..) bundle — **all 5 plugins install together**. `secret-scanner` only catches secrets that land in files — `action-guard` blocks the `cat .env | curl …` exfil path, `config-shield` catches poisoned `.claude/settings.json`, `vuln-detector` flags the code that leaks them, and `audit-trail` is what the incident response team reads afterward. Installing it alone leaves four other attack surfaces uncovered. The manifest lists the other four as dependencies.
+
+```
+/plugin marketplace add enchanted-plugins/reaper
+/plugin install reaper-secret-scanner@reaper
+```
+
+Claude Code resolves the dependency chain and installs all 5.
+
 ## Algorithms
 - **R1: Aho-Corasick Pattern Engine** — O(n+m) multi-pattern scanning via grep
 - **R2: Shannon Entropy Analysis** — high-entropy string detection (>4.5 bits/char)

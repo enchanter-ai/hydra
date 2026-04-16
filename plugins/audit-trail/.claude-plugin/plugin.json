@@ -7,5 +7,11 @@
   "keywords": ["audit", "logging", "events", "trail", "compliance"],
   "commands": ["./commands/audit.md"],
   "skills": ["./skills/audit-awareness/"],
-  "agents": "./agents/"
+  "agents": "./agents/",
+  "dependencies": [
+    "reaper-action-guard",
+    "reaper-config-shield",
+    "reaper-secret-scanner",
+    "reaper-vuln-detector"
+  ]
 }
