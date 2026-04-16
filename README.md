@@ -335,7 +335,7 @@ Levenshtein distance for typosquat detection. 199 known hallucinated/malicious p
 
 ### R7: Subcommand Overflow Detection
 
-$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \&\&\ \|\|\ \mid\ ])\rvert > 50$$
+$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \\&\\&\ ||\ \mid\ ])\rvert > 50$$
 
 Adversa AI discovered that safety filters fail when overwhelmed with subcommands. Reaper counts before matching.
 

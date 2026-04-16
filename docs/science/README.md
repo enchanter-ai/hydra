@@ -102,7 +102,7 @@ Cross-references against known hallucinated packages and popular package names. 
 
 **Problem:** Commands with 50+ subcommands bypass deny rules silently.
 
-$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \&\&\ \|\|\ \mid\ ])\rvert > 50$$
+$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \\&\\&\ ||\ \mid\ ])\rvert > 50$$
 
 Discovered by Adversa AI: when a command contains enough subcommands, safety filters fail to evaluate all of them. Reaper counts subcommand parts before any pattern matching.
 
@@ -116,7 +116,7 @@ Discovered by Adversa AI: when a command contains enough subcommands, safety fil
 
 $$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}}, \quad \alpha = 0.3$$
 
-$$\Theta_n = \Theta_{n-1} - \text{threats\_resolved}_n + \text{new\_threats}_n$$
+$$\Theta_n = \Theta_{n-1} - \text{threats\\_resolved}_n + \text{new\\_threats}_n$$
 
 $$\text{Posture}(t) = 1 - \frac{\Theta_t}{\Theta_0}$$
 
