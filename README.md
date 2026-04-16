@@ -1,6 +1,6 @@
 # Reaper
 
-<p align="center">
+<p>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-3fb950?style=for-the-badge"></a>
   <img alt="5 plugins" src="https://img.shields.io/badge/Plugins-5-bc8cff?style=for-the-badge">
   <img alt="2,011 security patterns" src="https://img.shields.io/badge/Patterns-2,011-58a6ff?style=for-the-badge">
