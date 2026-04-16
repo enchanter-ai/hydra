@@ -26,6 +26,24 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 
 ---
 
+## Contents
+
+- [The Numbers](#the-numbers)
+- [Why This Exists](#why-this-exists)
+- [How It Works](#how-it-works)
+- [The 20 Pattern Databases](#the-20-pattern-databases)
+- [What Makes Reaper Different](#what-makes-reaper-different)
+- [The Full Lifecycle](#the-full-lifecycle)
+- [Install](#install)
+- [5 Plugins, 5 Agents, 2,011 Patterns](#5-plugins-5-agents-2011-patterns)
+- [What You Get Per Session](#what-you-get-per-session)
+- [The Science Behind Reaper](#the-science-behind-reaper)
+- [vs Everything Else](#vs-everything-else)
+- [Architecture](#architecture)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## The Numbers
 
 | | Count |
@@ -67,6 +85,8 @@ Every pattern exists because something real happened to a real developer.
 ## How It Works
 
 Reaper doesn't scan after the fact. It **intercepts** — before secrets hit disk, before dangerous commands execute, before malicious configs load.
+
+At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 105 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
 
 ```mermaid
 graph TD
@@ -195,6 +215,8 @@ $$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text
 Patterns you consistently dismiss get lower severity. Chronic vulnerabilities escalate. The engine gets smarter with every session.
 
 ## The Full Lifecycle
+
+A single session flows left to right through five stages. **Config Shield** runs once at SessionStart and reports via `/reaper:config-check`. Every Bash call routes through **Action Guard** (PreToolUse, `/reaper:safety`). If the command is allowed, every Write/Edit fans out in parallel to **Secret Scanner** (`/reaper:secrets`) and **Vuln Detector** (`/reaper:vulns`). All events land in **Audit Trail** (`/reaper:audit`).
 
 ```mermaid
 graph LR
