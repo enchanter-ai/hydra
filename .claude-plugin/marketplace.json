@@ -1,0 +1,42 @@
+{
+  "name": "reaper",
+  "owner": {
+    "name": "enchanted-plugins"
+  },
+  "metadata": {
+    "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, and audit logging.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "reaper-secret-scanner",
+      "source": "./plugins/secret-scanner",
+      "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
+      "category": "security"
+    },
+    {
+      "name": "reaper-vuln-detector",
+      "source": "./plugins/vuln-detector",
+      "description": "OWASP Top 10 and CWE-mapped vulnerability detection in code changes.",
+      "category": "security"
+    },
+    {
+      "name": "reaper-action-guard",
+      "source": "./plugins/action-guard",
+      "description": "Pre-execution classification and blocking of dangerous Bash commands.",
+      "category": "security"
+    },
+    {
+      "name": "reaper-config-shield",
+      "source": "./plugins/config-shield",
+      "description": "Session-start scanning for malicious repository configuration files.",
+      "category": "security"
+    },
+    {
+      "name": "reaper-audit-trail",
+      "source": "./plugins/audit-trail",
+      "description": "Comprehensive security event logging with rotation and reporting.",
+      "category": "security"
+    }
+  ]
+}
