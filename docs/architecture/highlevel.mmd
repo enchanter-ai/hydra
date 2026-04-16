@@ -1,0 +1,28 @@
+graph TD
+    CC["Claude Code<br/>Tool Calls"]
+    secret_scanner["secret-scanner<br/><small>PostToolUse</small>"]
+    CC --> secret_scanner
+    secret_scanner_out(["state/audit.jsonl"])
+    secret_scanner --> secret_scanner_out
+    style secret_scanner fill:#161b22,stroke:#f85149,color:#e6edf3
+    vuln_detector["vuln-detector<br/><small>PostToolUse</small>"]
+    CC --> vuln_detector
+    vuln_detector_out(["state/audit.jsonl"])
+    vuln_detector --> vuln_detector_out
+    style vuln_detector fill:#161b22,stroke:#d29922,color:#e6edf3
+    action_guard["action-guard<br/><small>PreToolUse</small>"]
+    CC --> action_guard
+    action_guard_out(["state/audit.jsonl"])
+    action_guard --> action_guard_out
+    style action_guard fill:#161b22,stroke:#58a6ff,color:#e6edf3
+    config_shield["config-shield<br/><small>SessionStart</small>"]
+    CC --> config_shield
+    config_shield_out(["state/audit.jsonl"])
+    config_shield --> config_shield_out
+    style config_shield fill:#161b22,stroke:#bc8cff,color:#e6edf3
+    audit_trail["audit-trail<br/><small>PostToolUse</small>"]
+    CC --> audit_trail
+    audit_trail_out(["state/audit.jsonl"])
+    audit_trail --> audit_trail_out
+    style audit_trail fill:#161b22,stroke:#3fb950,color:#e6edf3
+    style CC fill:#0d1117,stroke:#f85149,color:#e6edf3

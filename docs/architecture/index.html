@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reaper — Architecture Explorer</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+  .brand-bar { height: 3px; background: #f85149; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 32px; margin-bottom: 4px; }
+  h1 span { color: #8b949e; font-size: 14px; font-weight: 400; margin-left: 12px; }
+  .subtitle { color: #484f58; font-size: 12px; margin-bottom: 32px; }
+  h2 { font-size: 18px; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 0; border-bottom: 1px solid #30363d; }
+  .tab { padding: 8px 16px; cursor: pointer; border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0; color: #8b949e; font-size: 13px; background: transparent; transition: all 0.15s; }
+  .tab:hover { color: #e6edf3; background: #161b22; }
+  .tab.active { color: #e6edf3; background: #161b22; border-color: #30363d; border-bottom-color: #161b22; margin-bottom: -1px; }
+  .diagram-panel { display: none; background: #161b22; border: 1px solid #30363d; border-top: none; border-radius: 0 0 8px 8px; padding: 24px; min-height: 300px; overflow-x: auto; }
+  .diagram-panel.active { display: block; }
+  .mermaid { background: transparent; }
+  .plugins-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-top: 16px; }
+  .plugin-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+  .plugin-card h3 { font-size: 16px; margin-bottom: 4px; color: #f85149; }
+  .plugin-card .desc { color: #8b949e; font-size: 12px; margin-bottom: 12px; }
+  .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #484f58; margin-top: 12px; margin-bottom: 4px; }
+  .hook { font-size: 12px; padding: 4px 0; border-bottom: 1px solid #21262d; }
+  .phase { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; background: #1c2333; color: #f85149; }
+  .matcher { color: #3fb950; font-size: 11px; }
+  .item { font-size: 12px; padding: 2px 0; }
+  .dim { color: #484f58; }
+  code { background: #1c2333; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e6edf3; }
+  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #30363d; font-size: 11px; color: #484f58; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="brand-bar"></div>
+<div class="container">
+  <h1>Reaper <span>Architecture Explorer</span></h1>
+  <div class="subtitle">Security guardrails for Claude Code — @enchanted-plugins</div>
+
+  <h2>System Diagrams</h2>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('highlevel')">High Level</div>
+    <div class="tab" onclick="showTab('hooks')">Hook Detail</div>
+    <div class="tab" onclick="showTab('dataflow')">Data Flow</div>
+    <div class="tab" onclick="showTab('lifecycle')">Session Lifecycle</div>
+  </div>
+
+  <div id="panel-highlevel" class="diagram-panel active">
+    <pre class="mermaid">graph TD
+    CC["Claude Code&lt;br/&gt;Tool Calls"]
+    secret_scanner["secret-scanner&lt;br/&gt;&lt;small&gt;PostToolUse&lt;/small&gt;"]
+    CC --> secret_scanner
+    vuln_detector["vuln-detector&lt;br/&gt;&lt;small&gt;PostToolUse&lt;/small&gt;"]
+    CC --> vuln_detector
+    action_guard["action-guard&lt;br/&gt;&lt;small&gt;PreToolUse&lt;/small&gt;"]
+    CC --> action_guard
+    config_shield["config-shield&lt;br/&gt;&lt;small&gt;SessionStart&lt;/small&gt;"]
+    CC --> config_shield
+    audit_trail["audit-trail&lt;br/&gt;&lt;small&gt;PostToolUse&lt;/small&gt;"]
+    CC --> audit_trail
+    audit(["audit.jsonl"])
+    secret_scanner --> audit
+    vuln_detector --> audit
+    action_guard --> audit
+    config_shield --> audit
+    audit_trail --> audit
+    style CC fill:#0d1117,stroke:#f85149,color:#e6edf3</pre>
+  </div>
+  <div id="panel-hooks" class="diagram-panel">
+    <pre class="mermaid">graph LR
+    subgraph config_shield["config-shield"]
+        cs_t["SessionStart"] --> cs_s["scan-config.sh&lt;br/&gt;30s"]
+    end
+    subgraph action_guard["action-guard"]
+        ag_t["PreToolUse: Bash"] --> ag_s["guard-action.sh&lt;br/&gt;10s"]
+    end
+    subgraph secret_scanner["secret-scanner"]
+        ss_t["PostToolUse: Write|Edit"] --> ss_s["scan-secrets.sh&lt;br/&gt;15s"]
+    end
+    subgraph vuln_detector["vuln-detector"]
+        vd_t["PostToolUse: Write|Edit"] --> vd_s["detect-vuln.sh&lt;br/&gt;15s"]
+    end
+    subgraph audit_trail["audit-trail"]
+        at_t["PostToolUse: All"] --> at_s["log-event.sh&lt;br/&gt;10s"]
+    end</pre>
+  </div>
+  <div id="panel-dataflow" class="diagram-panel">
+    <pre class="mermaid">graph TB
+    subgraph inputs["Tool Calls"]
+        Bash["Bash"]
+        Write["Write / Edit"]
+    end
+    Write --> ss["secret-scanner"]
+    Write --> vd["vuln-detector"]
+    Bash --> ag["action-guard"]
+    ss --> audit["audit.jsonl"]
+    vd --> audit
+    ag --> audit
+    audit --> report["📊 /reaper:audit"]</pre>
+  </div>
+  <div id="panel-lifecycle" class="diagram-panel">
+    <pre class="mermaid">graph TD
+    start(["Session Start"]) --> config["config-shield scans"]
+    config --> turns
+    subgraph turns["Active Session"]
+        t1["Tool Call"] --> pre["PreToolUse: action-guard"]
+        pre --> exec["Execute"]
+        exec --> post["PostToolUse: scanners + audit"]
+        post --> t1
+    end</pre>
+  </div>
+
+  <h2>Plugin Components</h2>
+  <div class="plugins-grid">
+    <div class="plugin-card">
+      <h3>secret-scanner</h3>
+      <p class="desc">Real-time secret detection. 200+ patterns, Shannon entropy, Aho-Corasick matching.</p>
+      <div class="section-label">Hooks</div>
+      <div class="hook"><span class="phase">PostToolUse</span> <span class="matcher">Write|Edit|MultiEdit</span> → <code>scan-secrets.sh</code> <span class="dim">(15s)</span></div>
+      <div class="section-label">Skills</div>
+      <div class="item"><strong>secret-awareness</strong></div>
+      <div class="section-label">Agents</div>
+      <div class="item"><strong>scanner</strong> <span class="dim">(haiku, fork)</span></div>
+      <div class="section-label">Commands</div>
+      <div class="item"><code>/reaper:secrets</code></div>
+    </div>
+    <div class="plugin-card">
+      <h3>vuln-detector</h3>
+      <p class="desc">OWASP Top 10 and CWE-mapped vulnerability detection in code changes.</p>
+      <div class="section-label">Hooks</div>
+      <div class="hook"><span class="phase">PostToolUse</span> <span class="matcher">Write|Edit|MultiEdit</span> → <code>detect-vuln.sh</code> <span class="dim">(15s)</span></div>
+      <div class="section-label">Skills</div>
+      <div class="item"><strong>vuln-awareness</strong></div>
+      <div class="section-label">Agents</div>
+      <div class="item"><strong>analyzer</strong> <span class="dim">(sonnet, fork)</span></div>
+      <div class="section-label">Commands</div>
+      <div class="item"><code>/reaper:vulns</code></div>
+    </div>
+    <div class="plugin-card">
+      <h3>action-guard</h3>
+      <p class="desc">Pre-execution classification and blocking of dangerous Bash commands.</p>
+      <div class="section-label">Hooks</div>
+      <div class="hook"><span class="phase">PreToolUse</span> <span class="matcher">Bash</span> → <code>guard-action.sh</code> <span class="dim">(10s)</span></div>
+      <div class="section-label">Skills</div>
+      <div class="item"><strong>safety-awareness</strong></div>
+      <div class="section-label">Agents</div>
+      <div class="item"><strong>guardian</strong> <span class="dim">(sonnet, fork)</span></div>
+      <div class="section-label">Commands</div>
+      <div class="item"><code>/reaper:safety</code></div>
+    </div>
+    <div class="plugin-card">
+      <h3>config-shield</h3>
+      <p class="desc">Session-start scanning for malicious repository configuration files.</p>
+      <div class="section-label">Hooks</div>
+      <div class="hook"><span class="phase">SessionStart</span> → <code>scan-config.sh</code> <span class="dim">(30s)</span></div>
+      <div class="section-label">Skills</div>
+      <div class="item"><strong>config-awareness</strong></div>
+      <div class="section-label">Agents</div>
+      <div class="item"><strong>inspector</strong> <span class="dim">(sonnet, fork)</span></div>
+      <div class="section-label">Commands</div>
+      <div class="item"><code>/reaper:config-check</code></div>
+    </div>
+    <div class="plugin-card">
+      <h3>audit-trail</h3>
+      <p class="desc">Comprehensive security event logging with rotation and reporting.</p>
+      <div class="section-label">Hooks</div>
+      <div class="hook"><span class="phase">PostToolUse</span> <span class="matcher">All Tools</span> → <code>log-event.sh</code> <span class="dim">(10s)</span></div>
+      <div class="section-label">Skills</div>
+      <div class="item"><strong>audit-awareness</strong></div>
+      <div class="section-label">Agents</div>
+      <div class="item"><strong>chronicler</strong> <span class="dim">(haiku, fork)</span></div>
+      <div class="section-label">Commands</div>
+      <div class="item"><code>/reaper:audit</code></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Generated from plugin metadata — @enchanted-plugins</span>
+    <span>Reaper v1.0.0</span>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      darkMode: true,
+      background: '#161b22',
+      primaryColor: '#1c2333',
+      primaryTextColor: '#e6edf3',
+      primaryBorderColor: '#30363d',
+      lineColor: '#484f58',
+      secondaryColor: '#161b22',
+      tertiaryColor: '#1c2333',
+    }
+  });
+
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.diagram-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + id).classList.add('active');
+    const panel = document.getElementById('panel-' + id);
+    const pre = panel.querySelector('.mermaid');
+    if (pre && !pre.getAttribute('data-processed')) {
+      mermaid.run({ nodes: [pre] });
+    }
+  }
+</script>
+</body>
+</html>

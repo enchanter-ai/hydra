@@ -1,0 +1,26 @@
+graph LR
+    subgraph config_shield["config-shield"]
+        config_trigger["SessionStart<br/>*"]
+        config_script["scan-config.sh<br/><small>timeout: 30s</small>"]
+        config_trigger --> config_script
+    end
+    subgraph action_guard["action-guard"]
+        guard_trigger["PreToolUse<br/>Bash"]
+        guard_script["guard-action.sh<br/><small>timeout: 10s</small>"]
+        guard_trigger --> guard_script
+    end
+    subgraph secret_scanner["secret-scanner"]
+        secret_trigger["PostToolUse<br/>Write | Edit | MultiEdit"]
+        secret_script["scan-secrets.sh<br/><small>timeout: 15s</small>"]
+        secret_trigger --> secret_script
+    end
+    subgraph vuln_detector["vuln-detector"]
+        vuln_trigger["PostToolUse<br/>Write | Edit | MultiEdit"]
+        vuln_script["detect-vuln.sh<br/><small>timeout: 15s</small>"]
+        vuln_trigger --> vuln_script
+    end
+    subgraph audit_trail["audit-trail"]
+        audit_trigger["PostToolUse<br/>All Tools"]
+        audit_script["log-event.sh<br/><small>timeout: 10s</small>"]
+        audit_trigger --> audit_script
+    end

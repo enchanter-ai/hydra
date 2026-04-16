@@ -1,0 +1,32 @@
+graph TB
+    subgraph inputs["Tool Calls"]
+        Bash["Bash"]
+        Write["Write / Edit"]
+        Read["Read"]
+        Glob["Glob / Grep"]
+    end
+    subgraph scanning["Scanning Layer"]
+        secrets["secret-scanner<br/><small>R1: Aho-Corasick + R2: Shannon Entropy</small>"]
+        vulns["vuln-detector<br/><small>R3: OWASP Graph</small>"]
+        guard["action-guard<br/><small>R4: Markov + R7: Overflow</small>"]
+    end
+    Write --> secrets
+    Write --> vulns
+    Bash --> guard
+    subgraph state["State Layer"]
+        audit["audit-trail/state/audit.jsonl"]
+        metrics["*/state/metrics.jsonl"]
+        learnings["*/state/learnings.json"]
+    end
+    secrets --> audit
+    vulns --> audit
+    guard --> audit
+    Read --> audit_hook["audit-trail"]
+    Glob --> audit_hook
+    audit_hook --> audit
+    subgraph output["Output"]
+        report["📊 /reaper:audit<br/>Security Report"]
+    end
+    audit --> report
+    metrics --> report
+    learnings --> report

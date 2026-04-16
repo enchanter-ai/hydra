@@ -1,0 +1,17 @@
+graph TD
+    start(["Session Start"]) --> configscan["config-shield<br/>scans repo configs"]
+    configscan --> turns
+    subgraph turns["Active Session"]
+        t1["Turn N: Bash Call"]
+        t1 --> pre["PreToolUse<br/>action-guard"]
+        pre -->|"SAFE"| exec["Tool Executes"]
+        pre -->|"BLOCK (exit 2)"| blocked["❌ Blocked"]
+        exec --> post["PostToolUse<br/>secret-scanner<br/>vuln-detector<br/>audit-trail"]
+        post --> t1
+    end
+    turns -->|"Context full"| compact["⚠️ Compaction"]
+    style configscan fill:#bc8cff,color:#0d1117
+    style pre fill:#58a6ff,color:#0d1117
+    style blocked fill:#f85149,color:#0d1117
+    style post fill:#3fb950,color:#0d1117
+    style compact fill:#d29922,color:#0d1117
