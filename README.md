@@ -1,6 +1,6 @@
 # Reaper
 
-**An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
+> **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
 
 Named after the **Reaper Leviathan** from Subnautica — you hear it before you see it. It hunts in the dark. Nothing gets past it.
 
