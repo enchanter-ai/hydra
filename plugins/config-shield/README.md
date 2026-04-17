@@ -35,3 +35,7 @@ To install this plugin on its own: `/plugin install reaper-config-shield@reaper`
 
 ## Agent
 `inspector` (Sonnet) — deep analysis with base64 decode and Unicode detection
+
+## Behavioral modules
+
+Inherits the [shared behavioral modules](../../shared/) via root [CLAUDE.md](../../CLAUDE.md) — discipline, context, verification, delegation, failure-modes, tool-use, skill-authoring, hooks, precedent.

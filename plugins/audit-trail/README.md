@@ -38,3 +38,7 @@ JSONL entries in `state/audit.jsonl`:
 
 ## Agent
 `chronicler` (Haiku) — session security summary and posture analysis
+
+## Behavioral modules
+
+Inherits the [shared behavioral modules](../../shared/) via root [CLAUDE.md](../../CLAUDE.md) — discipline, context, verification, delegation, failure-modes, tool-use, skill-authoring, hooks, precedent.

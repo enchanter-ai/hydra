@@ -31,3 +31,7 @@ To install this plugin on its own: `/plugin install reaper-secret-scanner@reaper
 
 ## Agent
 `scanner` (Haiku) — deep scan using pattern-engine.py and entropy-analyzer.py
+
+## Behavioral modules
+
+Inherits the [shared behavioral modules](../../shared/) via root [CLAUDE.md](../../CLAUDE.md) — discipline, context, verification, delegation, failure-modes, tool-use, skill-authoring, hooks, precedent.

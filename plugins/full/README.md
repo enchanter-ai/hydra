@@ -18,3 +18,7 @@ Claude Code resolves the five dependencies and installs:
 - `reaper-vuln-detector` — OWASP/CWE-mapped vulnerability detection
 
 If you want to cherry-pick a single plugin (e.g. just `reaper-secret-scanner`), you can — but each plugin covers a different attack surface, so you'll typically want defense-in-depth.
+
+## Behavioral modules
+
+Inherits the [shared behavioral modules](../../shared/) via root [CLAUDE.md](../../CLAUDE.md) — discipline, context, verification, delegation, failure-modes, tool-use, skill-authoring, hooks, precedent.
