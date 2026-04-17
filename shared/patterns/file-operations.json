@@ -1,0 +1,502 @@
+[
+  {
+    "id": "fileop-path-traversal-dotdot",
+    "pattern": "(?:path\\.join|path\\.resolve|os\\.path\\.join|filepath\\.Join|Path\\.Combine)\\([^)]*(?:req\\.|request\\.|params\\.|query\\.|body\\.|user)",
+    "severity": "high", "category": "path-traversal",
+    "description": "File path constructed from user input via path.join still allows ../ traversal.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python", "go", "csharp"], "file_types": ["*.js", "*.ts", "*.py", "*.go", "*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use path.resolve() then verify result starts with the intended base directory."
+  },
+  {
+    "id": "fileop-zip-slip-entry",
+    "pattern": "(?:entry|zipEntry|tarEntry)\\.(?:name|fileName|getName)\\(\\)(?:(?!startsWith|normalize|resolve|includes\\(['\"]\\.\\.)[\\s\\S]){0,100}(?:write|extract|create|output)",
+    "severity": "critical", "category": "path-traversal",
+    "description": "Archive entry name used in extraction without path validation enables zip slip (CVE-2018-1002200).",
+    "cwe": "CWE-22", "cve": "CVE-2018-1002200", "owasp": "A01:2021", "benchmark": null,
+    "languages": ["java", "kotlin", "python", "javascript", "go"], "file_types": ["*.java", "*.kt", "*.py", "*.js", "*.ts", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate entry path starts with target directory after canonical resolution."
+  },
+  {
+    "id": "fileop-tar-absolute-path",
+    "pattern": "(?:tar|tarfile)\\.(?:extract|extractall)\\([^)]*(?:(?!members|filter)[\\s\\S])*?\\)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Tar extraction without member filtering allows absolute path writes.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use tarfile.extractall(filter='data') (Python 3.12+) or validate each member name."
+  },
+  {
+    "id": "fileop-python-os-path-join-abs",
+    "pattern": "os\\.path\\.join\\([^)]*(?:request|input|user|param)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Python os.path.join with user input ignores base if input starts with / enabling traversal.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip leading / from user input; verify resolved path is under base directory."
+  },
+  {
+    "id": "fileop-node-path-traversal",
+    "pattern": "(?:fs\\.readFile|fs\\.writeFile|fs\\.createReadStream|fs\\.access)(?:Sync)?\\s*\\(\\s*(?:req\\.|request\\.|params\\.|query\\.)",
+    "severity": "critical", "category": "path-traversal",
+    "description": "Node.js file operation with user-controlled path enables arbitrary file access.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Resolve path and verify it starts with the intended base directory."
+  },
+  {
+    "id": "fileop-java-file-traversal",
+    "pattern": "new\\s+File\\(\\s*[^,)]*,\\s*(?:request\\.getParameter|userInput|fileName)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Java File constructor with user input enables directory traversal.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Path.normalize() and verify canonical path starts with base directory."
+  },
+  {
+    "id": "fileop-go-filepath-traversal",
+    "pattern": "filepath\\.Join\\([^)]*(?:r\\.|req\\.|request\\.)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Go filepath.Join with user input — ../ segments are not blocked by Join.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use filepath.Clean then verify result is under the intended base path."
+  },
+  {
+    "id": "fileop-encoded-traversal",
+    "pattern": "(?:%2e%2e|%252e%252e|\\.\\.%2f|%2f\\.\\.|\\.\\.%5c|%5c\\.\\.)",
+    "severity": "critical", "category": "path-traversal",
+    "description": "URL-encoded directory traversal (..) bypasses basic string-match filters.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "URL-decode before path validation; canonicalize then check prefix."
+  },
+  {
+    "id": "fileop-null-byte-filename",
+    "pattern": "(?:%00|\\\\x00|\\\\0).*\\.(?:jpg|png|gif|pdf|txt)",
+    "severity": "critical", "category": "path-traversal",
+    "description": "Null byte in filename truncates extension check enabling extension bypass.",
+    "cwe": "CWE-158", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.php", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Reject filenames containing null bytes; validate extension after sanitization."
+  },
+  {
+    "id": "fileop-php-include-user",
+    "pattern": "(?:include|require|include_once|require_once)\\s*\\(?\\s*(?:\\$_GET|\\$_POST|\\$_REQUEST|\\$_COOKIE|\\$file|\\$page|\\$path)",
+    "severity": "critical", "category": "file-inclusion",
+    "description": "PHP include with user-controlled path enables Local File Inclusion (LFI).",
+    "cwe": "CWE-98", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a whitelist of allowed include files; never include user-supplied paths."
+  },
+  {
+    "id": "fileop-php-include-url",
+    "pattern": "(?:include|require)\\s*\\(?\\s*['\"]https?://",
+    "severity": "critical", "category": "file-inclusion",
+    "description": "PHP include with URL enables Remote File Inclusion (RFI) for code execution.",
+    "cwe": "CWE-98", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set allow_url_include=Off in php.ini; never include remote files."
+  },
+  {
+    "id": "fileop-python-exec-open",
+    "pattern": "exec\\(\\s*open\\([^)]*\\)\\.read\\(\\)",
+    "severity": "critical", "category": "file-inclusion",
+    "description": "Python exec(open().read()) executes arbitrary file content as code.",
+    "cwe": "CWE-94", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "setup"],
+    "fix_hint": "Use importlib.import_module() for dynamic imports; avoid exec()."
+  },
+  {
+    "id": "fileop-node-require-user",
+    "pattern": "require\\(\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.|userInput|filePath|moduleName)",
+    "severity": "critical", "category": "file-inclusion",
+    "description": "Node.js require() with user-controlled module path enables arbitrary code execution.",
+    "cwe": "CWE-94", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a whitelist of allowed modules; never pass user input to require()."
+  },
+  {
+    "id": "fileop-java-fileinput-user",
+    "pattern": "new\\s+FileInputStream\\(\\s*(?:request\\.getParameter|userInput|fileName|filePath)",
+    "severity": "high", "category": "file-inclusion",
+    "description": "Java FileInputStream with user-controlled path enables arbitrary file reads.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate and canonicalize path; ensure it's within allowed directory."
+  },
+  {
+    "id": "fileop-template-user-path",
+    "pattern": "(?:render|render_template|render_to_string|template\\.render)\\s*\\(\\s*(?:req\\.|request\\.|params\\.|query\\.|user)",
+    "severity": "high", "category": "file-inclusion",
+    "description": "Template engine loading user-specified template file enables SSTI or info disclosure.",
+    "cwe": "CWE-94", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a whitelist of allowed template names; never pass user input directly."
+  },
+  {
+    "id": "fileop-ssi-user-input",
+    "pattern": "<!--#(?:include|exec|echo)\\s+(?:virtual|cmd|var)=['\"]?(?:\\$|\\{)",
+    "severity": "high", "category": "file-inclusion",
+    "description": "Server-Side Include (SSI) with dynamic input enables code injection.",
+    "cwe": "CWE-97", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.shtml", "*.html", "*.htm"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Disable SSI or sanitize all input used in SSI directives."
+  },
+  {
+    "id": "fileop-symlink-temp",
+    "pattern": "os\\.symlink\\([^)]*(?:tmp|temp|/tmp)",
+    "severity": "medium", "category": "symlink",
+    "description": "Creating symlinks in temp directories may enable symlink race condition attacks.",
+    "cwe": "CWE-59", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use mkdtemp() for unique directories; avoid symlinks in shared temp paths."
+  },
+  {
+    "id": "fileop-symlink-ln-s",
+    "pattern": "ln\\s+-s[\\s\\S]*?(?:/tmp|/var/tmp|\\$TMPDIR)",
+    "severity": "medium", "category": "symlink",
+    "description": "Symlink created in temp directory may be exploited for privilege escalation.",
+    "cwe": "CWE-59", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.sh", "*.bash"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use mktemp -d for unique directories; don't create symlinks in /tmp."
+  },
+  {
+    "id": "fileop-stat-then-open",
+    "pattern": "(?:os\\.stat|os\\.access|os\\.path\\.exists)\\s*\\([^)]+\\)[\\s\\S]{0,100}(?:open|os\\.open|read)\\s*\\(",
+    "severity": "medium", "category": "toctou",
+    "description": "TOCTOU race: stat/access check then open allows file state to change between calls.",
+    "cwe": "CWE-367", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Open the file directly and handle errors; avoid check-then-use patterns."
+  },
+  {
+    "id": "fileop-exists-then-read-node",
+    "pattern": "(?:fs\\.existsSync|fs\\.access)\\s*\\([^)]+\\)[\\s\\S]{0,100}fs\\.readFile",
+    "severity": "medium", "category": "toctou",
+    "description": "TOCTOU: existsSync/access before readFile allows race condition.",
+    "cwe": "CWE-367", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Call fs.readFile directly and handle ENOENT error."
+  },
+  {
+    "id": "fileop-exists-then-read-java",
+    "pattern": "(?:File\\.exists|Files\\.exists)\\s*\\([^)]+\\)[\\s\\S]{0,100}(?:new\\s+FileInputStream|Files\\.read)",
+    "severity": "medium", "category": "toctou",
+    "description": "TOCTOU: File.exists() then read allows race condition.",
+    "cwe": "CWE-367", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Open file directly with try-catch for FileNotFoundException."
+  },
+  {
+    "id": "fileop-stat-no-lstat",
+    "pattern": "os\\.stat\\([^)]+\\)(?:(?!os\\.lstat)[\\s\\S]){0,50}(?:os\\.open|open)\\(",
+    "severity": "low", "category": "toctou",
+    "description": "Using os.stat instead of os.lstat follows symlinks unknowingly.",
+    "cwe": "CWE-59", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use os.lstat() to check without following symlinks."
+  },
+  {
+    "id": "fileop-archive-symlink-extract",
+    "pattern": "(?:ZipFile|tarfile|unzip|7z)(?:(?!no_symlinks|NOFOLLOW|symlinks=False)[\\s\\S])*?(?:extract|extractall)",
+    "severity": "high", "category": "symlink",
+    "description": "Archive extraction without symlink restriction allows overwriting files outside target.",
+    "cwe": "CWE-59", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python", "java"], "file_types": ["*.py", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Skip symlink entries when extracting; use tarfile.extractall(filter='data')."
+  },
+  {
+    "id": "fileop-temp-predictable",
+    "pattern": "(?:/tmp/|\\\\temp\\\\|tempdir/)(?:my|app|data|cache|log|out)[A-Za-z0-9_-]*(?:\\.tmp|\\.log|\\.dat)",
+    "severity": "medium", "category": "temp-file",
+    "description": "Predictable temp file name enables symlink or race condition attacks.",
+    "cwe": "CWE-377", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.sh", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use mkstemp/mkdtemp/tempfile.NamedTemporaryFile for random temp paths."
+  },
+  {
+    "id": "fileop-temp-world-readable",
+    "pattern": "(?:open|os\\.open|chmod)\\s*\\([^)]*(?:0o?666|0o?644)[^)]*(?:/tmp|temp)",
+    "severity": "medium", "category": "temp-file",
+    "description": "Temp file created with world-readable permissions (0644/0666) leaks data.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.go", "*.sh"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use 0o600 permissions for temp files; use mkstemp which sets 0600."
+  },
+  {
+    "id": "fileop-temp-no-cleanup",
+    "pattern": "tempfile\\.NamedTemporaryFile\\([^)]*delete\\s*=\\s*False",
+    "severity": "low", "category": "temp-file",
+    "description": "Temp file with delete=False may leak sensitive data if not cleaned up.",
+    "cwe": "CWE-459", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use try/finally or atexit to clean up temp files; prefer delete=True."
+  },
+  {
+    "id": "fileop-shell-mktemp",
+    "pattern": "(?:TMPFILE|TEMPFILE|TMP)=(?:/tmp/|\\$TMPDIR/)\\$\\$",
+    "severity": "medium", "category": "temp-file",
+    "description": "Shell temp file using PID is predictable; use mktemp for randomness.",
+    "cwe": "CWE-377", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.sh", "*.bash"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use TMPFILE=$(mktemp) for cryptographically random temp filenames."
+  },
+  {
+    "id": "fileop-perm-666",
+    "pattern": "(?:chmod|os\\.chmod|fchmod)\\s*\\([^)]*0o?666",
+    "severity": "high", "category": "file-permission",
+    "description": "File permissions 0666 (world-writable) allows any user to modify the file.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.go", "*.sh", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use 0600 for sensitive files; use 0644 only for public-readable files."
+  },
+  {
+    "id": "fileop-perm-777",
+    "pattern": "(?:chmod|os\\.chmod|fchmod)\\s*\\([^)]*0o?777",
+    "severity": "high", "category": "file-permission",
+    "description": "File permissions 0777 (world-writable+executable) is a security risk.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.go", "*.sh", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use 0755 for executables; 0600 for sensitive files."
+  },
+  {
+    "id": "fileop-umask-zero",
+    "pattern": "(?:umask|os\\.umask)\\s*\\(\\s*0+\\s*\\)",
+    "severity": "high", "category": "file-permission",
+    "description": "umask(0) makes all new files world-readable and writable by default.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.go", "*.sh"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set umask to at least 0o077 for secure defaults."
+  },
+  {
+    "id": "fileop-key-world-readable",
+    "pattern": "chmod\\s+(?:644|664|666|755|777)\\s+[^\\s]*\\.(?:pem|key|p12|pfx|jks)",
+    "severity": "critical", "category": "file-permission",
+    "description": "Key/certificate file with world-readable permissions exposes private keys.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.sh", "*.bash", "*.yml", "*.yaml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set permissions to 0400 or 0600 for private key files."
+  },
+  {
+    "id": "fileop-suid-script",
+    "pattern": "chmod\\s+[u+]*s\\s+.*\\.(?:sh|py|rb|pl)",
+    "severity": "high", "category": "file-permission",
+    "description": "SUID bit on script enables privilege escalation to file owner.",
+    "cwe": "CWE-250", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.sh", "*.bash"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never set SUID on scripts; use sudo rules for controlled privilege escalation."
+  },
+  {
+    "id": "fileop-upload-no-extension",
+    "pattern": "(?:multer|upload|formidable|busboy)\\s*\\([\\s\\S]*?(?:(?!fileFilter|allowedTypes|mimeType|ext)[\\s\\S])*?\\)",
+    "severity": "high", "category": "upload",
+    "description": "File upload without extension validation allows uploading executable files.",
+    "cwe": "CWE-434", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add fileFilter checking allowed extensions; validate MIME type server-side."
+  },
+  {
+    "id": "fileop-upload-no-size-limit",
+    "pattern": "(?:multer|upload|formidable)\\s*\\([\\s\\S]*?(?:(?!limit|maxFileSize|maxSize|fileSizeLimit)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "upload",
+    "description": "File upload without size limit enables denial of service via large files.",
+    "cwe": "CWE-400", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set limits: { fileSize: 5 * 1024 * 1024 } in multer configuration."
+  },
+  {
+    "id": "fileop-upload-public-dir",
+    "pattern": "(?:destination|dest|uploadDir|upload_to)\\s*[=:]\\s*['\"]?(?:public|static|www|htdocs|web)/",
+    "severity": "high", "category": "upload",
+    "description": "File upload stored in publicly accessible directory enables direct execution.",
+    "cwe": "CWE-434", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Store uploads outside web root; serve via a controller that validates access."
+  },
+  {
+    "id": "fileop-upload-unsanitized-name",
+    "pattern": "(?:originalname|filename|original_filename|file\\.name)\\s*(?:(?!sanitize|slugify|replace|path\\.basename)[\\s\\S]){0,50}(?:path\\.join|os\\.path\\.join|filepath\\.Join)",
+    "severity": "high", "category": "upload",
+    "description": "Using original upload filename without sanitization enables path traversal.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Generate a random filename; strip path components from original name."
+  },
+  {
+    "id": "fileop-upload-double-ext",
+    "pattern": "\\.(?:php|jsp|asp|aspx|py|rb|sh|pl|cgi)\\.(?:jpg|png|gif|pdf|txt|bak)",
+    "severity": "high", "category": "upload",
+    "description": "Double extension file (e.g., shell.php.jpg) may bypass extension whitelist.",
+    "cwe": "CWE-434", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Check the final extension only; reject files with multiple suspicious extensions."
+  },
+  {
+    "id": "fileop-upload-content-type-only",
+    "pattern": "(?:Content-Type|content_type|contentType|mimetype)\\s*[=!]==?\\s*['\"](?:image|application)",
+    "severity": "medium", "category": "upload",
+    "description": "Checking only Content-Type header is insufficient; it can be spoofed by attacker.",
+    "cwe": "CWE-434", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate file content with magic bytes (file-type library) not just headers."
+  },
+  {
+    "id": "fileop-zip-bomb",
+    "pattern": "(?:ZipFile|zipfile|unzip|gunzip|zlib\\.inflate)\\s*\\([\\s\\S]*?(?:(?!maxSize|size_limit|MAX_SIZE)[\\s\\S])*?\\)",
+    "severity": "high", "category": "archive",
+    "description": "Archive extraction without size limit enables zip bomb denial of service.",
+    "cwe": "CWE-400", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set extraction limits for total size and file count before extracting."
+  },
+  {
+    "id": "fileop-archive-no-limit",
+    "pattern": "(?:extractall|extract_all|unzip|untar)\\s*\\((?:(?!max_files|limit|count)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "archive",
+    "description": "Archive extraction without file count limit enables file system exhaustion.",
+    "cwe": "CWE-400", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Limit maximum number of files and total bytes extracted."
+  },
+  {
+    "id": "fileop-tar-absolute-entry",
+    "pattern": "(?:tarEntry|entry)\\.(?:getName|name)\\s*\\(\\)?\\.startsWith\\(['\"]?/['\"]?\\)",
+    "severity": "info", "category": "archive",
+    "description": "Checking for absolute paths in tar entries — verify rejection is implemented.",
+    "cwe": "CWE-22", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["java", "python"], "file_types": ["*.java", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip leading / from archive entry names before extraction."
+  },
+  {
+    "id": "fileop-csharp-file-user",
+    "pattern": "(?:File\\.ReadAllText|File\\.WriteAllText|File\\.Open|StreamReader)\\s*\\(\\s*(?:request|input|user|param)",
+    "severity": "high", "category": "path-traversal",
+    "description": "C# file operation with user-controlled path enables arbitrary file access.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["csharp"], "file_types": ["*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Canonicalize path with Path.GetFullPath and verify it starts with base directory."
+  },
+  {
+    "id": "fileop-ruby-file-user",
+    "pattern": "File\\.(?:read|open|write|delete)\\s*\\(\\s*(?:params\\[|request\\.|user_input)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Ruby file operation with user-controlled path enables arbitrary file access.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use File.expand_path and verify result is under allowed directory."
+  },
+  {
+    "id": "fileop-php-unlink-user",
+    "pattern": "unlink\\s*\\(\\s*(?:\\$_GET|\\$_POST|\\$_REQUEST|\\$file|\\$path)",
+    "severity": "critical", "category": "path-traversal",
+    "description": "PHP unlink with user-controlled path enables arbitrary file deletion.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate path is within allowed directory before deletion."
+  },
+  {
+    "id": "fileop-send-file-user",
+    "pattern": "(?:res\\.sendFile|send_file|sendfile)\\s*\\(\\s*(?:req\\.|request\\.|params\\.|query\\.)",
+    "severity": "high", "category": "path-traversal",
+    "description": "Serving files with user-controlled path enables reading arbitrary server files.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python", "ruby"], "file_types": ["*.js", "*.ts", "*.py", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate file path starts with allowed directory; use res.sendFile with root option."
+  },
+  {
+    "id": "fileop-upload-no-malware-scan",
+    "pattern": "(?:multer|busboy|formidable|upload)\\s*\\([\\s\\S]*?(?:(?!scan|virus|malware|clamav|antivirus)[\\s\\S])*?\\)",
+    "severity": "low", "category": "upload",
+    "description": "File upload without malware scanning may accept infected files.",
+    "cwe": "CWE-434", "cve": null, "owasp": "A04:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add ClamAV or similar virus scanning for uploaded files."
+  },
+  {
+    "id": "fileop-write-credentials-open",
+    "pattern": "(?:open|writeFile|fopen)\\s*\\([^)]*(?:credentials|password|secret|key\\.pem|private_key)(?:(?!0o?600|0600)[\\s\\S]){0,50}(?:w|write)",
+    "severity": "high", "category": "file-permission",
+    "description": "Writing credentials to file without restricting permissions exposes secrets.",
+    "cwe": "CWE-732", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.js", "*.ts", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set file permissions to 0600 immediately after writing credentials."
+  },
+  {
+    "id": "fileop-toctou-go-stat-open",
+    "pattern": "os\\.Stat\\([^)]+\\)(?:(?!os\\.O_CREATE|os\\.O_EXCL)[\\s\\S]){0,100}os\\.Open\\(",
+    "severity": "medium", "category": "toctou",
+    "description": "Go os.Stat then os.Open race condition allows file state change between calls.",
+    "cwe": "CWE-367", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Open file directly and handle errors; use os.O_CREATE|os.O_EXCL for exclusive create."
+  },
+  {
+    "id": "fileop-temp-insecure-python",
+    "pattern": "tempfile\\.mktemp\\(",
+    "severity": "medium", "category": "temp-file",
+    "description": "Python tempfile.mktemp() returns a name without creating the file, enabling race conditions.",
+    "cwe": "CWE-377", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use tempfile.mkstemp() or tempfile.NamedTemporaryFile() instead."
+  },
+  {
+    "id": "fileop-archive-tar-symlink",
+    "pattern": "tarfile\\.open\\([\\s\\S]*?\\.extractall\\((?:(?!members|filter)[\\s\\S])*?\\)",
+    "severity": "high", "category": "archive",
+    "description": "Python tarfile.extractall without member filtering allows symlink and path traversal.",
+    "cwe": "CWE-22", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use tarfile.extractall(filter='data') or validate each member before extraction."
+  }
+]
