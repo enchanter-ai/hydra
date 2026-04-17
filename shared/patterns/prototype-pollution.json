@@ -1,0 +1,352 @@
+[
+  {
+    "id": "proto-direct-proto-assign",
+    "pattern": "\\[\\s*['\"]__proto__['\"]\\s*\\]\\s*=",
+    "severity": "critical", "category": "direct-pollution",
+    "description": "Direct __proto__ property assignment pollutes all objects' prototype chain.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "sanitize", "block"],
+    "fix_hint": "Block __proto__ key in input; use Object.create(null) for lookup maps."
+  },
+  {
+    "id": "proto-direct-proto-dot",
+    "pattern": "\\.__proto__\\s*=",
+    "severity": "critical", "category": "direct-pollution",
+    "description": "Direct obj.__proto__ assignment modifies the object's prototype chain.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never assign to __proto__; use Object.create() for prototype setup."
+  },
+  {
+    "id": "proto-direct-constructor-prototype",
+    "pattern": "\\.constructor\\.prototype\\.",
+    "severity": "critical", "category": "direct-pollution",
+    "description": "Accessing constructor.prototype enables prototype pollution via the constructor chain.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block 'constructor' key in user input; use hasOwnProperty checks."
+  },
+  {
+    "id": "proto-direct-set-prototype",
+    "pattern": "Object\\.setPrototypeOf\\s*\\([^)]*(?:req\\.|request\\.|body\\.|params\\.|query\\.|input|user|data)",
+    "severity": "critical", "category": "direct-pollution",
+    "description": "Object.setPrototypeOf with user data enables arbitrary prototype manipulation.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never pass user-controlled data to Object.setPrototypeOf."
+  },
+  {
+    "id": "proto-direct-bracket-nested",
+    "pattern": "\\w+\\[\\s*\\w+\\s*\\]\\[\\s*\\w+\\s*\\]\\s*=\\s*(?:req\\.|request\\.|body\\.|params\\.|data\\[|input|value)",
+    "severity": "high", "category": "direct-pollution",
+    "description": "Nested bracket notation assignment from user input enables prototype pollution via __proto__ key.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate keys against a deny list (__proto__, constructor, prototype)."
+  },
+  {
+    "id": "proto-direct-reflect-set",
+    "pattern": "Reflect\\.setPrototypeOf\\s*\\(",
+    "severity": "high", "category": "direct-pollution",
+    "description": "Reflect.setPrototypeOf can modify prototype chain if called with user input.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never use Reflect.setPrototypeOf with user-controlled arguments."
+  },
+  {
+    "id": "proto-lib-lodash-merge",
+    "pattern": "(?:_|lodash)\\.merge\\s*\\([^)]*(?:req\\.|request\\.|body\\.|params\\.|data|input|user)",
+    "severity": "critical", "category": "library-pollution",
+    "description": "lodash.merge with user input enables prototype pollution (CVE-2018-3721).",
+    "cwe": "CWE-1321", "cve": "CVE-2018-3721", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use lodash >= 4.17.21; filter __proto__ from input before merging."
+  },
+  {
+    "id": "proto-lib-lodash-defaultsdeep",
+    "pattern": "(?:_|lodash)\\.defaultsDeep\\s*\\([^)]*(?:req\\.|request\\.|body\\.|data|input|user)",
+    "severity": "critical", "category": "library-pollution",
+    "description": "lodash.defaultsDeep with user input enables prototype pollution (CVE-2019-10744).",
+    "cwe": "CWE-1321", "cve": "CVE-2019-10744", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Upgrade lodash to >= 4.17.21; sanitize input before defaultsDeep."
+  },
+  {
+    "id": "proto-lib-lodash-set",
+    "pattern": "(?:_|lodash)\\.set\\s*\\([^,]+,\\s*(?:req\\.|request\\.|body\\.|params\\.|key|path|user)",
+    "severity": "high", "category": "library-pollution",
+    "description": "lodash.set with user-controlled path can set __proto__ properties.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate path doesn't contain __proto__ or constructor before lodash.set."
+  },
+  {
+    "id": "proto-lib-jquery-extend",
+    "pattern": "\\$\\.extend\\s*\\(\\s*true\\s*,",
+    "severity": "high", "category": "library-pollution",
+    "description": "jQuery.extend(true, ...) deep merge is vulnerable to prototype pollution.",
+    "cwe": "CWE-1321", "cve": "CVE-2019-11358", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript"], "file_types": ["*.js", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Upgrade jQuery to >= 3.4.0; sanitize input before deep extend."
+  },
+  {
+    "id": "proto-lib-hoek-merge",
+    "pattern": "(?:Hoek|hoek)\\.(?:merge|applyToDefaults)\\s*\\(",
+    "severity": "high", "category": "library-pollution",
+    "description": "hoek.merge/applyToDefaults is vulnerable to prototype pollution (CVE-2018-3728).",
+    "cwe": "CWE-1321", "cve": "CVE-2018-3728", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Upgrade hoek to >= 5.0.3; filter __proto__ from input."
+  },
+  {
+    "id": "proto-lib-deepmerge",
+    "pattern": "(?:deepmerge|merge-deep|deep-extend|defaults-deep|deap)\\.?(?:merge|extend|all)?\\s*\\([^)]*(?:req\\.|body\\.|data|input|user)",
+    "severity": "high", "category": "library-pollution",
+    "description": "Deep merge library with user input may enable prototype pollution.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use structuredClone() or a prototype-safe merge; filter __proto__ from input."
+  },
+  {
+    "id": "proto-lib-mixin-deep",
+    "pattern": "(?:mixin-deep|set-value|mpath\\.set)\\s*\\(",
+    "severity": "high", "category": "library-pollution",
+    "description": "mixin-deep/set-value with user-controlled path enables prototype pollution.",
+    "cwe": "CWE-1321", "cve": "CVE-2019-10747", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Upgrade to patched version; validate path keys before set operations."
+  },
+  {
+    "id": "proto-lib-minimist",
+    "pattern": "(?:require|import)[\\s\\S]*?minimist",
+    "severity": "medium", "category": "library-pollution",
+    "description": "minimist < 1.2.6 is vulnerable to prototype pollution via CLI args (CVE-2021-44906).",
+    "cwe": "CWE-1321", "cve": "CVE-2021-44906", "owasp": "A06:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Upgrade minimist to >= 1.2.6 or use yargs/commander instead."
+  },
+  {
+    "id": "proto-json-parse-assign",
+    "pattern": "Object\\.assign\\s*\\([^)]*JSON\\.parse\\s*\\(\\s*(?:req\\.|request\\.|body|data|input)",
+    "severity": "high", "category": "json-pollution",
+    "description": "Object.assign from parsed user JSON can inject __proto__ properties.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Filter __proto__ and constructor from parsed JSON before Object.assign."
+  },
+  {
+    "id": "proto-json-parse-spread",
+    "pattern": "\\{\\s*\\.\\.\\.JSON\\.parse\\s*\\(\\s*(?:req\\.|request\\.|body|data|input)",
+    "severity": "high", "category": "json-pollution",
+    "description": "Spread operator on parsed user JSON can inherit __proto__ properties.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use JSON.parse with a reviver that filters __proto__ and constructor keys."
+  },
+  {
+    "id": "proto-json-no-filter",
+    "pattern": "JSON\\.parse\\s*\\(\\s*(?:req\\.|request\\.|body|data|input)(?:(?!reviver|filter|sanitize)[\\s\\S]){0,50}\\)",
+    "severity": "medium", "category": "json-pollution",
+    "description": "JSON.parse of user input without key filtering may contain __proto__.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add a JSON.parse reviver that rejects __proto__ and constructor keys."
+  },
+  {
+    "id": "proto-express-qs-allow-proto",
+    "pattern": "allowPrototypes\\s*:\\s*true",
+    "severity": "critical", "category": "express-pollution",
+    "description": "qs parser with allowPrototypes:true enables prototype pollution via query strings.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set allowPrototypes: false (default); never enable for user-facing endpoints."
+  },
+  {
+    "id": "proto-express-body-spread",
+    "pattern": "\\{\\s*\\.\\.\\.req\\.body\\s*\\}",
+    "severity": "high", "category": "express-pollution",
+    "description": "Spreading req.body directly into objects can inject __proto__ from request.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Destructure only expected fields: { name, email } = req.body."
+  },
+  {
+    "id": "proto-express-query-merge",
+    "pattern": "(?:Object\\.assign|_\\.merge|\\{\\s*\\.\\.\\.)\\s*\\(?[^)]*req\\.query",
+    "severity": "high", "category": "express-pollution",
+    "description": "Merging req.query directly into objects enables prototype pollution via qs parser.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Extract only expected query params; don't merge raw req.query."
+  },
+  {
+    "id": "proto-express-body-to-db",
+    "pattern": "\\.(update|create|findOneAndUpdate|insertOne)\\s*\\([^)]*req\\.body",
+    "severity": "high", "category": "express-pollution",
+    "description": "Passing req.body directly to database operation enables NoSQL injection and pollution.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Whitelist allowed fields before passing to database operations."
+  },
+  {
+    "id": "proto-express-params-key",
+    "pattern": "req\\.(?:params|query|body)\\[\\s*(?:key|prop|field|attr|name)\\s*\\]",
+    "severity": "medium", "category": "express-pollution",
+    "description": "Using dynamic key from request to access object properties may hit __proto__.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate dynamic keys against an allowlist; reject __proto__ and constructor."
+  },
+  {
+    "id": "proto-missing-forin-check",
+    "pattern": "for\\s*\\(\\s*(?:let|var|const)\\s+\\w+\\s+in\\s+(?:req\\.|body\\.|data\\.|input)(?:(?!hasOwnProperty|Object\\.keys)[\\s\\S]){0,100}\\{",
+    "severity": "medium", "category": "missing-safeguard",
+    "description": "for..in loop over user input without hasOwnProperty check iterates prototype properties.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Object.keys() or Object.entries() instead of for..in on user data."
+  },
+  {
+    "id": "proto-missing-null-proto",
+    "pattern": "(?:const|let|var)\\s+\\w+\\s*=\\s*\\{\\}\\s*;[\\s\\S]{0,100}\\w+\\[\\s*(?:key|prop|field|req\\.)",
+    "severity": "medium", "category": "missing-safeguard",
+    "description": "Plain {} object used as lookup map with dynamic keys inherits from Object.prototype.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Object.create(null) or new Map() for user-keyed lookup maps."
+  },
+  {
+    "id": "proto-missing-freeze",
+    "pattern": "(?:Object\\.prototype|Array\\.prototype|Function\\.prototype)(?:(?!freeze|seal)[\\s\\S]){0,20}$",
+    "severity": "low", "category": "missing-safeguard",
+    "description": "Global prototype not frozen allows pollution by any malicious code.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Call Object.freeze(Object.prototype) early in app initialization."
+  },
+  {
+    "id": "proto-missing-map",
+    "pattern": "(?:const|let|var)\\s+(?:cache|store|registry|lookup|index)\\s*=\\s*\\{\\}",
+    "severity": "low", "category": "missing-safeguard",
+    "description": "Plain object used as cache/store with user keys is susceptible to prototype pollution.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use new Map() instead of {} for user-keyed caches and stores."
+  },
+  {
+    "id": "proto-server-isadmin",
+    "pattern": "if\\s*\\(\\s*(?:user|obj|config|options|settings)\\.isAdmin\\b",
+    "severity": "high", "category": "server-impact",
+    "description": "Checking isAdmin property can be bypassed via prototype pollution injection.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use hasOwnProperty check: Object.hasOwn(user, 'isAdmin') before trusting."
+  },
+  {
+    "id": "proto-server-role-check",
+    "pattern": "if\\s*\\(\\s*(?:user|obj|config)\\.(?:role|permissions|privilege)\\b",
+    "severity": "high", "category": "server-impact",
+    "description": "Role/permission check can be bypassed if prototype is polluted with matching property.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Object.hasOwn() for auth checks; verify property exists on the object itself."
+  },
+  {
+    "id": "proto-server-template-opts",
+    "pattern": "(?:handlebars|ejs|pug|nunjucks)(?:(?!allowProtoPropertiesByDefault\\s*[=:]\\s*false)[\\s\\S]){0,100}(?:render|compile)",
+    "severity": "high", "category": "server-impact",
+    "description": "Template engine without prototype property restriction enables XSS via pollution.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set allowProtoPropertiesByDefault: false on template engine options."
+  },
+  {
+    "id": "proto-server-express-headers",
+    "pattern": "res\\.set\\([^)]*\\{\\s*\\.\\.\\.(?:req\\.|options|config|settings)",
+    "severity": "high", "category": "server-impact",
+    "description": "Spreading object into response headers can inject headers via prototype pollution.",
+    "cwe": "CWE-1321", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Explicitly set only required headers; don't spread untrusted objects."
+  },
+  {
+    "id": "proto-client-innerhtml",
+    "pattern": "\\.innerHTML\\s*=\\s*(?:options|config|settings|data)\\.",
+    "severity": "high", "category": "client-impact",
+    "description": "Setting innerHTML from object property can be exploited via prototype pollution for XSS.",
+    "cwe": "CWE-79", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use textContent instead of innerHTML; sanitize with DOMPurify."
+  },
+  {
+    "id": "proto-client-script-src",
+    "pattern": "(?:script|iframe)\\.src\\s*=\\s*(?:options|config|settings|data)\\.",
+    "severity": "critical", "category": "client-impact",
+    "description": "Setting script.src from object property enables XSS via prototype pollution.",
+    "cwe": "CWE-79", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URLs against an allowlist; use Object.hasOwn() to verify property source."
+  },
+  {
+    "id": "proto-client-event-handler",
+    "pattern": "\\[\\s*['\"]on\\w+['\"]\\s*\\]\\s*=\\s*(?:options|config|data)\\.",
+    "severity": "high", "category": "client-impact",
+    "description": "Setting event handler from object property enables XSS via prototype pollution.",
+    "cwe": "CWE-79", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use addEventListener with validated handlers; don't set on* from dynamic data."
+  },
+  {
+    "id": "proto-client-gadget-vue",
+    "pattern": "v-html\\s*=\\s*['\"]\\s*(?:options|config|item|data)\\.",
+    "severity": "high", "category": "client-impact",
+    "description": "Vue v-html with dynamic data is an XSS gadget exploitable via prototype pollution.",
+    "cwe": "CWE-79", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.vue"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use v-text or {{ }} interpolation instead of v-html for user data."
+  },
+  {
+    "id": "proto-client-dangerously-set",
+    "pattern": "dangerouslySetInnerHTML\\s*=\\s*\\{\\{\\s*__html:\\s*(?:props|state|data|options)\\.",
+    "severity": "high", "category": "client-impact",
+    "description": "React dangerouslySetInnerHTML with dynamic data is exploitable via prototype pollution.",
+    "cwe": "CWE-79", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Sanitize HTML with DOMPurify before dangerouslySetInnerHTML."
+  }
+]
