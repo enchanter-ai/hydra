@@ -1,0 +1,502 @@
+[
+  {
+    "id": "depconf-npm-preinstall-curl",
+    "pattern": "['\"]preinstall['\"]\\s*:\\s*['\"].*(?:curl|wget|fetch|http)",
+    "severity": "critical", "category": "install-script",
+    "description": "npm preinstall script making network calls may exfiltrate data or download malware.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove network calls from preinstall; use postinstall with verified URLs only."
+  },
+  {
+    "id": "depconf-npm-postinstall-shell",
+    "pattern": "['\"]postinstall['\"]\\s*:\\s*['\"].*(?:sh\\s+-c|bash\\s+-c|/bin/sh|/bin/bash|cmd\\s+/c)",
+    "severity": "high", "category": "install-script",
+    "description": "npm postinstall executing shell commands can run arbitrary code on install.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Avoid shell commands in install scripts; use node scripts with explicit actions."
+  },
+  {
+    "id": "depconf-npm-preinstall-node",
+    "pattern": "['\"]preinstall['\"]\\s*:\\s*['\"]node\\s+",
+    "severity": "medium", "category": "install-script",
+    "description": "npm preinstall running arbitrary node script executes before dependency audit.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Move pre-install logic to postinstall; use --ignore-scripts for untrusted packages."
+  },
+  {
+    "id": "depconf-npm-install-env-read",
+    "pattern": "['\"](?:pre|post)?install['\"]\\s*:\\s*['\"].*(?:process\\.env|\\$\\{|\\$HOME|\\$USER|\\$PATH|%APPDATA%)",
+    "severity": "high", "category": "install-script",
+    "description": "Install script reading environment variables may exfiltrate secrets.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove env variable access from install scripts; use runtime configuration."
+  },
+  {
+    "id": "depconf-python-setup-os-system",
+    "pattern": "(?:os\\.system|os\\.popen|subprocess\\.(?:call|run|Popen|check_output))\\s*\\(",
+    "severity": "high", "category": "install-script",
+    "description": "Python setup.py executing system commands runs arbitrary code during pip install.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["setup.py", "setup.cfg"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "build"],
+    "fix_hint": "Use pyproject.toml; avoid os.system/subprocess in setup.py."
+  },
+  {
+    "id": "depconf-python-setup-network",
+    "pattern": "(?:urllib|requests|httpx|aiohttp)\\.(?:get|post|urlopen|request)\\s*\\(",
+    "severity": "critical", "category": "install-script",
+    "description": "Python setup.py making network requests during install can download malware.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["setup.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove network calls from setup.py; bundle dependencies or use requirements.txt."
+  },
+  {
+    "id": "depconf-python-setup-exec",
+    "pattern": "(?:exec|eval|compile)\\s*\\([^)]*(?:open|read|urllib|request)",
+    "severity": "critical", "category": "install-script",
+    "description": "Python setup.py using exec/eval with file or network data enables arbitrary code execution.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["setup.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use declarative setup via pyproject.toml; avoid exec() in setup.py."
+  },
+  {
+    "id": "depconf-ruby-gem-system",
+    "pattern": "(?:system|exec|`|%x)\\s*[\\(\\[]?\\s*['\"].*(?:curl|wget|sh|bash)",
+    "severity": "high", "category": "install-script",
+    "description": "Ruby gem extconf.rb executing system commands runs arbitrary code during install.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["extconf.rb", "*.gemspec"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "native"],
+    "fix_hint": "Minimize system calls in extconf.rb; use mkmf helpers for native extensions."
+  },
+  {
+    "id": "depconf-cargo-build-network",
+    "pattern": "(?:reqwest|ureq|hyper|curl)::(?:get|Client|easy)",
+    "severity": "high", "category": "install-script",
+    "description": "Cargo build.rs making network requests can download arbitrary code at build time.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["rust"], "file_types": ["build.rs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Avoid network calls in build.rs; vendor dependencies or use cargo features."
+  },
+  {
+    "id": "depconf-cargo-build-command",
+    "pattern": "Command::new\\([^)]*(?:sh|bash|curl|wget|python|ruby|perl)",
+    "severity": "high", "category": "install-script",
+    "description": "Cargo build.rs spawning shell/interpreter commands runs arbitrary code at build time.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["rust"], "file_types": ["build.rs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "cc", "pkg-config"],
+    "fix_hint": "Limit build.rs commands to cc/pkg-config; avoid shell interpreters."
+  },
+  {
+    "id": "depconf-go-generate-curl",
+    "pattern": "//go:generate\\s+(?:curl|wget|sh|bash)",
+    "severity": "high", "category": "install-script",
+    "description": "Go generate directive with network/shell commands runs on go generate.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Limit go:generate to code generators (protoc, stringer); avoid shell commands."
+  },
+  {
+    "id": "depconf-gradle-exec",
+    "pattern": "(?:exec|commandLine|executable)\\s*[=({]\\s*['\"](?:curl|wget|sh|bash|python)",
+    "severity": "high", "category": "install-script",
+    "description": "Gradle build executing shell commands can run arbitrary code during build.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.gradle", "*.gradle.kts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Avoid shell commands in Gradle builds; use Gradle task APIs."
+  },
+  {
+    "id": "depconf-lockfile-registry-mismatch",
+    "pattern": "\"resolved\"\\s*:\\s*\"https?://(?!registry\\.npmjs\\.org|registry\\.yarnpkg\\.com)",
+    "severity": "critical", "category": "lockfile-poison",
+    "description": "package-lock.json resolved URL points to non-default registry — possible lockfile poisoning.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package-lock.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "private", "internal", "artifactory", "nexus"],
+    "fix_hint": "Verify resolved URLs match your configured registry; regenerate lockfile if tampered."
+  },
+  {
+    "id": "depconf-lockfile-integrity-sha1",
+    "pattern": "\"integrity\"\\s*:\\s*\"sha1-",
+    "severity": "high", "category": "lockfile-poison",
+    "description": "Lockfile integrity hash using SHA-1 instead of SHA-512 indicates possible downgrade attack.",
+    "cwe": "CWE-328", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package-lock.json"],
+    "false_positive_hints": ["test", "example", "legacy"],
+    "fix_hint": "Regenerate lockfile with npm >= 7 which uses sha512 integrity hashes."
+  },
+  {
+    "id": "depconf-yarn-registry-mismatch",
+    "pattern": "resolved\\s+\"https?://(?!registry\\.npmjs\\.org|registry\\.yarnpkg\\.com)",
+    "severity": "critical", "category": "lockfile-poison",
+    "description": "yarn.lock resolved URL points to unexpected registry — possible poisoning.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["yarn.lock"],
+    "false_positive_hints": ["test", "example", "private", "internal", "artifactory"],
+    "fix_hint": "Verify resolved URLs match configured registry; run yarn install --check-files."
+  },
+  {
+    "id": "depconf-lockfile-ip-resolved",
+    "pattern": "\"resolved\"\\s*:\\s*\"https?://\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "critical", "category": "lockfile-poison",
+    "description": "Lockfile resolved URL pointing to IP address instead of domain — highly suspicious.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package-lock.json", "yarn.lock"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Regenerate lockfile; resolved URLs should point to registry domain names."
+  },
+  {
+    "id": "depconf-pip-no-index",
+    "pattern": "--extra-index-url\\s+https?://(?!pypi\\.org|files\\.pythonhosted\\.org)",
+    "severity": "high", "category": "lockfile-poison",
+    "description": "pip extra-index-url pointing to non-PyPI registry may serve malicious packages.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["requirements.txt", "pip.conf", "*.cfg"],
+    "false_positive_hints": ["test", "example", "internal", "artifactory", "private"],
+    "fix_hint": "Use --index-url for primary registry; verify extra-index-url is trusted."
+  },
+  {
+    "id": "depconf-gemfile-non-rubygems",
+    "pattern": "source\\s+['\"]https?://(?!rubygems\\.org)",
+    "severity": "high", "category": "lockfile-poison",
+    "description": "Gemfile source pointing to non-rubygems.org registry may serve malicious gems.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["Gemfile", "Gemfile.lock"],
+    "false_positive_hints": ["test", "example", "internal", "private"],
+    "fix_hint": "Verify gem sources are trusted; use source blocks for private gems."
+  },
+  {
+    "id": "depconf-poetry-custom-source",
+    "pattern": "\\[\\[tool\\.poetry\\.source\\]\\][\\s\\S]*?url\\s*=\\s*['\"]https?://(?!pypi\\.org|files\\.pythonhosted)",
+    "severity": "medium", "category": "lockfile-poison",
+    "description": "Poetry custom source may serve packages that shadow PyPI names.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["pyproject.toml"],
+    "false_positive_hints": ["test", "example", "internal", "private", "artifactory"],
+    "fix_hint": "Set custom source as supplemental, not primary; pin package sources."
+  },
+  {
+    "id": "depconf-go-goproxy-custom",
+    "pattern": "GOPROXY\\s*=\\s*(?:https?://(?!proxy\\.golang\\.org)|direct)",
+    "severity": "medium", "category": "lockfile-poison",
+    "description": "Custom GOPROXY may serve tampered Go modules.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["go"], "file_types": [".env", "*.sh", "Makefile"],
+    "false_positive_hints": ["test", "example", "internal", "athens", "goproxy"],
+    "fix_hint": "Use proxy.golang.org as primary; verify custom proxy is trusted."
+  },
+  {
+    "id": "depconf-confusion-no-npmrc",
+    "pattern": "@[a-z][a-z0-9-]*/",
+    "severity": "medium", "category": "dep-confusion",
+    "description": "Scoped npm package without .npmrc registry mapping may resolve from public registry.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "public", "@types", "@babel", "@jest", "@aws-sdk"],
+    "fix_hint": "Create .npmrc with @scope:registry=https://your-private-registry/ mapping."
+  },
+  {
+    "id": "depconf-confusion-private-name",
+    "pattern": "\"name\"\\s*:\\s*\"(?!@)[a-z]+-(?:internal|private|corp|company|infra|platform|core)-",
+    "severity": "high", "category": "dep-confusion",
+    "description": "Package name with internal/private/corp prefix suggests private package that may be squatted on public registry.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Use scoped packages (@org/name); set publishConfig.registry to private registry."
+  },
+  {
+    "id": "depconf-confusion-pip-no-index",
+    "pattern": "(?:pip\\s+install|pip3\\s+install)(?:(?!--index-url|--no-deps)[\\s\\S])*?$",
+    "severity": "medium", "category": "dep-confusion",
+    "description": "pip install without --index-url defaults to PyPI which may serve squatted packages.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.sh", "Makefile", "Dockerfile", "*.yml"],
+    "false_positive_hints": ["test", "example", "public", "pypi"],
+    "fix_hint": "Use --index-url pointing to your private registry for internal packages."
+  },
+  {
+    "id": "depconf-version-star",
+    "pattern": "\"[^\"]+\"\\s*:\\s*\"\\*\"",
+    "severity": "high", "category": "version-manipulation",
+    "description": "Wildcard * version allows any version including malicious releases.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "peer"],
+    "fix_hint": "Pin to specific version or use caret ^ with known-good versions."
+  },
+  {
+    "id": "depconf-version-gte-zero",
+    "pattern": "\"[^\"]+\"\\s*:\\s*\">=\\s*0\\.0\\.0\"",
+    "severity": "high", "category": "version-manipulation",
+    "description": "Version range >=0.0.0 allows any version including malicious pre-releases.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Pin to specific version ranges; use lockfiles for reproducible installs."
+  },
+  {
+    "id": "depconf-version-git-url",
+    "pattern": "\"[^\"]+\"\\s*:\\s*\"(?:git\\+)?https?://(?:github|gitlab|bitbucket)",
+    "severity": "medium", "category": "version-manipulation",
+    "description": "Dependency from git URL instead of registry may change without version tracking.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Pin git dependencies to specific commit SHA; prefer registry packages."
+  },
+  {
+    "id": "depconf-version-prerelease-prod",
+    "pattern": "\"dependencies\"\\s*:\\s*\\{[\\s\\S]*?\"[^\"]+\"\\s*:\\s*\"[^\"]*-(?:alpha|beta|rc|canary|next|dev|snapshot)",
+    "severity": "medium", "category": "version-manipulation",
+    "description": "Pre-release dependency in production dependencies may be unstable or malicious.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "devDependencies"],
+    "fix_hint": "Use stable releases in production dependencies; pre-releases in devDependencies only."
+  },
+  {
+    "id": "depconf-version-no-lock",
+    "pattern": "(?:package-lock|yarn\\.lock|pnpm-lock)",
+    "severity": "low", "category": "version-manipulation",
+    "description": "Lockfile presence check — ensure lockfile is committed and not in .gitignore.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": [".gitignore"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Commit lockfiles to version control for reproducible and secure builds."
+  },
+  {
+    "id": "depconf-protest-locale-check",
+    "pattern": "(?:process\\.env\\.LANG|Intl\\.DateTimeFormat|navigator\\.language|locale|getLocale)(?:(?!i18n|translation|l10n)[\\s\\S]){0,50}(?:if|switch|===)",
+    "severity": "medium", "category": "protestware",
+    "description": "Conditional logic based on locale may indicate protestware targeting specific regions.",
+    "cwe": "CWE-506", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "i18n", "locale", "translation", "l10n"],
+    "fix_hint": "Review locale-conditional logic; report suspicious packages to registry."
+  },
+  {
+    "id": "depconf-protest-geo-check",
+    "pattern": "(?:geoip|ip-to-country|geo-from-ip|maxmind|geolocate)(?:(?!test|analytics)[\\s\\S]){0,50}(?:if|block|deny|delete|destroy)",
+    "severity": "high", "category": "protestware",
+    "description": "Geolocation check with destructive action indicates protestware behavior.",
+    "cwe": "CWE-506", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "analytics", "compliance", "gdpr"],
+    "fix_hint": "Report to registry security team; remove package and find alternative."
+  },
+  {
+    "id": "depconf-protest-timebomb",
+    "pattern": "new\\s+Date\\(\\)[\\s\\S]{0,30}(?:>|<|>=|<=)\\s*new\\s+Date\\(['\"]\\d{4}",
+    "severity": "high", "category": "protestware",
+    "description": "Date-based conditional execution pattern suggests time bomb behavior.",
+    "cwe": "CWE-506", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "trial", "license", "expiry"],
+    "fix_hint": "Review date-conditional code; report suspicious packages to registry."
+  },
+  {
+    "id": "depconf-protest-timezone",
+    "pattern": "(?:Intl\\.DateTimeFormat|timeZone|getTimezoneOffset)\\s*\\(\\)[\\s\\S]{0,50}(?:===|!==|includes)\\s*['\"](?:Europe|Asia|Russia|Belarus|China)",
+    "severity": "medium", "category": "protestware",
+    "description": "Timezone-based conditional logic may indicate region-targeted protestware.",
+    "cwe": "CWE-506", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "i18n", "analytics", "scheduling"],
+    "fix_hint": "Review timezone-conditional code; report suspicious packages to registry."
+  },
+  {
+    "id": "depconf-typo-suffix-js",
+    "pattern": "\"(?:react|express|lodash|axios|moment|chalk|commander|inquirer|debug|uuid)-(?:js|node|ts|lib)\"",
+    "severity": "medium", "category": "typosquat-heuristic",
+    "description": "Package name matches popular package with -js/-node suffix — potential typosquat.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Verify this is the correct package; check npm page and download counts."
+  },
+  {
+    "id": "depconf-typo-prefix-get",
+    "pattern": "\"(?:get-|node-|python-|go-|rust-)(?:express|react|vue|angular|django|flask|fastapi|gin|actix)\"",
+    "severity": "medium", "category": "typosquat-heuristic",
+    "description": "Package name with common prefix + popular name — potential typosquat.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["package.json", "requirements.txt", "Cargo.toml", "go.mod"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Verify package authenticity on registry; check author and download count."
+  },
+  {
+    "id": "depconf-typo-number-sub",
+    "pattern": "\"(?:l0dash|ax1os|m0ment|r3act|vu3|dj4ngo|fl4sk)\"",
+    "severity": "high", "category": "typosquat-heuristic",
+    "description": "Package name with number-letter substitution is a typosquat indicator.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["package.json", "requirements.txt"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Verify package name spelling; use the official package name."
+  },
+  {
+    "id": "depconf-typo-hyphen-swap",
+    "pattern": "\"(?:express_|lodash-|react_dom|vue_router|body_parser|cookie_parser)\"",
+    "severity": "medium", "category": "typosquat-heuristic",
+    "description": "Package name with hyphen/underscore swap may be typosquat of popular package.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["package.json", "requirements.txt"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Verify the correct naming convention for the package ecosystem."
+  },
+  {
+    "id": "depconf-typo-scoped-popular",
+    "pattern": "\"@[a-z]+/(?:express|react|vue|angular|lodash|axios|moment|webpack|babel|jest)\"",
+    "severity": "medium", "category": "typosquat-heuristic",
+    "description": "Scoped package shadowing unscoped popular name — verify scope is legitimate.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "@types/", "@babel/", "@jest/", "@angular/", "@vue/"],
+    "fix_hint": "Verify the scoped package is from a trusted organization."
+  },
+  {
+    "id": "depconf-manifest-name-mismatch",
+    "pattern": "\"name\"\\s*:\\s*\"([^\"]+)\"",
+    "severity": "low", "category": "manifest-confusion",
+    "description": "Verify package.json name matches directory name to detect manifest confusion.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "monorepo"],
+    "fix_hint": "Ensure package.json name matches the directory name or scoped equivalent."
+  },
+  {
+    "id": "depconf-manifest-dual-deps",
+    "pattern": "\"bundledDependencies\"\\s*:\\s*\\[[\\s\\S]*?\"([^\"]+)\"[\\s\\S]*?\\][\\s\\S]*?\"dependencies\"[\\s\\S]*?\"\\1\"",
+    "severity": "medium", "category": "manifest-confusion",
+    "description": "Same package in both dependencies and bundledDependencies creates confusion.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Remove duplicate from bundledDependencies or dependencies."
+  },
+  {
+    "id": "depconf-manifest-multi-pm",
+    "pattern": "(?:package\\.json|yarn\\.lock|pnpm-lock)[\\s\\S]*?(?:requirements\\.txt|Pipfile|pyproject\\.toml)[\\s\\S]*?(?:Gemfile|go\\.mod|Cargo\\.toml)",
+    "severity": "low", "category": "manifest-confusion",
+    "description": "Multiple package managers in same project may create dependency confusion vectors.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*"],
+    "false_positive_hints": ["test", "example", "monorepo", "polyglot"],
+    "fix_hint": "Clearly separate ecosystems into subdirectories with their own lockfiles."
+  },
+  {
+    "id": "depconf-npm-install-script-exec",
+    "pattern": "['\"](?:pre|post)?install['\"]\\s*:\\s*['\"].*(?:eval|exec|spawn|execSync|fork)\\s*\\(",
+    "severity": "critical", "category": "install-script",
+    "description": "Install script using eval/exec/spawn can run arbitrary code during npm install.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove dynamic code execution from install scripts; use static build steps."
+  },
+  {
+    "id": "depconf-python-init-import",
+    "pattern": "__init__\\.py[\\s\\S]*?(?:os\\.system|subprocess|urllib|requests\\.get)",
+    "severity": "high", "category": "install-script",
+    "description": "Python __init__.py with system/network calls runs on import during pip install.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["__init__.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Move initialization code to explicit function calls; avoid side effects on import."
+  },
+  {
+    "id": "depconf-composer-script",
+    "pattern": "\"(?:post-install-cmd|post-update-cmd)\"\\s*:\\s*[\\s\\S]*?(?:curl|wget|bash|sh\\s+-c|exec|system)",
+    "severity": "high", "category": "install-script",
+    "description": "Composer post-install script with shell commands runs arbitrary code.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["composer.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Limit composer scripts to PHP class methods; avoid shell commands."
+  },
+  {
+    "id": "depconf-lockfile-http-resolved",
+    "pattern": "\"resolved\"\\s*:\\s*\"http://(?!localhost|127\\.0\\.0\\.1)",
+    "severity": "critical", "category": "lockfile-poison",
+    "description": "Lockfile resolved URL using HTTP instead of HTTPS enables MITM attacks.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package-lock.json", "yarn.lock"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "All registry URLs must use HTTPS; regenerate lockfile with HTTPS registry."
+  },
+  {
+    "id": "depconf-version-latest-tag",
+    "pattern": "\"[^\"]+\"\\s*:\\s*\"latest\"",
+    "severity": "high", "category": "version-manipulation",
+    "description": "Dependency pinned to 'latest' tag installs whatever version is current — supply chain risk.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["package.json"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Pin to specific version; use caret ^ for controlled updates."
+  },
+  {
+    "id": "depconf-typo-double-char",
+    "pattern": "\"(?:expresss|reactt|lodassh|axioss|momentt|webpackk)\"",
+    "severity": "medium", "category": "typosquat-heuristic",
+    "description": "Package name with doubled character suggests typosquat of popular package.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["package.json", "requirements.txt"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Verify package name spelling matches the official package."
+  },
+  {
+    "id": "depconf-gemspec-name-mismatch",
+    "pattern": "Gem::Specification\\.new\\s+do\\s*\\|\\w+\\|[\\s\\S]*?\\.name\\s*=\\s*['\"]([^'\"]+)['\"]",
+    "severity": "low", "category": "manifest-confusion",
+    "description": "Verify gemspec name matches the gem directory to detect manifest confusion.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.gemspec"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Ensure gemspec name matches the directory name and gem convention."
+  },
+  {
+    "id": "depconf-cargo-name-mismatch",
+    "pattern": "\\[package\\][\\s\\S]*?name\\s*=\\s*\"([^\"]+)\"",
+    "severity": "low", "category": "manifest-confusion",
+    "description": "Verify Cargo.toml name matches directory to detect manifest confusion.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["rust"], "file_types": ["Cargo.toml"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Ensure Cargo.toml package name matches the crate directory name."
+  },
+  {
+    "id": "depconf-pypi-setup-name-mismatch",
+    "pattern": "setup\\([\\s\\S]*?name\\s*=\\s*['\"]([^'\"]+)['\"]",
+    "severity": "low", "category": "manifest-confusion",
+    "description": "Verify setup.py name matches package directory to detect manifest confusion.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["setup.py"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Ensure setup.py name matches the Python package directory name."
+  },
+  {
+    "id": "depconf-npm-install-ignore-scripts",
+    "pattern": "npm\\s+install(?:(?!--ignore-scripts)[\\s\\S])*?$",
+    "severity": "info", "category": "install-script",
+    "description": "npm install without --ignore-scripts executes all package lifecycle scripts.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.sh", "Makefile", "*.yml", "*.yaml"],
+    "false_positive_hints": ["test", "example", "ci", "docker"],
+    "fix_hint": "Use npm install --ignore-scripts for untrusted packages; audit scripts first."
+  }
+]
