@@ -1,0 +1,412 @@
+[
+  {
+    "id": "log-injection-js-concat",
+    "pattern": "(?:console\\.log|console\\.info|console\\.warn|console\\.error|logger\\.(?:info|warn|error|debug))\\s*\\([^)]*\\+\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.|user)",
+    "severity": "medium", "category": "log-injection",
+    "description": "User input concatenated into log message enables log injection and spoofing.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use structured logging (JSON format); sanitize user input before logging."
+  },
+  {
+    "id": "log-injection-py-fstring",
+    "pattern": "logging\\.(?:info|debug|warning|error|critical)\\s*\\(\\s*f['\"].*\\{(?:request|req|user_input|params)",
+    "severity": "medium", "category": "log-injection",
+    "description": "Python f-string in log with user input enables log forging and CRLF injection.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use logging.info('msg %s', var) parameterized format, not f-strings."
+  },
+  {
+    "id": "log-injection-java-concat",
+    "pattern": "(?:logger|log|LOG)\\.(?:info|debug|warn|error)\\s*\\([^)]*\\+\\s*(?:request\\.getParameter|input|userInput)",
+    "severity": "medium", "category": "log-injection",
+    "description": "Java logger with concatenated user input enables log injection.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use parameterized logging: logger.info(\"User: {}\", input)."
+  },
+  {
+    "id": "log-injection-go-printf",
+    "pattern": "log\\.Printf\\s*\\([^)]*(?:r\\.|req\\.|request\\.)",
+    "severity": "medium", "category": "log-injection",
+    "description": "Go log.Printf with request data enables log injection.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use structured logging (zerolog, zap); sanitize newlines from user input."
+  },
+  {
+    "id": "log-injection-crlf",
+    "pattern": "(?:logger|log|console)\\.(?:info|warn|error|debug)\\s*\\([^)]*(?:\\\\r\\\\n|\\\\n|%0d%0a|%0a)",
+    "severity": "high", "category": "log-injection",
+    "description": "CRLF characters in log message enable log line spoofing and forging.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip \\r and \\n from user input before logging."
+  },
+  {
+    "id": "log-injection-ansi-escape",
+    "pattern": "(?:\\\\x1b\\[|\\\\033\\[|\\\\e\\[)\\d+",
+    "severity": "medium", "category": "log-injection",
+    "description": "ANSI escape sequences in logs can manipulate terminal display or hide content.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "color", "chalk"],
+    "fix_hint": "Strip ANSI escape sequences from user input before logging."
+  },
+  {
+    "id": "log-injection-ruby",
+    "pattern": "(?:Rails\\.logger|logger)\\.(?:info|debug|warn|error)\\s*(?:\\(|\\s)[^)]*#\\{(?:params|request)",
+    "severity": "medium", "category": "log-injection",
+    "description": "Ruby logger with interpolated user input enables log injection.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Sanitize user input; strip newlines before logging."
+  },
+  {
+    "id": "log-injection-php",
+    "pattern": "(?:error_log|syslog|trigger_error)\\s*\\([^)]*(?:\\$_GET|\\$_POST|\\$_REQUEST|\\$_SERVER)",
+    "severity": "medium", "category": "log-injection",
+    "description": "PHP logging with raw superglobal input enables log injection.",
+    "cwe": "CWE-117", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Sanitize user input with str_replace before logging."
+  },
+  {
+    "id": "log-log4shell-jndi-ldap",
+    "pattern": "\\$\\{jndi:ldap://",
+    "severity": "critical", "category": "log4shell",
+    "description": "Log4Shell JNDI/LDAP injection — the most exploited vulnerability of 2021 (CVE-2021-44228).",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.properties", "*.yml", "*.yaml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf", "rule"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; set log4j2.formatMsgNoLookups=true."
+  },
+  {
+    "id": "log-log4shell-jndi-rmi",
+    "pattern": "\\$\\{jndi:rmi://",
+    "severity": "critical", "category": "log4shell",
+    "description": "Log4Shell JNDI/RMI variant enables remote code execution via RMI registry.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.properties"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; set log4j2.formatMsgNoLookups=true."
+  },
+  {
+    "id": "log-log4shell-jndi-dns",
+    "pattern": "\\$\\{jndi:dns://",
+    "severity": "critical", "category": "log4shell",
+    "description": "Log4Shell JNDI/DNS variant used for out-of-band data exfiltration.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.properties"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; set log4j2.formatMsgNoLookups=true."
+  },
+  {
+    "id": "log-log4shell-jndi-iiop",
+    "pattern": "\\$\\{jndi:iiop://",
+    "severity": "critical", "category": "log4shell",
+    "description": "Log4Shell JNDI/IIOP variant enables RCE via CORBA.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; set log4j2.formatMsgNoLookups=true."
+  },
+  {
+    "id": "log-log4shell-nested-lower",
+    "pattern": "\\$\\{\\$\\{(?:lower|upper|::-)[^}]*\\}(?:ndi|jndi)",
+    "severity": "critical", "category": "log4shell",
+    "description": "Obfuscated Log4Shell using nested lookups to bypass WAF detection.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.log"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; nested lookups are disabled in patched versions."
+  },
+  {
+    "id": "log-log4shell-obfuscated",
+    "pattern": "\\$\\{j\\$\\{[^}]*\\}ndi:",
+    "severity": "critical", "category": "log4shell",
+    "description": "Obfuscated Log4Shell splitting 'jndi' across nested lookups.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.log"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; remove log4j-core < 2.17.1 from dependencies."
+  },
+  {
+    "id": "log-log4shell-env-exfil",
+    "pattern": "\\$\\{jndi:ldap://\\$\\{env:",
+    "severity": "critical", "category": "log4shell",
+    "description": "Log4Shell with environment variable exfiltration via DNS/LDAP.",
+    "cwe": "CWE-917", "cve": "CVE-2021-44228", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt", "*.xml", "*.log"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "waf"],
+    "fix_hint": "Upgrade to Log4j 2.17.1+; disable JNDI lookups entirely."
+  },
+  {
+    "id": "log-log4j1-jms-appender",
+    "pattern": "JMSAppender|org\\.apache\\.log4j\\.net\\.JMSAppender",
+    "severity": "high", "category": "log4shell",
+    "description": "Log4j 1.x JMSAppender enables JNDI-based RCE similar to Log4Shell.",
+    "cwe": "CWE-917", "cve": "CVE-2021-4104", "owasp": "A03:2021", "benchmark": null,
+    "languages": ["java"], "file_types": ["*.xml", "*.properties", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Migrate from Log4j 1.x to Log4j 2.17.1+; remove JMSAppender config."
+  },
+  {
+    "id": "log-sensitive-password",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:password|passwd|pwd)\\b",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Password value logged in plaintext persists in log storage.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask", "redact"],
+    "fix_hint": "Never log passwords; redact sensitive fields before logging."
+  },
+  {
+    "id": "log-sensitive-token",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:(?:access|auth|bearer|refresh)_?token|authorization)\\b",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Authentication token logged in plaintext enables session hijacking from logs.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask", "redact"],
+    "fix_hint": "Never log tokens; use truncated/hashed form for debugging."
+  },
+  {
+    "id": "log-sensitive-credit-card",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:card_?number|credit_?card|ccnum|pan)\\b",
+    "severity": "critical", "category": "sensitive-logging",
+    "description": "Credit card number in logs violates PCI-DSS and exposes financial data.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask"],
+    "fix_hint": "Never log card numbers; mask to last 4 digits only."
+  },
+  {
+    "id": "log-sensitive-ssn",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:ssn|social_?security|tax_?id)\\b",
+    "severity": "critical", "category": "sensitive-logging",
+    "description": "SSN/tax ID logged in plaintext violates privacy regulations.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask"],
+    "fix_hint": "Never log SSN; mask to last 4 digits or use tokenized reference."
+  },
+  {
+    "id": "log-sensitive-api-key",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*api_?key\\b",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "API key logged in plaintext enables unauthorized access from log readers.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask", "redact"],
+    "fix_hint": "Never log API keys; use truncated prefix for debugging."
+  },
+  {
+    "id": "log-sensitive-secret",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:secret_?key|private_?key|signing_?key)\\b",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Secret/private key logged in plaintext enables cryptographic compromise.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask"],
+    "fix_hint": "Never log private keys; log key ID or fingerprint instead."
+  },
+  {
+    "id": "log-sensitive-session",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*session_?id\\b",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Session ID logged in plaintext enables session hijacking from logs.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Log truncated/hashed session IDs; never log full session identifiers."
+  },
+  {
+    "id": "log-sensitive-pii",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:email|phone_?number|date_?of_?birth|dob|address)\\b",
+    "severity": "medium", "category": "sensitive-logging",
+    "description": "PII (email, phone, DOB, address) in logs may violate GDPR/CCPA.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask"],
+    "fix_hint": "Mask PII before logging; use hashed/pseudonymized identifiers."
+  },
+  {
+    "id": "log-stack-trace-client",
+    "pattern": "res\\.(?:json|send|write)\\s*\\([^)]*(?:err\\.stack|error\\.stack|e\\.getStackTrace|traceback)",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Stack trace sent to client exposes internal paths, versions, and code structure.",
+    "cwe": "CWE-209", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Return generic error messages to clients; log full stack traces server-side only."
+  },
+  {
+    "id": "log-verbose-error-prod",
+    "pattern": "(?:res\\.json|res\\.send|response\\.write)\\s*\\([^)]*(?:e\\.message|err\\.message|error\\.message)",
+    "severity": "medium", "category": "sensitive-logging",
+    "description": "Error messages sent to clients may reveal internal implementation details.",
+    "cwe": "CWE-209", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Return generic error messages; log details server-side only."
+  },
+  {
+    "id": "log-no-rotation",
+    "pattern": "(?:fs\\.appendFile|open\\([^)]*['\"]a['\"])[\\s\\S]*?\\.log",
+    "severity": "low", "category": "log-management",
+    "description": "Log file written without rotation can grow unbounded causing disk exhaustion.",
+    "cwe": "CWE-400", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a logging library with built-in rotation (winston, logrotate, logging.handlers)."
+  },
+  {
+    "id": "log-world-readable",
+    "pattern": "(?:open|fopen|os\\.open)\\s*\\([^)]*\\.log[^)]*(?:0o?644|0o?666|world)",
+    "severity": "medium", "category": "log-management",
+    "description": "Log file with world-readable permissions exposes logged data to all users.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.py", "*.go", "*.sh"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set log file permissions to 0640 or stricter."
+  },
+  {
+    "id": "log-in-git",
+    "pattern": "\\*\\.log(?!.*!)",
+    "severity": "low", "category": "log-management",
+    "description": "Log files may not be in .gitignore, risking exposure of logged secrets in VCS.",
+    "cwe": "CWE-532", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": [".gitignore"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Add *.log to .gitignore to prevent log files in version control."
+  },
+  {
+    "id": "log-debug-production",
+    "pattern": "(?:LOG_LEVEL|log_level|logLevel|LOGLEVEL)\\s*[=:]\\s*['\"]?(?:DEBUG|TRACE|ALL)['\"]?",
+    "severity": "medium", "category": "log-management",
+    "description": "Debug/trace log level in production generates excessive logs with potential secrets.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.env", "*.yml", "*.yaml", "*.json", "*.properties", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "dev", "local"],
+    "fix_hint": "Set log level to INFO or WARN in production environments."
+  },
+  {
+    "id": "log-stdout-no-structure",
+    "pattern": "console\\.log\\s*\\(\\s*['\"](?:Error|Warning|INFO|DEBUG):",
+    "severity": "low", "category": "log-management",
+    "description": "Unstructured console.log in production hinders log aggregation and alerting.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use structured logging library (winston, pino) for JSON log output."
+  },
+  {
+    "id": "log-crlf-http-header",
+    "pattern": "(?:setHeader|writeHead|header|add_header)\\s*\\([^)]*(?:\\\\r\\\\n|%0d%0a|%0a)",
+    "severity": "high", "category": "crlf-injection",
+    "description": "CRLF in HTTP header value enables response splitting and header injection.",
+    "cwe": "CWE-113", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip \\r and \\n from all user input before setting HTTP headers."
+  },
+  {
+    "id": "log-crlf-email-header",
+    "pattern": "(?:To|From|CC|BCC|Subject):\\s*[^\\n]*(?:\\\\r\\\\n|%0d%0a)[\\s\\S]*?(?:To|From|CC|BCC):",
+    "severity": "high", "category": "crlf-injection",
+    "description": "CRLF injection in email headers enables sending to unauthorized recipients.",
+    "cwe": "CWE-93", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.php", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate email header fields; reject input containing \\r or \\n."
+  },
+  {
+    "id": "log-crlf-smtp-injection",
+    "pattern": "(?:MAIL FROM|RCPT TO|DATA)\\s*[^\\n]*(?:req\\.|request\\.|params\\.|body\\.)",
+    "severity": "high", "category": "crlf-injection",
+    "description": "User input in SMTP commands enables email header injection.",
+    "cwe": "CWE-93", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Sanitize all user input used in SMTP commands; reject CRLF characters."
+  },
+  {
+    "id": "log-crlf-response-split",
+    "pattern": "(?:res\\.setHeader|response\\.setHeader|header\\()\\s*\\([^)]*(?:req\\.|request\\.|params\\.|query\\.)",
+    "severity": "high", "category": "crlf-injection",
+    "description": "User input in response header value enables HTTP response splitting.",
+    "cwe": "CWE-113", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Sanitize user input; strip \\r\\n before setting response headers."
+  },
+  {
+    "id": "log-crlf-cookie-injection",
+    "pattern": "Set-Cookie:\\s*[^;]*(?:req\\.|request\\.|params\\.|query\\.)",
+    "severity": "high", "category": "crlf-injection",
+    "description": "User input in Set-Cookie header enables cookie injection via CRLF.",
+    "cwe": "CWE-113", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "URL-encode cookie values; reject input containing \\r or \\n."
+  },
+  {
+    "id": "log-ctrl-null-byte",
+    "pattern": "(?:\\\\x00|%00|\\\\0)(?:.*(?:open|exec|system|eval|include|require))",
+    "severity": "high", "category": "control-chars",
+    "description": "Null byte in input may truncate strings in C-based functions enabling bypasses.",
+    "cwe": "CWE-158", "cve": null, "owasp": "A03:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Reject input containing null bytes; validate at application boundary."
+  },
+  {
+    "id": "log-ctrl-unicode-line",
+    "pattern": "(?:\\\\u2028|\\\\u2029)",
+    "severity": "medium", "category": "control-chars",
+    "description": "Unicode line/paragraph separators (U+2028/U+2029) cause unexpected line breaks in JSON.",
+    "cwe": "CWE-117", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Escape U+2028 and U+2029 in JSON output; use JSON.stringify which handles these."
+  },
+  {
+    "id": "log-ctrl-backspace",
+    "pattern": "\\\\x08",
+    "severity": "low", "category": "control-chars",
+    "description": "Backspace character in output can manipulate terminal display to hide content.",
+    "cwe": "CWE-116", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip control characters from user input before display or logging."
+  },
+  {
+    "id": "log-ctrl-form-feed",
+    "pattern": "\\\\x0c",
+    "severity": "low", "category": "control-chars",
+    "description": "Form feed character in output can manipulate terminal or printer display.",
+    "cwe": "CWE-116", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Strip control characters (0x00-0x1F except tab/newline) from user input."
+  },
+  {
+    "id": "log-sensitive-connection-string",
+    "pattern": "(?:log|logger|console|print|logging)\\.?(?:info|debug|warn|error|log|warning)?\\s*\\([^)]*(?:connection_?string|conn_?str|database_?url|db_?url)",
+    "severity": "high", "category": "sensitive-logging",
+    "description": "Database connection string logged may contain embedded credentials.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "mask", "redact"],
+    "fix_hint": "Never log connection strings; log database host/name without credentials."
+  }
+]
