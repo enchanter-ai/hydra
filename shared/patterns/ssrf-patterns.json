@@ -1,0 +1,612 @@
+[
+  {
+    "id": "ssrf-aws-metadata-v1",
+    "pattern": "169\\.254\\.169\\.254",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Request to AWS EC2 metadata endpoint (169.254.169.254) enables SSRF credential theft.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "imds", "metadata"],
+    "fix_hint": "Block requests to 169.254.169.254; use IMDSv2 with hop limit 1."
+  },
+  {
+    "id": "ssrf-aws-metadata-v6",
+    "pattern": "fd00:ec2::254",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Request to AWS IPv6 metadata endpoint enables SSRF credential theft.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block requests to fd00:ec2::254; enforce IMDSv2."
+  },
+  {
+    "id": "ssrf-aws-metadata-path",
+    "pattern": "/latest/meta-data/(?:iam|security-credentials|identity-credentials)",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Path to AWS IAM credentials via metadata service — classic SSRF exfiltration target.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use IMDSv2 with PUT token requirement; block metadata paths in URL validation."
+  },
+  {
+    "id": "ssrf-aws-userdata",
+    "pattern": "/latest/user-data",
+    "severity": "high", "category": "cloud-metadata",
+    "description": "Access to EC2 user-data via SSRF may leak startup scripts containing secrets.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block metadata paths; never put secrets in EC2 user-data."
+  },
+  {
+    "id": "ssrf-gcp-metadata",
+    "pattern": "metadata\\.google\\.internal",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Request to GCP metadata server enables SSRF theft of service account tokens.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block requests to metadata.google.internal; validate outbound URLs."
+  },
+  {
+    "id": "ssrf-gcp-metadata-flavor",
+    "pattern": "Metadata-Flavor:\\s*Google",
+    "severity": "high", "category": "cloud-metadata",
+    "description": "GCP metadata Flavor header indicates intentional metadata access — verify not SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "sdk", "client"],
+    "fix_hint": "Ensure metadata access is from trusted code, not user-controlled requests."
+  },
+  {
+    "id": "ssrf-azure-metadata",
+    "pattern": "169\\.254\\.169\\.254[\\s\\S]*?Metadata:\\s*true",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Azure IMDS request with Metadata:true header via SSRF leaks managed identity tokens.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block metadata requests from user-controlled URL paths."
+  },
+  {
+    "id": "ssrf-alibaba-metadata",
+    "pattern": "100\\.100\\.100\\.200",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Request to Alibaba Cloud metadata endpoint (100.100.100.200) enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block requests to 100.100.100.200 in URL validation."
+  },
+  {
+    "id": "ssrf-digitalocean-metadata",
+    "pattern": "169\\.254\\.169\\.254/metadata",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "DigitalOcean metadata endpoint access via SSRF leaks droplet credentials.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block metadata IP in outbound URL validation."
+  },
+  {
+    "id": "ssrf-oracle-metadata",
+    "pattern": "169\\.254\\.169\\.254/opc",
+    "severity": "critical", "category": "cloud-metadata",
+    "description": "Oracle Cloud metadata endpoint access via SSRF leaks instance credentials.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block metadata IP in outbound URL validation."
+  },
+  {
+    "id": "ssrf-k8s-service-default",
+    "pattern": "kubernetes\\.default\\.svc",
+    "severity": "high", "category": "cloud-metadata",
+    "description": "Request to Kubernetes API server via SSRF enables cluster compromise.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "client-go", "sdk"],
+    "fix_hint": "Block internal Kubernetes URLs in outbound URL validation."
+  },
+  {
+    "id": "ssrf-k8s-service-host",
+    "pattern": "KUBERNETES_SERVICE_HOST",
+    "severity": "medium", "category": "cloud-metadata",
+    "description": "Using KUBERNETES_SERVICE_HOST env var in URL construction may indicate SSRF risk.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "client", "sdk"],
+    "fix_hint": "Use official Kubernetes client libraries instead of direct HTTP requests."
+  },
+  {
+    "id": "ssrf-internal-rfc1918-10",
+    "pattern": "(?:https?://|fetch\\(|request\\().*10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to 10.x.x.x private network may indicate SSRF to internal services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "docker", "compose"],
+    "fix_hint": "Validate URLs against an allowlist; block RFC1918 private IP ranges."
+  },
+  {
+    "id": "ssrf-internal-rfc1918-172",
+    "pattern": "(?:https?://|fetch\\(|request\\().*172\\.(?:1[6-9]|2[0-9]|3[0-1])\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to 172.16-31.x.x private network may indicate SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "docker"],
+    "fix_hint": "Validate URLs against an allowlist; block RFC1918 private IP ranges."
+  },
+  {
+    "id": "ssrf-internal-rfc1918-192",
+    "pattern": "(?:https?://|fetch\\(|request\\().*192\\.168\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to 192.168.x.x private network may indicate SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "docker"],
+    "fix_hint": "Validate URLs against an allowlist; block RFC1918 private IP ranges."
+  },
+  {
+    "id": "ssrf-internal-linklocal",
+    "pattern": "(?:https?://|fetch\\(|request\\().*169\\.254\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to link-local 169.254.x.x may target cloud metadata endpoints.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block all link-local addresses in outbound URL validation."
+  },
+  {
+    "id": "ssrf-internal-loopback",
+    "pattern": "(?:https?://|fetch\\(|request\\().*127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to 127.x.x.x loopback may access internal-only services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "localhost", "dev"],
+    "fix_hint": "Block loopback addresses in URL validation; use allowlist for outbound."
+  },
+  {
+    "id": "ssrf-internal-ipv6",
+    "pattern": "(?:https?://|fetch\\(|request\\().*\\[?(?:fe80:|fc00:|fd00:)",
+    "severity": "high", "category": "internal-network",
+    "description": "HTTP request to private IPv6 address may indicate SSRF to internal network.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block private IPv6 ranges (fe80::, fc00::, fd00::) in URL validation."
+  },
+  {
+    "id": "ssrf-bypass-zero",
+    "pattern": "(?:https?://|fetch\\(|request\\().*(?:0\\.0\\.0\\.0|0x0\\.0x0)",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Request to 0.0.0.0 bypasses naive localhost checks to access local services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "bind"],
+    "fix_hint": "Block 0.0.0.0 and all zero-representations in URL validation."
+  },
+  {
+    "id": "ssrf-bypass-ipv6-loopback",
+    "pattern": "(?:https?://|fetch\\(|request\\().*\\[::1\\]",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Request to [::1] IPv6 loopback bypasses 127.0.0.1 blocklists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block both IPv4 and IPv6 loopback in URL validation."
+  },
+  {
+    "id": "ssrf-bypass-hex-ip",
+    "pattern": "(?:https?://|fetch\\(|request\\().*0x[0-9a-fA-F]{8}",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Hex-encoded IP (e.g., 0x7f000001) bypasses dotted-decimal IP blocklists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Resolve URLs to IP after parsing and block all private/loopback ranges."
+  },
+  {
+    "id": "ssrf-bypass-octal-ip",
+    "pattern": "(?:https?://)0[0-7]{3,}\\.0",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Octal-encoded IP (e.g., 0177.0.0.1) bypasses decimal IP blocklists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Normalize IP addresses before validation; resolve to canonical form."
+  },
+  {
+    "id": "ssrf-bypass-decimal-ip",
+    "pattern": "(?:https?://)2130706433",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Decimal IP 2130706433 (127.0.0.1) bypasses dotted-notation blocklists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Parse and normalize all IP representations before validation."
+  },
+  {
+    "id": "ssrf-bypass-at-sign",
+    "pattern": "https?://[^/]*@[^/]*",
+    "severity": "high", "category": "localhost-bypass",
+    "description": "URL with @ can redirect to attacker host (http://expected@evil.com) bypassing host checks.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "auth"],
+    "fix_hint": "Strip userinfo from URLs before validation; use URL parser to extract host."
+  },
+  {
+    "id": "ssrf-bypass-nip-io",
+    "pattern": "(?:nip\\.io|xip\\.io|sslip\\.io|localtest\\.me|lvh\\.me|vcap\\.me)",
+    "severity": "high", "category": "localhost-bypass",
+    "description": "DNS wildcard service resolves to arbitrary IPs bypassing domain-based allowlists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "dev"],
+    "fix_hint": "Validate resolved IP address, not just hostname; block private IPs post-DNS."
+  },
+  {
+    "id": "ssrf-bypass-shorturl-127",
+    "pattern": "(?:https?://)127\\.1(?:[:/]|$)",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "Abbreviated 127.1 resolves to 127.0.0.1 bypassing some host checks.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Normalize IP addresses; resolve and check canonical form."
+  },
+  {
+    "id": "ssrf-scheme-file",
+    "pattern": "file://",
+    "severity": "critical", "category": "url-scheme",
+    "description": "file:// scheme in URL allows reading local filesystem via SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "path"],
+    "fix_hint": "Only allow http:// and https:// schemes; block file://, gopher://, etc."
+  },
+  {
+    "id": "ssrf-scheme-gopher",
+    "pattern": "gopher://",
+    "severity": "critical", "category": "url-scheme",
+    "description": "gopher:// scheme enables arbitrary TCP data smuggling to internal services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only allow http:// and https:// schemes in URL validation."
+  },
+  {
+    "id": "ssrf-scheme-dict",
+    "pattern": "dict://",
+    "severity": "high", "category": "url-scheme",
+    "description": "dict:// scheme can interact with Redis and other internal services via SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only allow http:// and https:// schemes in URL validation."
+  },
+  {
+    "id": "ssrf-scheme-ldap",
+    "pattern": "ldap://",
+    "severity": "high", "category": "url-scheme",
+    "description": "ldap:// scheme via SSRF can query internal directory services or trigger JNDI.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "config"],
+    "fix_hint": "Only allow http:// and https:// schemes; validate URLs before request."
+  },
+  {
+    "id": "ssrf-scheme-tftp",
+    "pattern": "tftp://",
+    "severity": "high", "category": "url-scheme",
+    "description": "tftp:// scheme can be used to exfiltrate data to attacker via SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only allow http:// and https:// schemes."
+  },
+  {
+    "id": "ssrf-scheme-jar",
+    "pattern": "jar:(?:https?|file)://",
+    "severity": "high", "category": "url-scheme",
+    "description": "jar:// scheme can access remote ZIP files and extract contents server-side.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block jar:// scheme in URL validation; only allow http/https."
+  },
+  {
+    "id": "ssrf-scheme-php-filter",
+    "pattern": "php://(?:filter|input|data)",
+    "severity": "critical", "category": "url-scheme",
+    "description": "php:// wrapper enables reading source code or injecting data via SSRF/LFI.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Block php:// wrappers; validate file paths against an allowlist."
+  },
+  {
+    "id": "ssrf-scheme-data",
+    "pattern": "data:(?:text|application)/[^;]+;base64,",
+    "severity": "medium", "category": "url-scheme",
+    "description": "data: URL used in server-side context can inject content bypassing URL validation.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "image", "svg"],
+    "fix_hint": "Block data: scheme in server-side URL processing."
+  },
+  {
+    "id": "ssrf-user-url-fetch-js",
+    "pattern": "fetch\\(\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.|url|userUrl|inputUrl|targetUrl)",
+    "severity": "critical", "category": "user-url",
+    "description": "fetch() with user-controlled URL enables SSRF to internal services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-axios-js",
+    "pattern": "axios\\.(?:get|post|put|delete|head|patch)\\(\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.|url|userUrl)",
+    "severity": "critical", "category": "user-url",
+    "description": "axios with user-controlled URL enables SSRF to internal services.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-requests-py",
+    "pattern": "requests\\.(?:get|post|put|delete|head|patch)\\(\\s*(?:url|request\\.|params\\[|data\\[|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "Python requests with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-urllib-py",
+    "pattern": "urllib\\.request\\.urlopen\\(\\s*(?:url|request|target|user)",
+    "severity": "critical", "category": "user-url",
+    "description": "Python urllib.urlopen with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; use a dedicated SSRF-safe HTTP library."
+  },
+  {
+    "id": "ssrf-user-url-java",
+    "pattern": "new\\s+URL\\(\\s*(?:request\\.getParameter|userInput|url|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "Java URL with user input enables SSRF via openConnection/openStream.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-go",
+    "pattern": "http\\.(?:Get|Post|Head)\\(\\s*(?:r\\.|req\\.|url|userURL|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "Go http.Get with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block RFC1918 IPs."
+  },
+  {
+    "id": "ssrf-user-url-ruby",
+    "pattern": "(?:URI\\.open|Net::HTTP\\.get|open-uri)\\s*\\(\\s*(?:params\\[|request\\.|url|user)",
+    "severity": "critical", "category": "user-url",
+    "description": "Ruby HTTP request with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-php",
+    "pattern": "(?:file_get_contents|curl_setopt|fopen)\\s*\\(\\s*(?:\\$_GET|\\$_POST|\\$_REQUEST|\\$url|\\$target)",
+    "severity": "critical", "category": "user-url",
+    "description": "PHP HTTP function with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; disable file:// and other dangerous wrappers."
+  },
+  {
+    "id": "ssrf-user-url-csharp",
+    "pattern": "(?:HttpClient|WebClient|WebRequest)\\.(?:Get|Download|Create)\\w*\\(\\s*(?:url|request|user|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "C# HTTP client with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["csharp"], "file_types": ["*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-spring-resttemplate",
+    "pattern": "restTemplate\\.(?:get|post|put|exchange)ForObject\\(\\s*(?:url|request\\.getParameter|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "Spring RestTemplate with user URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist before passing to RestTemplate."
+  },
+  {
+    "id": "ssrf-user-url-httpx-py",
+    "pattern": "httpx\\.(?:get|post|put|delete|head|AsyncClient)\\(\\s*(?:url|request|target|user)",
+    "severity": "critical", "category": "user-url",
+    "description": "Python httpx with user-controlled URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-redirect-follow-true",
+    "pattern": "(?:followRedirects|follow_redirects|allow_redirects|maxRedirects|followAllRedirects)\\s*[=:]\\s*(?:true|True|\\d+)",
+    "severity": "medium", "category": "redirect",
+    "description": "HTTP client following redirects on user URLs enables SSRF via redirect to internal IP.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Disable redirect following for user URLs; validate each redirect destination."
+  },
+  {
+    "id": "ssrf-redirect-no-validation",
+    "pattern": "(?:followRedirect|redirect)\\s*:\\s*(?:function|\\().*(?:return\\s+true|=>\\s*true)",
+    "severity": "high", "category": "redirect",
+    "description": "Custom redirect handler always returning true follows to any destination.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate redirect destination against allowlist before following."
+  },
+  {
+    "id": "ssrf-redirect-http-to-gopher",
+    "pattern": "(?:followRedirect|follow_redirect)(?:(?!validateRedirect|isAllowed)[\\s\\S])*$",
+    "severity": "medium", "category": "redirect",
+    "description": "Redirect following without scheme validation enables HTTP-to-gopher SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate redirect scheme is http/https before following."
+  },
+  {
+    "id": "ssrf-webhook-user-url",
+    "pattern": "(?:webhook|callback|notify|hook)_?(?:url|uri|endpoint)\\s*[=:]\\s*(?:req\\.|request\\.|body\\.|params\\.|data\\[)",
+    "severity": "high", "category": "webhook",
+    "description": "Webhook URL from user input without validation enables SSRF on callback.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate webhook URLs against an allowlist; resolve and block private IPs."
+  },
+  {
+    "id": "ssrf-webhook-stored",
+    "pattern": "(?:save|store|create)(?:Webhook|Hook|Callback)[\\s\\S]*?url\\s*[=:]\\s*(?:req\\.|body\\.|data\\.|input)",
+    "severity": "high", "category": "webhook",
+    "description": "Storing user-supplied webhook URL for later fetch creates stored SSRF vector.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate webhook URL at storage time AND at fetch time."
+  },
+  {
+    "id": "ssrf-notification-url",
+    "pattern": "(?:notification|alert|ping|status)_?url\\s*[=:]\\s*(?:req\\.|request\\.|params\\.|body\\.)",
+    "severity": "high", "category": "webhook",
+    "description": "Notification URL from user input enables SSRF when notification fires.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate notification URLs against an allowlist of permitted domains."
+  },
+  {
+    "id": "ssrf-image-proxy",
+    "pattern": "(?:imageUrl|image_url|img_src|avatar_url|icon_url)\\s*[=:]\\s*(?:req\\.|request\\.|body\\.|params\\.)",
+    "severity": "high", "category": "webhook",
+    "description": "Image/avatar URL from user input fetched server-side enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a dedicated image proxy with URL allowlist and private IP blocking."
+  },
+  {
+    "id": "ssrf-pdf-url",
+    "pattern": "(?:pdf|html_to_pdf|wkhtmltopdf|puppeteer|playwright)[\\s\\S]*?(?:goto|navigate|url)\\s*[=(]\\s*(?:req\\.|url|user|target)",
+    "severity": "high", "category": "user-url",
+    "description": "PDF generation with user URL enables SSRF via browser-based rendering.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URLs for PDF generation; block internal IPs and non-http schemes."
+  },
+  {
+    "id": "ssrf-dns-rebinding",
+    "pattern": "(?:dns|resolve|lookup)\\s*\\([^)]*\\)(?:(?!pinning|pin|cache)[\\s\\S]){0,200}(?:fetch|request|http)",
+    "severity": "high", "category": "dns-rebinding",
+    "description": "DNS resolution followed by HTTP request without IP pinning enables DNS rebinding SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Pin resolved IP; validate IP is not private after DNS resolution."
+  },
+  {
+    "id": "ssrf-user-url-aiohttp",
+    "pattern": "(?:aiohttp\\.ClientSession|session)\\.(?:get|post|put|delete|head)\\(\\s*(?:url|request|target|user)",
+    "severity": "critical", "category": "user-url",
+    "description": "Python aiohttp with user-controlled URL enables async SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist; resolve DNS and block private IPs."
+  },
+  {
+    "id": "ssrf-user-url-okhttp",
+    "pattern": "OkHttpClient[\\s\\S]*?Request\\.Builder\\(\\)[\\s\\S]*?\\.url\\(\\s*(?:url|request|user|target)",
+    "severity": "critical", "category": "user-url",
+    "description": "Java OkHttp with user URL enables SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate URL against an allowlist before building OkHttp request."
+  },
+  {
+    "id": "ssrf-redirect-python",
+    "pattern": "allow_redirects\\s*=\\s*True",
+    "severity": "medium", "category": "redirect",
+    "description": "Python requests following redirects on user URLs enables redirect-based SSRF.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set allow_redirects=False for user-supplied URLs; validate redirect targets."
+  },
+  {
+    "id": "ssrf-webhook-slack",
+    "pattern": "(?:slack|discord|teams)_?(?:webhook|hook)_?url\\s*[=:]\\s*(?:req\\.|body\\.|data\\.|input)",
+    "severity": "high", "category": "webhook",
+    "description": "User-supplied Slack/Discord/Teams webhook URL enables SSRF on notification.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate webhook URLs match expected service domains (hooks.slack.com etc)."
+  },
+  {
+    "id": "ssrf-bypass-ipv6-mapped",
+    "pattern": "(?:https?://|fetch\\(|request\\().*\\[::[fF]{4}:(?:127|10|172|192)",
+    "severity": "critical", "category": "localhost-bypass",
+    "description": "IPv6-mapped IPv4 address (::ffff:127.0.0.1) bypasses IPv4-only blocklists.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Normalize IPv6-mapped addresses to IPv4 before validation."
+  },
+  {
+    "id": "ssrf-scheme-ftp",
+    "pattern": "ftp://",
+    "severity": "medium", "category": "url-scheme",
+    "description": "ftp:// scheme in server-side requests can access FTP servers internally.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A10:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "config"],
+    "fix_hint": "Only allow http:// and https:// schemes in URL validation."
+  },
+  {
+    "id": "ssrf-xml-external-entity",
+    "pattern": "<!ENTITY\\s+\\w+\\s+SYSTEM\\s+['\"](?:file://|http://|ftp://|gopher://)",
+    "severity": "critical", "category": "url-scheme",
+    "description": "XML external entity referencing URL enables XXE-based SSRF.",
+    "cwe": "CWE-611", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.xml", "*.svg", "*.xsl"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Disable external entity processing; use defusedxml in Python."
+  }
+]
