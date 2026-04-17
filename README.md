@@ -97,38 +97,19 @@ Reaper doesn't scan after the fact. It **intercepts** — before secrets hit dis
 
 At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 105 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
 
-```mermaid
-graph TD
-    User(["You: open a repo in Claude Code"])
+<p align="center">
+  <a href="docs/assets/hooks.mmd" title="View hook-binding diagram source (Mermaid)">
+    <img src="docs/assets/hooks.svg"
+         alt="Reaper hook bindings: SessionStart runs config-shield (R5), PreToolUse/Bash runs action-guard (R4 + R7), PostToolUse/Write·Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; audit-trail (R8) observes all hooks and applies Bayesian threat EMA"
+         width="100%" style="max-width:1100px;">
+  </a>
+</p>
 
-    User --> SS
+<sub align="center">
 
-    subgraph SS["SESSION START"]
-        config["config-shield<br/><small>R5: Config Poisoning Detection</small><br/>Scans .claude/, .vscode/, package.json, .npmrc, .mcp.json<br/><b>117 signatures, 6 CVEs</b>"]
-    end
+Source: [docs/assets/hooks.mmd](docs/assets/hooks.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
 
-    SS --> Session
-
-    subgraph Session["ACTIVE SESSION"]
-        direction TB
-
-        subgraph Pre["PRE-TOOL (before execution)"]
-            guard["action-guard<br/><small>R4: Markov Classification</small><br/><small>R7: Subcommand Overflow</small><br/>Classifies Bash commands → BLOCK / WARN / ALLOW<br/><b>105 dangerous-op patterns</b>"]
-        end
-
-        subgraph Post["POST-TOOL (after execution)"]
-            secrets["secret-scanner<br/><small>R1: Aho-Corasick (310 patterns)</small><br/><small>R2: Shannon Entropy (H > 4.5)</small>"]
-            vulns["vuln-detector<br/><small>R3: OWASP Graph</small><br/><b>1,124 new patterns across 15 databases</b><br/>CI/CD, containers, IaC, crypto, auth, SSRF, API,<br/>AI attacks, ReDoS, deserialization, file ops,<br/>log injection, prototype pollution, supply chain, headers"]
-            audit["audit-trail<br/><small>R8: Bayesian Threat Convergence</small><br/>Logs every security event"]
-        end
-
-        Pre --> Post
-    end
-
-    style SS fill:#161b22,stroke:#bc8cff,color:#e6edf3
-    style Pre fill:#161b22,stroke:#f85149,color:#e6edf3
-    style Post fill:#161b22,stroke:#3fb950,color:#e6edf3
-```
+</sub>
 
 No permission prompts. No manual scanning. Every tool call is monitored. Dangerous commands are blocked before they execute.
 
@@ -219,7 +200,7 @@ The full value never appears in stderr, audit logs, metrics, or reports. Not in 
 
 The **Bayesian Threat Convergence** engine (R8) tracks security posture over time:
 
-$$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}}, \quad \alpha = 0.3$$
+<p align="center"><img src="docs/assets/math/r8-ema.svg" alt="r_new = alpha · s_current + (1 - alpha) · r_prior; alpha = 0.3"></p>
 
 Patterns you consistently dismiss get lower severity. Chronic vulnerabilities escalate. The engine gets smarter with every session.
 
@@ -227,19 +208,19 @@ Patterns you consistently dismiss get lower severity. Chronic vulnerabilities es
 
 A single session flows left to right through five stages. **Config Shield** runs once at SessionStart and reports via `/reaper:config-check`. Every Bash call routes through **Action Guard** (PreToolUse, `/reaper:safety`). If the command is allowed, every Write/Edit fans out in parallel to **Secret Scanner** (`/reaper:secrets`) and **Vuln Detector** (`/reaper:vulns`). All events land in **Audit Trail** (`/reaper:audit`).
 
-```mermaid
-graph LR
-    A["Config Shield<br/><small>SessionStart</small><br/>/reaper:config-check"] -->|"repo scanned"| B["Action Guard<br/><small>PreToolUse</small><br/>/reaper:safety"]
-    B -->|"command allowed"| C["Secret Scanner<br/><small>PostToolUse</small><br/>/reaper:secrets"]
-    C -->|"file scanned"| D["Vuln Detector<br/><small>PostToolUse</small><br/>/reaper:vulns"]
-    D -->|"CWE mapped"| E["Audit Trail<br/><small>PostToolUse</small><br/>/reaper:audit"]
+<p align="center">
+  <a href="docs/assets/lifecycle.mmd" title="View session-lifecycle diagram source (Mermaid)">
+    <img src="docs/assets/lifecycle.svg"
+         alt="Reaper full lifecycle: 5 stages — Config Shield (SessionStart · R5) → Action Guard (PreToolUse · R4 + R7) → Secret Scanner (PostToolUse · R1 + R2) → Vuln Detector (PostToolUse · R3) → Audit Trail (all hooks · R8 Bayesian EMA)"
+         width="100%" style="max-width:1100px;">
+  </a>
+</p>
 
-    style A fill:#161b22,stroke:#bc8cff,color:#e6edf3
-    style B fill:#161b22,stroke:#f85149,color:#e6edf3
-    style C fill:#161b22,stroke:#d29922,color:#e6edf3
-    style D fill:#161b22,stroke:#58a6ff,color:#e6edf3
-    style E fill:#161b22,stroke:#3fb950,color:#e6edf3
-```
+<sub align="center">
+
+Source: [docs/assets/lifecycle.mmd](docs/assets/lifecycle.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
+
+</sub>
 
 ## Install
 
@@ -298,51 +279,55 @@ Every engine is built on a formal mathematical model. Full derivations in [`docs
 
 ### R1: Aho-Corasick Pattern Engine
 
-$$T(n, m) = O(|T| + |P| + z) \quad \text{where } z = \text{matches found}$$
+<p align="center"><img src="docs/assets/math/r1-aho.svg" alt="T(n, m) = O(|T| + |P| + z) where z is the number of matches"></p>
 
 Trie with failure links. The hook uses `grep -Eof` with one pattern per line for native C speed (<50ms). The Python script builds the full automaton for batch scanning.
 
 ### R2: Shannon Entropy Analysis
 
-$$H(s) = -\sum_{c \in \text{charset}(s)} p(c) \log_2 p(c) \quad \text{Flag if } H(s) > 4.5 \text{ and } |s| \geq 20$$
+<p align="center"><img src="docs/assets/math/r2-entropy.svg" alt="H(s) = -sum over charset p(c) log2 p(c)"></p>
+
+<p align="center"><img src="docs/assets/math/r2-flag.svg" alt="Flag(s) iff H(s) > 4.5 AND length >= 20"></p>
 
 Catches secrets that don't match any known pattern but have suspiciously high randomness.
 
 ### R3: OWASP Vulnerability Graph
 
-$$\text{Vulnerable}(f) \iff \exists\, p \in P_{\text{lang}(f)} : \text{match}(p, f) \ \wedge \ \neg\text{InComment}(p, f)$$
+<p align="center"><img src="docs/assets/math/r3-owasp.svg" alt="Vulnerable(f) iff some pattern p in the language-specific set matches f and is not inside a comment"></p>
 
 Language-aware CWE pattern matching. Comment detection reduces false positives. Maps to OWASP Top 10 2021.
 
 ### R4: Markov Action Classification
 
-$$\text{Class}(\text{cmd}) \in \lbrace\text{SAFE}, \text{WARN}, \text{BLOCK}\rbrace$$
+<p align="center"><img src="docs/assets/math/r4-class.svg" alt="Class(cmd) ∈ {SAFE, WARN, BLOCK}"></p>
 
-$$\text{BLOCK} \iff \text{cmd} \in D_{\text{block}} \ \cup \ \lbrace\text{cmd} : |\text{subcommands}| > 50\rbrace$$
+<p align="center"><img src="docs/assets/math/r4-block.svg" alt="BLOCK iff cmd is in the dangerous-op set or has more than 50 subcommands"></p>
 
 State-machine classification against 105 dangerous command patterns. Exit 2 blocks execution.
 
 ### R5: Config Poisoning Detection
 
-$$\text{Poisoned}(c) \iff \exists\, s \in S_{\text{CVE}} : \text{match}(s, \text{content}(c))$$
+<p align="center"><img src="docs/assets/math/r5-poison.svg" alt="Poisoned(c) iff some CVE signature matches the contents of c"></p>
 
 117 attack signatures across 30+ config file types. Base64 payload decoding. Hidden Unicode detection.
 
 ### R6: Phantom Dependency Detection
 
-$$d_{\text{lev}}(a, b) = \min\begin{cases} d(a_{1..m-1}, b) + 1 \\ d(a, b_{1..n-1}) + 1 \\ d(a_{1..m-1}, b_{1..n-1}) + [a_m \neq b_n] \end{cases}$$
+<p align="center"><img src="docs/assets/math/r6-levenshtein.svg" alt="Levenshtein edit distance via the standard recurrence: delete, insert, or substitute"></p>
 
 Levenshtein distance for typosquat detection. 199 known hallucinated/malicious packages across 5 ecosystems.
 
 ### R7: Subcommand Overflow Detection
 
-$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \\&\\&\ ||\ \mid\ ])\rvert > 50$$
+<p align="center"><img src="docs/assets/math/r7-overflow.svg" alt="Block(cmd) iff |split(cmd, separators)| > 50"></p>
 
 Adversa AI discovered that safety filters fail when overwhelmed with subcommands. Reaper counts before matching.
 
 ### R8: Bayesian Threat Convergence
 
-$$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}} \qquad \text{Posture}(t) = 1 - \frac{\Theta_t}{\Theta_0}$$
+<p align="center"><img src="docs/assets/math/r8-ema.svg" alt="r_new = alpha · s_current + (1 - alpha) · r_prior; alpha = 0.3"></p>
+
+<p align="center"><img src="docs/assets/math/r8-posture.svg" alt="Posture(t) = 1 - Theta_t / Theta_0"></p>
 
 Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns escalate.
 

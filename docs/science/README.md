@@ -8,9 +8,9 @@ These aren't abstractions. Every formula maps to running code.
 
 ## R1. Aho-Corasick Pattern Engine
 
-**Problem:** Scan text $T$ for 200+ secret patterns $P$ in linear time.
+**Problem:** Scan text T for 200+ secret patterns P in linear time.
 
-$$T(n, m) = O(|T| + |P| + z) \quad \text{where } z = \text{matches found}$$
+<p align="center"><img src="../assets/math/r1-aho.svg" alt="T(n, m) = O(|T| + |P| + z) where z is the number of matches"></p>
 
 Construction: build a trie from all patterns, add failure links via BFS, then scan text following goto/failure/output functions.
 
@@ -24,11 +24,11 @@ The hook (`scan-secrets.sh`) uses `grep -nEo` with cached regex alternation for 
 
 **Problem:** Detect high-entropy strings that look like secrets but don't match known patterns.
 
-$$H(s) = -\sum_{c \in \text{charset}(s)} p(c) \log_2 p(c)$$
+<p align="center"><img src="../assets/math/r2-entropy.svg" alt="H(s) = -sum over charset p(c) log2 p(c)"></p>
 
-$$\text{Flag}(s) \iff H(s) > 4.5 \ \wedge \ |s| \geq 20$$
+<p align="center"><img src="../assets/math/r2-flag.svg" alt="Flag(s) iff H(s) > 4.5 AND length >= 20"></p>
 
-Excludes known false positives: UUIDs, lock file hashes, pure alphabetic strings. Severity escalates with entropy: $H > 5.0$ is HIGH, $H > 4.5$ is MEDIUM.
+Excludes known false positives: UUIDs, lock file hashes, pure alphabetic strings. Severity escalates with entropy: H > 5.0 is HIGH, H > 4.5 is MEDIUM.
 
 **Implementation:** `shared/scripts/entropy-analyzer.py`
 
@@ -38,7 +38,7 @@ Excludes known false positives: UUIDs, lock file hashes, pure alphabetic strings
 
 **Problem:** Detect CWE-mapped vulnerability patterns with language awareness.
 
-$$\text{Vulnerable}(f) \iff \exists\, p \in P_{\text{lang}(f)} : \text{match}(p, f) \ \wedge \ \neg\text{InComment}(p, f)$$
+<p align="center"><img src="../assets/math/r3-owasp.svg" alt="Vulnerable(f) iff some pattern p in the language-specific set matches f and is not inside a comment"></p>
 
 Maps to OWASP Top 10 2021 categories. Language detection from file extension filters applicable patterns. Comment detection reduces false positives.
 
@@ -60,9 +60,9 @@ Maps to OWASP Top 10 2021 categories. Language detection from file extension fil
 
 **Problem:** Classify Bash commands as safe, risky, or dangerous before execution.
 
-$$\text{Class}(\text{cmd}) \in \lbrace\text{SAFE}, \text{WARN}, \text{BLOCK}\rbrace$$
+<p align="center"><img src="../assets/math/r4-class.svg" alt="Class(cmd) ∈ {SAFE, WARN, BLOCK}"></p>
 
-$$\text{BLOCK} \iff \text{cmd} \in D_{\text{block}} \ \cup \ \lbrace\text{cmd} : |\text{subcommands}| > 50\rbrace$$
+<p align="center"><img src="../assets/math/r4-block.svg" alt="BLOCK iff cmd is in the dangerous-op set or has more than 50 subcommands"></p>
 
 In `strict` mode, both BLOCK and WARN patterns are blocked. In `balanced` mode (default), only BLOCK patterns are blocked. In `permissive` mode, nothing is blocked.
 
@@ -74,7 +74,7 @@ In `strict` mode, both BLOCK and WARN patterns are blocked. In `balanced` mode (
 
 **Problem:** Detect malicious repository config files before they execute.
 
-$$\text{Poisoned}(c) \iff \exists\, s \in S_{\text{CVE}} : \text{match}(s, \text{content}(c))$$
+<p align="center"><img src="../assets/math/r5-poison.svg" alt="Poisoned(c) iff some CVE signature matches the contents of c"></p>
 
 Covers: CVE-2025-59536 (hooks exploit), CVE-2026-21852 (API key theft), CVE-2025-54135 (Cursor MCP), plus VSCode autorun, MCP consent bypass, package.json lifecycle scripts, hidden Unicode injection.
 
@@ -88,9 +88,9 @@ Deep analysis decodes base64 payloads and detects obfuscated commands.
 
 **Problem:** Detect AI-hallucinated package names (slopsquatting) via edit distance.
 
-$$d_{\text{lev}}(a, b) = \min\begin{cases} d(a_{1..m-1}, b) + 1 \\ d(a, b_{1..n-1}) + 1 \\ d(a_{1..m-1}, b_{1..n-1}) + [a_m \neq b_n] \end{cases}$$
+<p align="center"><img src="../assets/math/r6-levenshtein.svg" alt="Levenshtein edit distance via the standard recurrence: delete, insert, or substitute"></p>
 
-$$\text{Typosquat}(p) \iff \exists\, t \in \text{Registry} : 0 < d_{\text{lev}}(p, t) \leq 2$$
+<p align="center"><img src="../assets/math/r6-typosquat.svg" alt="Typosquat(p) iff there exists a registry entry t with 0 < edit distance <= 2"></p>
 
 Cross-references against known hallucinated packages and popular package names. Checks npm, PyPI, Cargo, Go ecosystems.
 
@@ -102,7 +102,7 @@ Cross-references against known hallucinated packages and popular package names. 
 
 **Problem:** Commands with 50+ subcommands bypass deny rules silently.
 
-$$\text{Block}(\text{cmd}) \iff \lvert\text{split}(\text{cmd},\ [\ ;\ \\&\\&\ ||\ \mid\ ])\rvert > 50$$
+<p align="center"><img src="../assets/math/r7-overflow.svg" alt="Block(cmd) iff |split(cmd, separators)| > 50"></p>
 
 Discovered by Adversa AI: when a command contains enough subcommands, safety filters fail to evaluate all of them. Reaper counts subcommand parts before any pattern matching.
 
@@ -114,11 +114,11 @@ Discovered by Adversa AI: when a command contains enough subcommands, safety fil
 
 **Problem:** Track security posture across sessions with exponential moving average.
 
-$$r_{\text{new}} = \alpha \cdot s_{\text{current}} + (1 - \alpha) \cdot r_{\text{prior}}, \quad \alpha = 0.3$$
+<p align="center"><img src="../assets/math/r8-ema.svg" alt="r_new = alpha · s_current + (1 - alpha) · r_prior; alpha = 0.3"></p>
 
-$$\Theta_n = \Theta_{n-1} - \text{threats\\_resolved}_n + \text{new\\_threats}_n$$
+<p align="center"><img src="../assets/math/r8-theta.svg" alt="Theta_n = Theta_{n-1} - threats_resolved_n + new_threats_n"></p>
 
-$$\text{Posture}(t) = 1 - \frac{\Theta_t}{\Theta_0}$$
+<p align="center"><img src="../assets/math/r8-posture.svg" alt="Posture(t) = 1 - Theta_t / Theta_0"></p>
 
 Accumulates per-finding-type rates across sessions. Patterns frequently dismissed get lower severity. Chronic patterns (rate > 0.5 across 3+ sessions) are flagged.
 

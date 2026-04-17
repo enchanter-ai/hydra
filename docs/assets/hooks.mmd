@@ -1,0 +1,72 @@
+---
+title: Reaper hook bindings
+config:
+  look: neo
+  theme: dark
+  flowchart:
+    curve: basis
+    padding: 18
+    nodeSpacing: 44
+    rankSpacing: 54
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 14
+      bottom: 18
+---
+flowchart TD
+    TitleBlock["<div style='font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-align:center;min-width:900px;padding:6px 10px;line-height:1.8'><div style='color:#58a6ff;font-size:15px;letter-spacing:6px;border-bottom:1px solid #1e3a5f;padding-bottom:10px;margin-bottom:10px'>REAPER &nbsp;·&nbsp; HOOK&nbsp;BINDINGS &nbsp;·&nbsp; DEFENSE&nbsp;LAYERS</div><div style='display:flex;gap:40px;justify-content:center;font-size:11px;color:#8b949e;letter-spacing:2px'><span>DWG&nbsp;&nbsp;<b style='color:#e6edf3'>RPR-001</b></span><span>REV&nbsp;&nbsp;<b style='color:#e6edf3'>A.1</b></span><span>SCALE&nbsp;&nbsp;<b style='color:#e6edf3'>1:1</b></span><span>PATTERNS&nbsp;&nbsp;<b style='color:#e6edf3'>n&nbsp;=&nbsp;2,011</b></span><span>SHEET&nbsp;&nbsp;<b style='color:#e6edf3'>01&nbsp;/&nbsp;01</b></span></div></div>"]
+
+    User(["<div style='text-align:center;line-height:1.8;padding:4px 12px'><b style='letter-spacing:1.5px'>DEVELOPER&nbsp;·&nbsp;OPEN&nbsp;REPO</b><br/><span style='color:#8b949e;font-size:12px'>Claude Code session starts</span></div>"])
+
+    subgraph SS["<div style='text-align:center;min-width:900px;line-height:2'><div><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>PLUGIN&nbsp;01&nbsp;·&nbsp;SessionStart</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>CONFIG-SHIELD</b></div><div style='color:#6e7681;font-size:11px;font-family:ui-monospace,monospace;letter-spacing:1.2px'>R5&nbsp;·&nbsp;117&nbsp;signatures&nbsp;·&nbsp;6&nbsp;CVEs&nbsp;·&nbsp;τ&nbsp;≈&nbsp;~80ms</div></div>"]
+        direction LR
+        config["<div style='text-align:center;line-height:1.7'>CONFIG&nbsp;POISONING<br/>DETECTION<br/><small style='color:#6e7681'>Poisoned(c) ⇔ ∃ s ∈ S_CVE : match(s, c)</small></div>"]
+    end
+
+    subgraph Pre["<div style='text-align:center;min-width:900px;line-height:2'><div><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>PLUGIN&nbsp;02&nbsp;·&nbsp;PreToolUse&nbsp;/&nbsp;Bash</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>ACTION-GUARD</b></div><div style='color:#6e7681;font-size:11px;font-family:ui-monospace,monospace;letter-spacing:1.2px'>R4 · R7&nbsp;·&nbsp;105&nbsp;dangerous-op&nbsp;patterns&nbsp;·&nbsp;exit&nbsp;2&nbsp;blocks</div></div>"]
+        direction LR
+        guard["<div style='text-align:center;line-height:1.7'>MARKOV&nbsp;ACTION<br/>CLASSIFICATION<br/><small style='color:#6e7681'>Class(cmd) ∈ {SAFE, WARN, BLOCK}</small></div>"]
+        overflow["<div style='text-align:center;line-height:1.7'>SUBCOMMAND<br/>OVERFLOW&nbsp;GUARD<br/><small style='color:#6e7681'>BLOCK iff |split(cmd)| > 50</small></div>"]
+    end
+
+    subgraph Post["<div style='text-align:center;min-width:900px;line-height:2'><div><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>PLUGIN&nbsp;03·04&nbsp;·&nbsp;PostToolUse&nbsp;/&nbsp;Write·Edit</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>SECRET-SCANNER&nbsp;+&nbsp;VULN-DETECTOR</b></div><div style='color:#6e7681;font-size:11px;font-family:ui-monospace,monospace;letter-spacing:1.2px'>R1·R2·R3&nbsp;·&nbsp;1,434&nbsp;patterns&nbsp;·&nbsp;τ&nbsp;&lt;&nbsp;50ms/file</div></div>"]
+        direction LR
+        secrets["<div style='text-align:center;line-height:1.7'>AHO-CORASICK<br/>+ SHANNON ENTROPY<br/><small style='color:#6e7681'>R1 · O(|T|+|P|+z) · R2 · H > 4.5</small></div>"]
+        vulns["<div style='text-align:center;line-height:1.7'>OWASP<br/>VULNERABILITY&nbsp;GRAPH<br/><small style='color:#6e7681'>R3 · CWE-mapped · language-aware</small></div>"]
+    end
+
+    subgraph Audit["<div style='text-align:center;min-width:900px;line-height:2'><div><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>PLUGIN&nbsp;05&nbsp;·&nbsp;All&nbsp;hooks</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>AUDIT-TRAIL</b></div><div style='color:#6e7681;font-size:11px;font-family:ui-monospace,monospace;letter-spacing:1.2px'>R8&nbsp;·&nbsp;Bayesian&nbsp;threat&nbsp;EMA&nbsp;·&nbsp;cross-session&nbsp;learning</div></div>"]
+        direction LR
+        audit["<div style='text-align:center;line-height:1.7'>BAYESIAN&nbsp;THREAT<br/>CONVERGENCE<br/><small style='color:#6e7681'>r_new = αs + (1−α)r · α = 0.3</small></div>"]
+    end
+
+    subgraph Legend["<div style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px;min-width:900px;text-align:center'>LEGEND&nbsp;&nbsp;·&nbsp;&nbsp;SEVERITY&nbsp;/&nbsp;HOOK&nbsp;POINT</div>"]
+        direction LR
+        lg1["<span style='color:#bc8cff'>■</span>&nbsp;&nbsp;SessionStart&nbsp;·&nbsp;pre-execution"] --- lg2["<span style='color:#d75952'>■</span>&nbsp;&nbsp;PreToolUse&nbsp;·&nbsp;blocking"] --- lg3["<span style='color:#3fb950'>■</span>&nbsp;&nbsp;PostToolUse&nbsp;·&nbsp;observation"] --- lg4["<span style='color:#d29922'>■</span>&nbsp;&nbsp;AllHooks&nbsp;·&nbsp;audit"]
+    end
+
+    TitleBlock ~~~ User
+    User --> SS
+    SS --> Pre
+    Pre --> Post
+    Post --> Audit
+    Audit ~~~ Legend
+
+    classDef step fill:#0a1628,stroke:#1e3a5f,stroke-width:1px,color:#c9d1d9,rx:6,ry:6
+    classDef userNode fill:#0a1628,stroke:#1e3a5f,stroke-width:1.5px,color:#e6edf3,rx:10,ry:10
+    classDef titleBlock fill:#06111f,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3,rx:4,ry:4
+    classDef legend fill:#06111f,stroke:#1e3a5f,stroke-width:1px,color:#8b949e,rx:4,ry:4
+    classDef legendItem fill:#0a1628,stroke:#1e3a5f,stroke-width:0.5px,color:#c9d1d9,rx:4,ry:4
+
+    class User userNode
+    class config,guard,overflow,secrets,vulns,audit step
+    class TitleBlock titleBlock
+    class Legend legend
+    class lg1,lg2,lg3,lg4 legendItem
+
+    style SS fill:#0f1d33,stroke:#bc8cff,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Pre fill:#0f1d33,stroke:#d75952,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Post fill:#0f1d33,stroke:#3fb950,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style Audit fill:#0f1d33,stroke:#d29922,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+
+    linkStyle default stroke:#8b949e,stroke-width:1.5px
