@@ -1,0 +1,502 @@
+[
+  {
+    "id": "header-csp-unsafe-inline",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:script-src|default-src)[\\s\\S]*?'unsafe-inline'",
+    "severity": "high", "category": "csp",
+    "description": "CSP with 'unsafe-inline' in script-src allows inline scripts defeating XSS protection.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove 'unsafe-inline'; use nonce-based or hash-based CSP for inline scripts."
+  },
+  {
+    "id": "header-csp-unsafe-eval",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:script-src|default-src)[\\s\\S]*?'unsafe-eval'",
+    "severity": "high", "category": "csp",
+    "description": "CSP with 'unsafe-eval' allows eval() and similar functions defeating XSS protection.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove 'unsafe-eval'; refactor code to avoid eval(), new Function(), setTimeout(string)."
+  },
+  {
+    "id": "header-csp-wildcard-script",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:script-src|default-src)\\s+\\*",
+    "severity": "critical", "category": "csp",
+    "description": "CSP with wildcard * in script-src allows loading scripts from any origin.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify explicit allowed origins in script-src instead of wildcard."
+  },
+  {
+    "id": "header-csp-data-script",
+    "pattern": "Content-Security-Policy[\\s\\S]*?script-src[\\s\\S]*?data:",
+    "severity": "high", "category": "csp",
+    "description": "CSP allowing data: in script-src enables XSS via data: URI scripts.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove data: from script-src; use nonce-based CSP for inline content."
+  },
+  {
+    "id": "header-csp-blob-script",
+    "pattern": "Content-Security-Policy[\\s\\S]*?script-src[\\s\\S]*?blob:",
+    "severity": "medium", "category": "csp",
+    "description": "CSP allowing blob: in script-src can be abused for XSS via Blob URLs.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "worker"],
+    "fix_hint": "Remove blob: from script-src unless required for Web Workers."
+  },
+  {
+    "id": "header-csp-http-source",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:script-src|default-src)[\\s\\S]*?http:",
+    "severity": "medium", "category": "csp",
+    "description": "CSP allowing http: sources enables mixed content and MITM injection.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use https: sources only in CSP directives."
+  },
+  {
+    "id": "header-csp-no-base-uri",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:(?!base-uri)[\\s\\S])*$",
+    "severity": "medium", "category": "csp",
+    "description": "CSP without base-uri restriction allows base tag injection for relative URL hijacking.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add base-uri 'self' to CSP to prevent base tag injection."
+  },
+  {
+    "id": "header-csp-no-object-src",
+    "pattern": "Content-Security-Policy[\\s\\S]*?(?:(?!object-src)[\\s\\S])*$",
+    "severity": "low", "category": "csp",
+    "description": "CSP without object-src restriction allows Flash/Java plugin embedding.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add object-src 'none' to CSP to block plugin content."
+  },
+  {
+    "id": "header-hsts-missing",
+    "pattern": "(?:app|server|express)\\.(?:use|listen|get)\\([\\s\\S]*?(?:(?!Strict-Transport-Security|hsts|helmet\\.hsts)[\\s\\S])*$",
+    "severity": "medium", "category": "hsts",
+    "description": "Server without HSTS header allows downgrade attacks from HTTPS to HTTP.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Strict-Transport-Security header; use helmet.hsts() in Express."
+  },
+  {
+    "id": "header-hsts-no-subdomains",
+    "pattern": "Strict-Transport-Security[\\s\\S]*?max-age=\\d+(?:(?!includeSubDomains)[\\s\\S])*?(?:;|$|\")",
+    "severity": "medium", "category": "hsts",
+    "description": "HSTS without includeSubDomains leaves subdomains vulnerable to downgrade.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add includeSubDomains to Strict-Transport-Security header."
+  },
+  {
+    "id": "header-hsts-low-maxage",
+    "pattern": "Strict-Transport-Security[\\s\\S]*?max-age=(?:[0-9]{1,6})(?:;|$|\")",
+    "severity": "medium", "category": "hsts",
+    "description": "HSTS max-age under 1 year (31536000) provides insufficient protection window.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set max-age to at least 31536000 (1 year); 63072000 (2 years) recommended."
+  },
+  {
+    "id": "header-hsts-no-preload",
+    "pattern": "Strict-Transport-Security[\\s\\S]*?max-age=\\d+[\\s\\S]*?includeSubDomains(?:(?!preload)[\\s\\S])*?(?:;|$|\")",
+    "severity": "low", "category": "hsts",
+    "description": "HSTS without preload directive means first visit is still vulnerable.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add preload directive and submit domain to hstspreload.org."
+  },
+  {
+    "id": "header-hsts-http-only",
+    "pattern": "(?:http://)[\\s\\S]*?Strict-Transport-Security",
+    "severity": "medium", "category": "hsts",
+    "description": "HSTS header sent over HTTP is ineffective; must be sent over HTTPS.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "redirect"],
+    "fix_hint": "Only set HSTS header on HTTPS responses; redirect HTTP to HTTPS first."
+  },
+  {
+    "id": "header-xfo-allowall",
+    "pattern": "X-Frame-Options\\s*[=:]\\s*['\"]?ALLOWALL",
+    "severity": "high", "category": "frame-protection",
+    "description": "X-Frame-Options: ALLOWALL permits clickjacking attacks via iframe embedding.",
+    "cwe": "CWE-1021", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set X-Frame-Options to DENY or SAMEORIGIN."
+  },
+  {
+    "id": "header-xfo-missing",
+    "pattern": "(?:app|server)\\.(?:use|listen)\\([\\s\\S]*?(?:(?!X-Frame-Options|frameguard|frame-options)[\\s\\S])*$",
+    "severity": "medium", "category": "frame-protection",
+    "description": "Missing X-Frame-Options header allows clickjacking via iframe embedding.",
+    "cwe": "CWE-1021", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set X-Frame-Options: DENY or use helmet.frameguard()."
+  },
+  {
+    "id": "header-frame-ancestors-wildcard",
+    "pattern": "frame-ancestors\\s+\\*",
+    "severity": "high", "category": "frame-protection",
+    "description": "CSP frame-ancestors with wildcard allows any site to embed page in iframe.",
+    "cwe": "CWE-1021", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set frame-ancestors to 'self' or specific trusted origins."
+  },
+  {
+    "id": "header-nosniff-missing",
+    "pattern": "(?:app|server)\\.(?:use|listen)\\([\\s\\S]*?(?:(?!X-Content-Type-Options|noSniff|nosniff)[\\s\\S])*$",
+    "severity": "medium", "category": "content-type",
+    "description": "Missing X-Content-Type-Options: nosniff allows MIME-type sniffing attacks.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add X-Content-Type-Options: nosniff header; use helmet.noSniff()."
+  },
+  {
+    "id": "header-xpoweredby-present",
+    "pattern": "X-Powered-By\\s*[=:]",
+    "severity": "low", "category": "server-info",
+    "description": "X-Powered-By header reveals server framework enabling targeted attacks.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.xml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "remove"],
+    "fix_hint": "Remove X-Powered-By header; use helmet.hidePoweredBy() in Express."
+  },
+  {
+    "id": "header-server-version",
+    "pattern": "Server:\\s*(?:Apache|nginx|IIS|Express|Kestrel)[/ ]\\d+\\.\\d+",
+    "severity": "low", "category": "server-info",
+    "description": "Server header with version info enables targeted exploits for known CVEs.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.conf", "*.xml", "*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove or obscure the Server header; hide version information."
+  },
+  {
+    "id": "header-phpinfo-exposed",
+    "pattern": "phpinfo\\s*\\(\\s*\\)",
+    "severity": "high", "category": "server-info",
+    "description": "phpinfo() exposes PHP configuration, environment variables, and server details.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove phpinfo() calls; restrict to local/admin access only."
+  },
+  {
+    "id": "header-debug-token",
+    "pattern": "X-Debug-Token|X-Debug-Token-Link|_profiler",
+    "severity": "high", "category": "server-info",
+    "description": "Debug/profiler headers indicate debug mode enabled in production.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.xml", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "dev", "local"],
+    "fix_hint": "Disable debug mode in production; remove profiler endpoints."
+  },
+  {
+    "id": "header-aspnet-version",
+    "pattern": "X-AspNet-Version|X-AspNetMvc-Version",
+    "severity": "low", "category": "server-info",
+    "description": "ASP.NET version header reveals framework version for targeted attacks.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["csharp"], "file_types": ["*.cs", "*.config", "*.xml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "remove"],
+    "fix_hint": "Remove version headers in web.config: <httpRuntime enableVersionHeader=\"false\" />."
+  },
+  {
+    "id": "header-verbose-error",
+    "pattern": "(?:customErrors|mode)\\s*=\\s*['\"]Off['\"]",
+    "severity": "high", "category": "server-info",
+    "description": "Custom errors disabled shows full stack traces to clients.",
+    "cwe": "CWE-209", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["csharp"], "file_types": ["*.config", "*.xml"],
+    "false_positive_hints": ["test", "example", "mock", "dev", "local"],
+    "fix_hint": "Set customErrors mode=\"On\" or \"RemoteOnly\" in production."
+  },
+  {
+    "id": "header-cors-reflect-origin",
+    "pattern": "(?:Access-Control-Allow-Origin|allowedOrigins?)\\s*[=:]\\s*(?:req\\.headers?\\.origin|request\\.headers?\\.origin|origin)",
+    "severity": "high", "category": "cors-header",
+    "description": "CORS reflecting request Origin without validation allows any site to make authenticated requests.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate Origin against an explicit allowlist before reflecting."
+  },
+  {
+    "id": "header-cors-null-origin",
+    "pattern": "(?:Access-Control-Allow-Origin|allowedOrigins?)\\s*[=:]\\s*['\"]null['\"]",
+    "severity": "high", "category": "cors-header",
+    "description": "CORS allowing null origin enables sandboxed iframe attacks.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never allow null origin; use explicit allowed origin list."
+  },
+  {
+    "id": "header-cors-credentials-wildcard",
+    "pattern": "Access-Control-Allow-Credentials\\s*[=:]\\s*['\"]?true[\\s\\S]*?Access-Control-Allow-Origin\\s*[=:]\\s*['\"]?\\*",
+    "severity": "critical", "category": "cors-header",
+    "description": "CORS with credentials and wildcard origin allows any site to steal authenticated data.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use specific allowed origins with credentials; never combine * with credentials."
+  },
+  {
+    "id": "header-cors-all-methods",
+    "pattern": "Access-Control-Allow-Methods\\s*[=:]\\s*['\"]?\\*",
+    "severity": "medium", "category": "cors-header",
+    "description": "CORS allowing all HTTP methods expands attack surface unnecessarily.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify only required methods: GET, POST, PUT, DELETE."
+  },
+  {
+    "id": "header-cors-expose-sensitive",
+    "pattern": "Access-Control-Expose-Headers[\\s\\S]*?(?:Authorization|Set-Cookie|X-CSRF)",
+    "severity": "high", "category": "cors-header",
+    "description": "CORS exposing Authorization/Set-Cookie headers to JavaScript enables token theft.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only expose non-sensitive headers; never expose Authorization or Set-Cookie."
+  },
+  {
+    "id": "header-referrer-unsafe-url",
+    "pattern": "Referrer-Policy\\s*[=:]\\s*['\"]?unsafe-url",
+    "severity": "medium", "category": "referrer-policy",
+    "description": "Referrer-Policy: unsafe-url sends full URL including path and query to all origins.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Referrer-Policy to strict-origin-when-cross-origin or no-referrer."
+  },
+  {
+    "id": "header-referrer-no-downgrade",
+    "pattern": "Referrer-Policy\\s*[=:]\\s*['\"]?no-referrer-when-downgrade",
+    "severity": "low", "category": "referrer-policy",
+    "description": "no-referrer-when-downgrade sends full URL on same-protocol requests leaking paths.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Referrer-Policy to strict-origin-when-cross-origin."
+  },
+  {
+    "id": "header-referrer-missing",
+    "pattern": "(?:app|server)\\.(?:use|listen)\\([\\s\\S]*?(?:(?!Referrer-Policy|referrerPolicy)[\\s\\S])*$",
+    "severity": "low", "category": "referrer-policy",
+    "description": "Missing Referrer-Policy header defaults to browser behavior leaking URLs.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Referrer-Policy: strict-origin-when-cross-origin; use helmet.referrerPolicy()."
+  },
+  {
+    "id": "header-permissions-all",
+    "pattern": "(?:Permissions-Policy|Feature-Policy)[\\s\\S]*?(?:camera|microphone|geolocation)\\s*=\\s*\\*",
+    "severity": "medium", "category": "permissions-policy",
+    "description": "Permissions-Policy allowing camera/microphone/geolocation to all origins.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict sensitive permissions to self only: camera=(), microphone=()."
+  },
+  {
+    "id": "header-permissions-missing",
+    "pattern": "(?:app|server)\\.(?:use|listen)\\([\\s\\S]*?(?:(?!Permissions-Policy|Feature-Policy|permittedPolicies)[\\s\\S])*$",
+    "severity": "low", "category": "permissions-policy",
+    "description": "Missing Permissions-Policy allows embedded content to access device features.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Permissions-Policy header restricting camera, microphone, geolocation."
+  },
+  {
+    "id": "header-permissions-no-floc",
+    "pattern": "(?:Permissions-Policy|Feature-Policy)(?:(?!interest-cohort)[\\s\\S])*$",
+    "severity": "low", "category": "permissions-policy",
+    "description": "Missing interest-cohort restriction allows FLoC tracking by Google.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add interest-cohort=() to Permissions-Policy to opt out of FLoC."
+  },
+  {
+    "id": "header-cache-sensitive-no-store",
+    "pattern": "(?:/api/|/auth/|/login|/user|/account|/profile)(?:(?!Cache-Control|no-store|no-cache|private)[\\s\\S])*?res\\.(?:json|send)",
+    "severity": "medium", "category": "cache",
+    "description": "Sensitive API endpoint without Cache-Control: no-store may cache auth data.",
+    "cwe": "CWE-524", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Cache-Control: no-store, no-cache on sensitive API responses."
+  },
+  {
+    "id": "header-cache-auth-public",
+    "pattern": "Cache-Control[\\s\\S]*?public[\\s\\S]*?(?:Authorization|Set-Cookie)",
+    "severity": "high", "category": "cache",
+    "description": "Cache-Control: public on responses with auth headers caches credentials in CDN/proxy.",
+    "cwe": "CWE-524", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Cache-Control: private, no-store for authenticated responses."
+  },
+  {
+    "id": "header-cache-no-vary",
+    "pattern": "(?:Accept-Language|Accept-Encoding|Authorization)(?:(?!Vary)[\\s\\S])*?Cache-Control",
+    "severity": "low", "category": "cache",
+    "description": "Content-negotiated response without Vary header may serve wrong cached version.",
+    "cwe": "CWE-524", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Vary header matching content negotiation headers."
+  },
+  {
+    "id": "header-cookie-samesite-none-no-secure",
+    "pattern": "SameSite\\s*=\\s*None(?:(?!;\\s*Secure)[\\s\\S]){0,30}(?:;|$)",
+    "severity": "high", "category": "cookie-header",
+    "description": "SameSite=None without Secure flag is rejected by browsers or sent over HTTP.",
+    "cwe": "CWE-614", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Always pair SameSite=None with Secure flag."
+  },
+  {
+    "id": "header-cookie-no-host-prefix",
+    "pattern": "Set-Cookie:\\s*(?:session|auth|token|sid)=(?:(?!__Host-|__Secure-)[\\s\\S])*?(?:;|$)",
+    "severity": "low", "category": "cookie-header",
+    "description": "Sensitive cookie without __Host- or __Secure- prefix lacks additional protections.",
+    "cwe": "CWE-614", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use __Host- prefix for cookies that should be origin-bound."
+  },
+  {
+    "id": "header-cookie-session-no-httponly",
+    "pattern": "Set-Cookie:\\s*(?:session|sid|PHPSESSID|JSESSIONID|connect\\.sid)=(?:(?!HttpOnly)[\\s\\S])*?(?:$|\\n)",
+    "severity": "high", "category": "cookie-header",
+    "description": "Session cookie without HttpOnly is accessible to JavaScript enabling XSS theft.",
+    "cwe": "CWE-1004", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.php", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add HttpOnly flag to all session cookies."
+  },
+  {
+    "id": "header-cookie-no-secure",
+    "pattern": "Set-Cookie:\\s*(?:session|sid|auth|token)=(?:(?!Secure)[\\s\\S])*?(?:$|\\n)",
+    "severity": "high", "category": "cookie-header",
+    "description": "Session/auth cookie without Secure flag can be sent over unencrypted HTTP.",
+    "cwe": "CWE-614", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf", "*.php", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "localhost"],
+    "fix_hint": "Add Secure flag to all cookies in production."
+  },
+  {
+    "id": "header-directory-listing",
+    "pattern": "(?:autoindex\\s+on|Options\\s+\\+?Indexes|DirectoryIndex\\s+disabled|directory_listing\\s*[=:]\\s*true)",
+    "severity": "high", "category": "server-exposure",
+    "description": "Directory listing enabled exposes file structure and potentially sensitive files.",
+    "cwe": "CWE-548", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.conf", "nginx.conf", "httpd.conf", ".htaccess"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set autoindex off (nginx) or Options -Indexes (Apache)."
+  },
+  {
+    "id": "header-git-exposed",
+    "pattern": "location\\s+[~=]*\\s*/?(?:\\.git|\\.svn|\\.hg)\\s*\\{(?:(?!deny|return\\s+403|return\\s+404)[\\s\\S])*?\\}",
+    "severity": "critical", "category": "server-exposure",
+    "description": ".git directory accessible via web server exposes source code and credentials.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.conf", "nginx.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "deny"],
+    "fix_hint": "Block .git access: location ~ /\\.git { deny all; return 404; }"
+  },
+  {
+    "id": "header-env-exposed",
+    "pattern": "location\\s+[~=]*\\s*/?(?:\\.env|\\.htaccess|\\.htpasswd)\\s*\\{(?:(?!deny|return\\s+403)[\\s\\S])*?\\}",
+    "severity": "critical", "category": "server-exposure",
+    "description": ".env file accessible via web server exposes database credentials and API keys.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.conf", "nginx.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "deny"],
+    "fix_hint": "Block .env access: location ~ /\\. { deny all; return 404; }"
+  },
+  {
+    "id": "header-backup-files",
+    "pattern": "location\\s+[~=]*\\s*['\"]?.*\\.(?:bak|old|swp|sql|dump|tar\\.gz|zip)\\s*['\"]?\\s*\\{(?:(?!deny|return\\s+403)[\\s\\S])*?\\}",
+    "severity": "high", "category": "server-exposure",
+    "description": "Backup files (.bak, .sql, .dump) accessible via web server expose sensitive data.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.conf", "nginx.conf", ".htaccess"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "deny"],
+    "fix_hint": "Block backup file extensions; move backups outside web root."
+  },
+  {
+    "id": "header-debug-endpoint",
+    "pattern": "(?:app|router)\\.(?:get|use)\\s*\\([\\s]*['\"](?:/debug|/console|/actuator|/elmah|/_debug_toolbar|/trace|/dump)",
+    "severity": "high", "category": "server-exposure",
+    "description": "Debug endpoint exposed without authentication reveals internal state.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python", "java"], "file_types": ["*.js", "*.ts", "*.py", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "auth", "admin"],
+    "fix_hint": "Remove debug endpoints in production or protect with authentication."
+  },
+  {
+    "id": "header-admin-no-auth",
+    "pattern": "(?:app|router)\\.(?:get|use)\\s*\\([\\s]*['\"](?:/admin|/management|/internal)(?:(?!auth|protect|guard|middleware|session)[\\s\\S]){0,50}\\)",
+    "severity": "high", "category": "server-exposure",
+    "description": "Admin panel route without authentication middleware is publicly accessible.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add authentication middleware to admin routes."
+  },
+  {
+    "id": "header-actuator-exposed",
+    "pattern": "management\\.endpoints\\.web\\.exposure\\.include\\s*=\\s*\\*",
+    "severity": "high", "category": "server-exposure",
+    "description": "Spring Boot actuator exposing all endpoints reveals health, env, and heap dumps.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.properties", "*.yml", "*.yaml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only expose health and info; set management.endpoints.web.exposure.include=health,info."
+  },
+  {
+    "id": "header-nginx-server-tokens",
+    "pattern": "server_tokens\\s+on",
+    "severity": "low", "category": "server-info",
+    "description": "nginx server_tokens on reveals exact version in Server header and error pages.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["nginx.conf", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set server_tokens off; in nginx.conf."
+  },
+  {
+    "id": "header-mixed-content",
+    "pattern": "(?:upgrade-insecure-requests|block-all-mixed-content)(?:(?!Content-Security-Policy)[\\s\\S])*$",
+    "severity": "medium", "category": "tls-header",
+    "description": "Missing upgrade-insecure-requests CSP directive allows mixed content.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add upgrade-insecure-requests to Content-Security-Policy header."
+  }
+]
