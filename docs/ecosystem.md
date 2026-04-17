@@ -17,32 +17,28 @@ Every developer asks these during an AI-assisted session. Each question maps to 
 └──────────────────────────────────────────────────────────┘
 ```
 
-## Plugin Ecosystem (8 games, 0 overlap)
+## Plugin Ecosystem (9 games, Hollow Knight shared by Hornet + Weaver)
+
+Shipped today: Flux, Allay, Hornet, Reaper, Weaver. Planned: Nook, Athena, Crucible, Assembler, + 11 more in Phase 3–4.
 
 ```
-                    ┌─────────────────┐
-                    │  ENCHANTED MCP   │
-                    │  (unified layer) │
-                    └────────┬────────┘
-                             │
-        ┌────────┬───────────┼───────────┬────────┐
-        │        │           │           │        │
-   ┌────▼───┐ ┌──▼───┐ ┌────▼────┐ ┌───▼────┐ ┌─▼────┐
-   │  Flux  │ │Allay │ │ Hornet  │ │ Reaper │ │ Nook │
-   │ prompt │ │token │ │ change  │ │security│ │ cost │
-   │enchant │ │health│ │ trust   │ │ guard  │ │track │
-   └────────┘ └──────┘ └─────────┘ └────────┘ └──────┘
-   Minecraft  Minecraft  Hollow      Subnautica  Animal
-   enchantment allay     Knight                  Crossing
+                          ┌─────────────────┐
+                          │  ENCHANTED MCP   │
+                          │  (unified layer) │
+                          └────────┬────────┘
+                                   │
+    ┌──────────┬──────────┬────────┼────────┬──────────┬──────────┐
+    │          │          │        │        │          │          │
+┌───▼────┐ ┌──▼───┐ ┌────▼────┐ ┌─▼────┐ ┌─▼──────┐ ┌─▼────┐ ┌───▼──────┐
+│  Flux  │ │Allay │ │ Hornet  │ │Reaper│ │ Weaver │ │ Nook │ │  + Phase │
+│ prompt │ │token │ │ change  │ │sec-  │ │ git    │ │ cost │ │   3-4    │
+│ craft  │ │health│ │ trust   │ │urity │ │ flow   │ │track │ │ plugins  │
+│  v3.0  │ │ v2.0 │ │  v1.0   │ │ v1.0 │ │ v0.0.1 │ │ n/a  │ │          │
+└────────┘ └──────┘ └─────────┘ └──────┘ └────────┘ └──────┘ └──────────┘
+ Minecraft  Minecraft  Hollow    Subnautica Hollow   Animal   Hades, Terraria,
+ enchant.    allay     Knight               Knight   Crossing Factorio, ...
 
-        ┌────────┬───────────┬───────────┐
-        │        │           │           │
-   ┌────▼───┐ ┌──▼─────┐ ┌──▼────┐ ┌───▼──────┐
-   │ Athena │ │Crucible│ │Assemb-│ │  + 12    │
-   │ review │ │ test   │ │ ler   │ │  more    │
-   │ judge  │ │ prove  │ │ CI/CD │ │  plugins │
-   └────────┘ └────────┘ └───────┘ └──────────┘
-   Hades      Terraria    Factorio   Phase 3-4
+  Shipped     Shipped     Shipped    Shipped  Shipped   Planned    Planned
 ```
 
 ## Data Flow Between Plugins
@@ -72,32 +68,40 @@ Session Start
 ## Algorithm Distribution
 
 ```
-Total: 27 named algorithms across 8 products
+Total: 32 named algorithms across 9 products (5 shipped + 4 planned)
 
-Flux (6):     Gauss ─── SAT ─── Game Theory ─── Adaptation ─── Verification ─── Accumulation
-Allay (5):    Markov ─── Runway ─── Shannon ─── Atomic ─── Dedup
-Hornet (6):   Bayesian Trust ─── Semantic Diff ─── Info-Gain ─── Continuity ─── Adversarial ─── Learning
-Reaper (8):   Aho-Corasick ─── Entropy ─── OWASP ─── Action ─── Config ─── Phantom ─── Overflow ─── Threat
-Nook (2):     Exponential Smoothing ─── Budget Boundary
-Athena (2):   AST Diff ─── Decision Trees
-Crucible (1): Genetic Mutation
-Assembler (1):Critical Path DAG
+Shipped:
+  Flux   (6):   Gauss ─── SAT ─── Game Theory ─── Adaptation ─── Verification ─── Accumulation
+  Allay  (5):   Markov ─── Runway ─── Shannon ─── Atomic ─── Dedup
+  Hornet (6):   Bayesian Trust ─── Semantic Diff ─── Info-Gain ─── Continuity ─── Adversarial ─── Learning
+  Reaper (8):   Aho-Corasick ─── Entropy ─── OWASP ─── Action ─── Config ─── Phantom ─── Overflow ─── Threat
+  Weaver (5):   Myers-Diff ─── Jaccard-Cosine ─── Workflow Classifier ─── Path-History ─── Gauss Learning (W5)
+
+Planned:
+  Nook      (2): Exponential Smoothing ─── Budget Boundary
+  Athena    (2): AST Diff ─── Decision Trees
+  Crucible  (1): Genetic Mutation
+  Assembler (1): Critical Path DAG
 ```
 
 ## Hook Lifecycle Coverage
 
 ```
 SessionStart  ──▶  Reaper (config-shield: scan for repo-level attacks)
+              ──▶  Weaver (capability-memory: provider registry, GitLab probe)
 
-PreToolUse    ──▶  Allay (token-saver: compress output, block dupes)
+PreToolUse    ──▶  Allay  (token-saver: compress output, block dupes)
               ──▶  Reaper (action-guard: block dangerous commands)
+              ──▶  Weaver (weaver-gate: destructive-op decision gate)
 
-PostToolUse   ──▶  Allay (context-guard: drift detection, runway)
+PostToolUse   ──▶  Allay  (context-guard: drift detection, runway)
               ──▶  Hornet (change-tracker: semantic diff, trust scoring)
               ──▶  Reaper (secret-scanner, vuln-detector, audit-trail)
+              ──▶  Weaver (boundary-segmenter: task-boundary clustering)
 
-PreCompact    ──▶  Allay (state-keeper: checkpoint before compaction)
+PreCompact    ──▶  Allay  (state-keeper: checkpoint before compaction)
               ──▶  Hornet (session-memory: save continuity graph)
+              ──▶  Weaver (weaver-learning: persist developer preferences)
 ```
 
 ## Game Origin Reference
@@ -111,6 +115,7 @@ PreCompact    ──▶  Allay (state-keeper: checkpoint before compaction)
 | Hades | Athena | A game where gods judge your performance and reward excellence with boons — quality is earned |
 | Terraria | Crucible | A game where you forge items in increasingly extreme conditions to prove their worth |
 | Factorio | Assembler | A game that IS automation — every machine connects to the next in an optimized pipeline |
+| Hollow Knight | Weaver | Weavers are Hornet's ancestral kin — silk-spinners who weave threads into coherent patterns. Branches are threads; merges stitch them into a coherent history. |
 
 ## Infrastructure
 
