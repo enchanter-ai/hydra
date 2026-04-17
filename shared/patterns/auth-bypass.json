@@ -1,0 +1,802 @@
+[
+  {
+    "id": "auth-jwt-alg-none",
+    "pattern": "['\"]alg['\"]\\s*:\\s*['\"](?:none|None|NONE|nOnE)['\"]",
+    "severity": "critical", "category": "jwt",
+    "description": "JWT with algorithm 'none' disables signature verification allowing token forgery.",
+    "cwe": "CWE-327", "cve": "CVE-2015-9235", "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Explicitly specify allowed algorithms and reject 'none' in JWT verification."
+  },
+  {
+    "id": "auth-jwt-algorithm-none",
+    "pattern": "algorithm[s]?\\s*[=:]\\s*['\"]none['\"]",
+    "severity": "critical", "category": "jwt",
+    "description": "JWT library configured with algorithm none bypasses all signature checks.",
+    "cwe": "CWE-327", "cve": "CVE-2015-9235", "owasp": "A02:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set algorithms to ['RS256'] or ['ES256'] and never allow 'none'."
+  },
+  {
+    "id": "auth-jwt-hs256-on-rs256",
+    "pattern": "algorithms?\\s*[=:]\\s*\\[?\\s*['\"]HS256['\"]",
+    "severity": "high", "category": "jwt",
+    "description": "JWT accepting HS256 may enable algorithm confusion attack if RS256 keys are used.",
+    "cwe": "CWE-327", "cve": "CVE-2016-10555", "owasp": "A02:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "symmetric"],
+    "fix_hint": "Pin the algorithm to match the key type; use RS256 with RSA keys only."
+  },
+  {
+    "id": "auth-jwt-no-expiry-check",
+    "pattern": "jwt\\.decode\\([^)]*,\\s*(?:options|verify)[^)]*(?:verify_exp|requireExp)\\s*[=:]\\s*(?:false|False)",
+    "severity": "high", "category": "jwt",
+    "description": "JWT decoded without expiry verification allows use of expired tokens.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["python", "javascript", "typescript"], "file_types": ["*.py", "*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Always verify exp claim; set verify_exp=True or require: ['exp']."
+  },
+  {
+    "id": "auth-jwt-localstorage",
+    "pattern": "localStorage\\.setItem\\([^)]*(?:token|jwt|access_token|auth)",
+    "severity": "high", "category": "jwt",
+    "description": "JWT stored in localStorage is accessible to XSS attacks stealing auth tokens.",
+    "cwe": "CWE-922", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts", "*.jsx", "*.tsx"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Store JWT in HttpOnly secure cookie instead of localStorage."
+  },
+  {
+    "id": "auth-jwt-no-audience",
+    "pattern": "jwt\\.(?:verify|decode)\\([^)]*(?:(?!audience|aud)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "jwt",
+    "description": "JWT verification without audience check allows token reuse across services.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add audience parameter to jwt.verify() matching your service identifier."
+  },
+  {
+    "id": "auth-jwt-no-issuer",
+    "pattern": "jwt\\.(?:verify|decode)\\([^)]*(?:(?!issuer|iss)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "jwt",
+    "description": "JWT verification without issuer check accepts tokens from any identity provider.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add issuer parameter to jwt.verify() matching your identity provider."
+  },
+  {
+    "id": "auth-jwt-secret-literal",
+    "pattern": "jwt\\.sign\\([^)]*['\"][A-Za-z0-9+/=]{8,}['\"]",
+    "severity": "critical", "category": "jwt",
+    "description": "JWT signing with hardcoded secret allows token forgery if source is leaked.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Load JWT secret from environment variable or secret manager."
+  },
+  {
+    "id": "auth-jwt-decode-no-verify-py",
+    "pattern": "jwt\\.decode\\([^)]*verify\\s*=\\s*False",
+    "severity": "critical", "category": "jwt",
+    "description": "PyJWT decode with verify=False skips all signature validation.",
+    "cwe": "CWE-347", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove verify=False; always verify JWT signatures in production."
+  },
+  {
+    "id": "auth-jwt-verify-no-algorithms",
+    "pattern": "jwt\\.verify\\([^)]*(?:(?!algorithms)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "jwt",
+    "description": "jsonwebtoken.verify without explicit algorithms list enables algorithm confusion.",
+    "cwe": "CWE-327", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add { algorithms: ['RS256'] } to jwt.verify() options."
+  },
+  {
+    "id": "auth-jwt-in-url",
+    "pattern": "[?&](?:token|jwt|access_token|auth_token)=ey[A-Za-z0-9_-]+\\.",
+    "severity": "high", "category": "jwt",
+    "description": "JWT in URL query parameter is logged in server logs, browser history, and referrer headers.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Send JWT in Authorization header instead of URL query parameters."
+  },
+  {
+    "id": "auth-jwt-weak-secret",
+    "pattern": "jwt\\.sign\\([^)]*['\"](?:secret|password|key|test|admin|123)['\"]",
+    "severity": "critical", "category": "jwt",
+    "description": "JWT signed with weak/guessable secret enables brute-force token forgery.",
+    "cwe": "CWE-521", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use a cryptographically random secret of at least 256 bits."
+  },
+  {
+    "id": "auth-jwt-java-no-verify",
+    "pattern": "Jwts\\.parser\\(\\)(?:(?!\\.setSigningKey)[\\s\\S])*?\\.parse\\(",
+    "severity": "critical", "category": "jwt",
+    "description": "Java JWT parsed without setting signing key skips signature verification.",
+    "cwe": "CWE-347", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Call .setSigningKey(key) before .parseClaimsJws() for signature verification."
+  },
+  {
+    "id": "auth-jwt-go-parse-unverified",
+    "pattern": "jwt\\.Parse(?:WithClaims)?\\([^,]+,\\s*nil\\s*\\)",
+    "severity": "critical", "category": "jwt",
+    "description": "Go JWT parsed with nil keyfunc skips signature verification.",
+    "cwe": "CWE-347", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Provide a valid key function that returns the verification key."
+  },
+  {
+    "id": "auth-session-no-regenerate",
+    "pattern": "(?:req\\.login|passport\\.authenticate)\\([^)]*\\)(?:(?!regenerate|rotate|destroy)[\\s\\S]){0,200}(?:res\\.redirect|res\\.json)",
+    "severity": "high", "category": "session",
+    "description": "Login without session regeneration enables session fixation attacks.",
+    "cwe": "CWE-384", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Call req.session.regenerate() after successful authentication."
+  },
+  {
+    "id": "auth-session-id-in-url",
+    "pattern": "[?&](?:session_?id|sid|PHPSESSID|JSESSIONID)=",
+    "severity": "high", "category": "session",
+    "description": "Session ID in URL leaks via referrer headers, browser history, and server logs.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.php", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Transmit session IDs only in cookies, never in URL parameters."
+  },
+  {
+    "id": "auth-session-long-expiry",
+    "pattern": "(?:maxAge|max_age|expir)\\s*[=:]\\s*(?:86400000|172800000|\\d{9,})",
+    "severity": "medium", "category": "session",
+    "description": "Session with very long expiry increases window for session hijacking.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set session maxAge to at most 8 hours (28800000ms) for sensitive applications."
+  },
+  {
+    "id": "auth-session-no-invalidate-password",
+    "pattern": "(?:changePassword|updatePassword|resetPassword)\\s*(?:=|:)\\s*(?:async\\s+)?(?:function|\\()[\\s\\S]*?(?:(?!destroy|invalidate|regenerate|logout|clearSession)[\\s\\S])*?\\}",
+    "severity": "high", "category": "session",
+    "description": "Password change without session invalidation lets compromised sessions persist.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Invalidate all sessions and regenerate after password change."
+  },
+  {
+    "id": "auth-session-fixation-cookie",
+    "pattern": "Set-Cookie:\\s*(?:session|sid)=[^;]+(?:(?!Secure|HttpOnly)[\\s\\S])*$",
+    "severity": "high", "category": "session",
+    "description": "Session cookie without Secure and HttpOnly flags enables session theft.",
+    "cwe": "CWE-384", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Secure, HttpOnly, and SameSite flags on session cookies."
+  },
+  {
+    "id": "auth-session-php-strict-mode",
+    "pattern": "session\\.use_strict_mode\\s*=\\s*(?:0|Off|off)",
+    "severity": "high", "category": "session",
+    "description": "PHP sessions without strict mode accept uninitialized session IDs.",
+    "cwe": "CWE-384", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php", "*.ini"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set session.use_strict_mode = 1 in php.ini."
+  },
+  {
+    "id": "auth-csrf-missing-token",
+    "pattern": "<form[^>]*method=['\"]post['\"][^>]*>(?:(?!csrf|_token|csrfmiddlewaretoken|authenticity_token|__RequestVerificationToken)[\\s\\S])*?</form>",
+    "severity": "high", "category": "csrf",
+    "description": "HTML form with POST method missing CSRF token enables cross-site request forgery.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.html", "*.htm", "*.ejs", "*.hbs", "*.phtml", "*.erb", "*.jinja2"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Include a CSRF token hidden field in every POST form."
+  },
+  {
+    "id": "auth-csrf-samesite-none",
+    "pattern": "SameSite\\s*[=:]\\s*['\"]?None['\"]?(?:(?!Secure)[\\s\\S]){0,50}$",
+    "severity": "high", "category": "csrf",
+    "description": "Cookie with SameSite=None without Secure flag is rejected by browsers or enables CSRF.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Always pair SameSite=None with Secure flag, or use SameSite=Lax."
+  },
+  {
+    "id": "auth-csrf-disabled-django",
+    "pattern": "@csrf_exempt",
+    "severity": "high", "category": "csrf",
+    "description": "Django view with @csrf_exempt disables CSRF protection on that endpoint.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "webhook", "api"],
+    "fix_hint": "Remove @csrf_exempt; use proper CSRF tokens or token-based auth for APIs."
+  },
+  {
+    "id": "auth-csrf-disabled-express",
+    "pattern": "csrf\\s*[:(]\\s*(?:false|\\{\\s*(?:ignore|disable))",
+    "severity": "high", "category": "csrf",
+    "description": "Express CSRF protection explicitly disabled leaves app vulnerable to CSRF.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Enable CSRF middleware and include tokens in forms and AJAX requests."
+  },
+  {
+    "id": "auth-csrf-disabled-rails",
+    "pattern": "skip_before_action\\s*:verify_authenticity_token",
+    "severity": "high", "category": "csrf",
+    "description": "Rails skipping authenticity token verification disables CSRF protection.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "api"],
+    "fix_hint": "Remove skip_before_action for :verify_authenticity_token; use protect_from_forgery."
+  },
+  {
+    "id": "auth-csrf-disabled-spring",
+    "pattern": "\\.csrf\\(\\)\\s*\\.disable\\(\\)",
+    "severity": "high", "category": "csrf",
+    "description": "Spring Security CSRF protection disabled leaves all forms vulnerable.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "stateless"],
+    "fix_hint": "Enable CSRF for browser-facing endpoints; only disable for stateless API endpoints."
+  },
+  {
+    "id": "auth-csrf-get-state-change",
+    "pattern": "(?:app|router)\\.get\\([^)]*(?:delete|remove|update|create|logout|transfer)",
+    "severity": "medium", "category": "csrf",
+    "description": "State-changing operation on GET endpoint is vulnerable to CSRF via image tags and links.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use POST/PUT/DELETE methods for state-changing operations."
+  },
+  {
+    "id": "auth-csrf-token-in-url",
+    "pattern": "[?&]csrf[_-]?token=",
+    "severity": "medium", "category": "csrf",
+    "description": "CSRF token in URL leaks through referrer headers and browser history.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.html", "*.py", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Send CSRF token in request body or custom header, not URL."
+  },
+  {
+    "id": "auth-cookie-no-httponly",
+    "pattern": "(?:Set-Cookie|setCookie|set_cookie|cookie)\\s*[(:=][\\s\\S]*?(?:(?!httpOnly|HttpOnly|http_only)[\\s\\S])*?(?:;|\\)|$)",
+    "severity": "medium", "category": "cookie",
+    "description": "Cookie without HttpOnly flag is accessible to JavaScript enabling XSS-based theft.",
+    "cwe": "CWE-1004", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.rb", "*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set httpOnly: true on all sensitive cookies."
+  },
+  {
+    "id": "auth-cookie-no-secure",
+    "pattern": "(?:cookie|session)\\s*[({][\\s\\S]*?secure\\s*[=:]\\s*false",
+    "severity": "high", "category": "cookie",
+    "description": "Cookie with secure=false can be sent over unencrypted HTTP connections.",
+    "cwe": "CWE-614", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "localhost"],
+    "fix_hint": "Set secure: true on all cookies in production."
+  },
+  {
+    "id": "auth-cookie-no-samesite",
+    "pattern": "(?:cookie|session)\\s*[({][\\s\\S]*?(?:(?!sameSite|samesite|same_site)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "cookie",
+    "description": "Cookie without SameSite attribute may be sent with cross-site requests.",
+    "cwe": "CWE-1275", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set sameSite: 'Lax' or 'Strict' on all cookies."
+  },
+  {
+    "id": "auth-cookie-sensitive-data",
+    "pattern": "(?:document\\.cookie|setCookie|res\\.cookie)\\s*[=(]\\s*['\"]?(?:password|token|secret|ssn|credit)",
+    "severity": "high", "category": "cookie",
+    "description": "Sensitive data stored directly in cookie value can be read by client-side scripts.",
+    "cwe": "CWE-315", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Store sensitive data server-side; use only opaque session IDs in cookies."
+  },
+  {
+    "id": "auth-cookie-excessive-maxage",
+    "pattern": "(?:maxAge|max_age|Max-Age)\\s*[=:]\\s*(?:31536000|63072000|\\d{9,})",
+    "severity": "low", "category": "cookie",
+    "description": "Cookie with very long Max-Age (1+ year) persists across browser sessions.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "remember"],
+    "fix_hint": "Set appropriate Max-Age based on sensitivity; use short-lived sessions."
+  },
+  {
+    "id": "auth-cookie-domain-broad",
+    "pattern": "(?:domain|Domain)\\s*[=:]\\s*['\"]?\\.(?:com|org|net|io|dev)['\"]?",
+    "severity": "high", "category": "cookie",
+    "description": "Cookie scoped to broad domain is shared across all subdomains enabling theft.",
+    "cwe": "CWE-1275", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Scope cookie domain to the specific subdomain that needs it."
+  },
+  {
+    "id": "auth-oauth-missing-state",
+    "pattern": "(?:authorize|authorization)_url[\\s\\S]*?(?:(?!state)[\\s\\S])*?(?:redirect|callback)",
+    "severity": "high", "category": "oauth",
+    "description": "OAuth authorization without state parameter enables CSRF on the callback.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.rb", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Generate a random state parameter and verify it in the callback."
+  },
+  {
+    "id": "auth-oauth-open-redirect",
+    "pattern": "redirect_uri\\s*[=:]\\s*(?:req\\.|request\\.|params\\.|query\\.)",
+    "severity": "critical", "category": "oauth",
+    "description": "OAuth redirect_uri from user input enables token theft via open redirect.",
+    "cwe": "CWE-601", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate redirect_uri against a whitelist of registered URIs."
+  },
+  {
+    "id": "auth-oauth-no-pkce",
+    "pattern": "(?:grant_type|response_type)\\s*[=:]\\s*['\"](?:code|authorization_code)['\"](?:(?!code_challenge|code_verifier)[\\s\\S])*?(?:fetch|request|axios|http)",
+    "severity": "medium", "category": "oauth",
+    "description": "OAuth authorization code flow without PKCE is vulnerable to code interception.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.swift", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use PKCE with code_challenge and code_verifier for public clients."
+  },
+  {
+    "id": "auth-oauth-token-in-fragment",
+    "pattern": "response_type\\s*[=:]\\s*['\"]token['\"]",
+    "severity": "high", "category": "oauth",
+    "description": "OAuth implicit grant returns token in URL fragment exposing it to the browser.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use authorization code flow with PKCE instead of implicit grant."
+  },
+  {
+    "id": "auth-oauth-implicit-grant",
+    "pattern": "(?:grantTypes|grant_types|allowed_grant_types)\\s*[=:]\\s*\\[?[\\s\\S]*?['\"]implicit['\"]",
+    "severity": "high", "category": "oauth",
+    "description": "OAuth server allowing implicit grant flow exposes tokens in URLs.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Disable implicit grant; use authorization code flow with PKCE."
+  },
+  {
+    "id": "auth-oauth-client-secret-frontend",
+    "pattern": "(?:client_secret|clientSecret)\\s*[=:]\\s*['\"][A-Za-z0-9_-]{10,}['\"]",
+    "severity": "critical", "category": "oauth",
+    "description": "OAuth client_secret in client-side code is extractable by anyone.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.jsx", "*.tsx", "*.vue", "*.svelte"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Keep client_secret server-side only; use PKCE for public clients."
+  },
+  {
+    "id": "auth-oauth-no-redirect-validation",
+    "pattern": "(?:callback|redirect)(?:Url|Uri|_url|_uri)\\s*=\\s*(?:req|request)\\.(?:query|params|body)",
+    "severity": "high", "category": "oauth",
+    "description": "OAuth callback URL from request input without validation enables token theft.",
+    "cwe": "CWE-601", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Validate callback URL against registered redirect URIs whitelist."
+  },
+  {
+    "id": "auth-password-in-url",
+    "pattern": "(?:https?://)[^@\\s]*:[^@\\s]*@",
+    "severity": "high", "category": "password",
+    "description": "Password embedded in URL is logged in server logs and browser history.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.env", "*.yml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "placeholder"],
+    "fix_hint": "Use connection objects or environment variables instead of credentials in URLs."
+  },
+  {
+    "id": "auth-password-in-query",
+    "pattern": "[?&](?:password|passwd|pwd|pass)=",
+    "severity": "high", "category": "password",
+    "description": "Password sent as URL query parameter is logged and cached.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.html"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Send passwords in POST request body, never as URL parameters."
+  },
+  {
+    "id": "auth-password-logged",
+    "pattern": "(?:console\\.log|logger?\\.(?:info|debug|warn|error|log)|print|logging\\.(?:info|debug))\\s*\\([^)]*(?:password|passwd|pwd|credential)",
+    "severity": "high", "category": "password",
+    "description": "Password logged in plaintext persists in log storage and monitoring systems.",
+    "cwe": "CWE-532", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never log passwords; redact sensitive fields before logging."
+  },
+  {
+    "id": "auth-no-rate-limit-login",
+    "pattern": "(?:app|router)\\.post\\(['\"](?:/login|/signin|/auth)['\"][\\s\\S]*?(?:(?!rateLimit|rate_limit|throttle|limiter)[\\s\\S])*?\\)",
+    "severity": "high", "category": "password",
+    "description": "Login endpoint without rate limiting enables brute-force password attacks.",
+    "cwe": "CWE-307", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add rate limiting middleware (express-rate-limit) to login endpoints."
+  },
+  {
+    "id": "auth-password-comparison-eq",
+    "pattern": "(?:password|passwd|pwd)\\s*(?:===?|!==?)\\s*(?:req|request|input|user|body|params)",
+    "severity": "high", "category": "password",
+    "description": "Direct password comparison instead of hash check indicates plaintext storage.",
+    "cwe": "CWE-256", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use bcrypt.compare() or argon2.verify() to compare password hashes."
+  },
+  {
+    "id": "auth-no-lockout",
+    "pattern": "(?:failedAttempts|failed_attempts|login_attempts)\\s*(?:>|>=|<|<=)\\s*\\d+(?:(?!lock|block|disable|ban|suspend)[\\s\\S]){0,100}",
+    "severity": "medium", "category": "password",
+    "description": "Failed login tracking without account lockout allows unlimited brute-force.",
+    "cwe": "CWE-307", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Implement progressive delays or account lockout after N failed attempts."
+  },
+  {
+    "id": "auth-missing-middleware-express",
+    "pattern": "(?:app|router)\\.(?:get|post|put|delete|patch)\\(['\"][^'\"]+['\"]\\s*,\\s*(?:async\\s+)?(?:function|\\(req)",
+    "severity": "medium", "category": "access-control",
+    "description": "Express route handler without auth middleware may expose endpoint to unauthenticated users.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public", "health", "status"],
+    "fix_hint": "Add authentication middleware between route path and handler function."
+  },
+  {
+    "id": "auth-idor-user-id",
+    "pattern": "(?:findById|find_by_id|findOne|get)\\s*\\(\\s*(?:req\\.params|request\\.params|params)\\.",
+    "severity": "high", "category": "access-control",
+    "description": "Database query with user-supplied ID without authorization check enables IDOR.",
+    "cwe": "CWE-639", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript", "python"], "file_types": ["*.js", "*.ts", "*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Verify the authenticated user owns or has access to the requested resource."
+  },
+  {
+    "id": "auth-role-check-after-action",
+    "pattern": "(?:delete|update|modify|remove|destroy)\\([\\s\\S]*?\\)[\\s\\S]*?if\\s*\\(\\s*(?:req\\.user\\.role|user\\.role|currentUser\\.role)",
+    "severity": "high", "category": "access-control",
+    "description": "Authorization check after destructive action means the action runs regardless of role.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Move authorization checks before any state-changing operations."
+  },
+  {
+    "id": "auth-isadmin-from-input",
+    "pattern": "(?:isAdmin|is_admin|admin|role)\\s*[=:]\\s*(?:req\\.|request\\.|body\\.|params\\.|query\\.)",
+    "severity": "critical", "category": "access-control",
+    "description": "Admin/role flag set from user input enables privilege escalation.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never set role/admin flags from user input; derive from server-side session."
+  },
+  {
+    "id": "auth-no-authz-header-check",
+    "pattern": "(?:app|router)\\.(?:get|post|put|delete)\\([\\s\\S]*?(?:(?!authorization|authenticate|isAuth|requireAuth|ensureAuth|protect|guard)[\\s\\S])*?(?:res\\.json|res\\.send)",
+    "severity": "medium", "category": "access-control",
+    "description": "Route handler without authorization header check may serve unauthenticated requests.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public", "health"],
+    "fix_hint": "Add authentication middleware to verify Authorization header on protected routes."
+  },
+  {
+    "id": "auth-horizontal-privesc",
+    "pattern": "(?:userId|user_id|owner_id)\\s*[=:]\\s*(?:parseInt|Number)?\\s*\\(?\\s*(?:req|request)\\.(?:params|query|body)",
+    "severity": "high", "category": "access-control",
+    "description": "User ID from request params without ownership validation enables horizontal privilege escalation.",
+    "cwe": "CWE-639", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Verify req.user.id matches the requested userId or user has admin role."
+  },
+  {
+    "id": "auth-missing-middleware-fastapi",
+    "pattern": "@app\\.(?:get|post|put|delete|patch)\\([^)]*\\)\\s*(?:async\\s+)?def\\s+\\w+\\((?:(?!Depends|Security|current_user|get_current)[\\s\\S])*?\\):",
+    "severity": "medium", "category": "access-control",
+    "description": "FastAPI route without Depends() auth dependency exposes endpoint publicly.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public", "health"],
+    "fix_hint": "Add Depends(get_current_user) parameter to protect the endpoint."
+  },
+  {
+    "id": "auth-missing-annotation-spring",
+    "pattern": "@(?:Get|Post|Put|Delete|Patch)Mapping\\([^)]*\\)\\s*public[\\s\\S]*?(?:(?!@PreAuthorize|@Secured|@RolesAllowed)[\\s\\S])*?\\{",
+    "severity": "medium", "category": "access-control",
+    "description": "Spring endpoint without authorization annotation may be publicly accessible.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public"],
+    "fix_hint": "Add @PreAuthorize or @Secured annotation to restrict endpoint access."
+  },
+  {
+    "id": "auth-apikey-in-url",
+    "pattern": "[?&](?:api_?key|apikey|api_?token|access_?key)=[A-Za-z0-9_-]{10,}",
+    "severity": "high", "category": "api-key",
+    "description": "API key in URL query parameter is logged in server logs and proxies.",
+    "cwe": "CWE-598", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Send API keys in request headers (Authorization or X-API-Key) not URL."
+  },
+  {
+    "id": "auth-apikey-same-env",
+    "pattern": "(?:API_KEY|api_key)\\s*[=:]\\s*['\"][A-Za-z0-9_-]{10,}['\"]\\s*(?:#|//)\\s*(?:production|staging|prod|dev)",
+    "severity": "medium", "category": "api-key",
+    "description": "Same API key annotated for multiple environments enables cross-env abuse.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.env", "*.yml", "*.yaml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use unique API keys per environment loaded from environment-specific secrets."
+  },
+  {
+    "id": "auth-apikey-client-side",
+    "pattern": "(?:apiKey|api_key|API_KEY)\\s*[=:]\\s*['\"][A-Za-z0-9_-]{16,}['\"]",
+    "severity": "high", "category": "api-key",
+    "description": "API key hardcoded in client-side code is extractable from browser devtools.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.jsx", "*.tsx", "*.vue", "*.svelte"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public"],
+    "fix_hint": "Proxy API calls through your backend; never expose secret keys client-side."
+  },
+  {
+    "id": "auth-apikey-in-config",
+    "pattern": "(?:api_key|apiKey|API_KEY|secret_key)\\s*[=:]\\s*['\"][A-Za-z0-9_/+=]{20,}['\"]",
+    "severity": "high", "category": "api-key",
+    "description": "API key hardcoded in tracked configuration file risks exposure in version control.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.toml", "*.cfg", "*.conf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "changeme"],
+    "fix_hint": "Use environment variables or a secret manager; reference by name not value."
+  },
+  {
+    "id": "auth-basic-auth-plaintext",
+    "pattern": "Authorization:\\s*Basic\\s+[A-Za-z0-9+/=]{10,}",
+    "severity": "high", "category": "api-key",
+    "description": "Hardcoded Basic auth header contains base64-encoded credentials in source.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.sh"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Load credentials from environment variables or secret manager."
+  },
+  {
+    "id": "auth-bearer-hardcoded",
+    "pattern": "Authorization['\"]?\\s*[=:]\\s*['\"]Bearer\\s+ey[A-Za-z0-9_-]+\\.",
+    "severity": "critical", "category": "api-key",
+    "description": "Hardcoded Bearer token in source code will be exposed in version control.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Load bearer tokens from environment variables at runtime."
+  },
+  {
+    "id": "auth-django-debug-true",
+    "pattern": "DEBUG\\s*=\\s*True",
+    "severity": "high", "category": "access-control",
+    "description": "Django DEBUG=True in production exposes detailed error pages with source code.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "dev", "local"],
+    "fix_hint": "Set DEBUG=False in production settings; use environment variable."
+  },
+  {
+    "id": "auth-flask-debug",
+    "pattern": "app\\.run\\([^)]*debug\\s*=\\s*True",
+    "severity": "high", "category": "access-control",
+    "description": "Flask running with debug=True exposes interactive debugger enabling RCE.",
+    "cwe": "CWE-94", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "dev"],
+    "fix_hint": "Set debug=False in production; use FLASK_DEBUG environment variable."
+  },
+  {
+    "id": "auth-express-trust-proxy",
+    "pattern": "app\\.set\\(['\"]trust proxy['\"],\\s*true\\)",
+    "severity": "medium", "category": "access-control",
+    "description": "Express trusting all proxies enables IP spoofing via X-Forwarded-For header.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set trust proxy to specific proxy count or IP addresses."
+  },
+  {
+    "id": "auth-jwt-ruby-no-verify",
+    "pattern": "JWT\\.decode\\([^)]*verify:\\s*false",
+    "severity": "critical", "category": "jwt",
+    "description": "Ruby JWT decoded with verify: false skips all signature validation.",
+    "cwe": "CWE-347", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove verify: false; always verify JWT signatures."
+  },
+  {
+    "id": "auth-jwt-csharp-no-validate",
+    "pattern": "ValidateIssuerSigningKey\\s*=\\s*false",
+    "severity": "critical", "category": "jwt",
+    "description": "C# JWT validation with ValidateIssuerSigningKey=false skips signature check.",
+    "cwe": "CWE-347", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["csharp"], "file_types": ["*.cs"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set ValidateIssuerSigningKey = true in TokenValidationParameters."
+  },
+  {
+    "id": "auth-session-java-no-invalidate",
+    "pattern": "(?:doLogin|authenticate|login)\\s*\\([\\s\\S]*?(?:(?!session\\.invalidate|HttpSession\\.invalidate)[\\s\\S])*?HttpSession",
+    "severity": "high", "category": "session",
+    "description": "Java login without session.invalidate() enables session fixation attacks.",
+    "cwe": "CWE-384", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["java", "kotlin"], "file_types": ["*.java", "*.kt"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Call session.invalidate() and create new session after successful login."
+  },
+  {
+    "id": "auth-session-django-no-cycle",
+    "pattern": "(?:login|authenticate)\\([\\s\\S]*?(?:(?!cycle_key|flush|logout)[\\s\\S])*?(?:HttpResponse|redirect)",
+    "severity": "high", "category": "session",
+    "description": "Django login without session cycle_key enables session fixation.",
+    "cwe": "CWE-384", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use django.contrib.auth.login() which calls request.session.cycle_key()."
+  },
+  {
+    "id": "auth-csrf-disabled-laravel",
+    "pattern": "\\$except\\s*=\\s*\\[\\s*['\"]\\*['\"]",
+    "severity": "high", "category": "csrf",
+    "description": "Laravel VerifyCsrfToken middleware excluding all routes disables CSRF protection.",
+    "cwe": "CWE-352", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["php"], "file_types": ["*.php"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Only exclude specific API routes from CSRF; keep protection for web routes."
+  },
+  {
+    "id": "auth-oauth-token-refresh-no-rotation",
+    "pattern": "(?:refreshToken|refresh_token)\\s*[=:]\\s*(?:req\\.|body\\.)(?:(?!rotate|revoke|invalidate|new)[\\s\\S]){0,100}(?:res\\.json|return)",
+    "severity": "medium", "category": "oauth",
+    "description": "Refresh token reuse without rotation allows stolen tokens to persist indefinitely.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Implement refresh token rotation; issue new refresh token on each use."
+  },
+  {
+    "id": "auth-password-min-length-low",
+    "pattern": "(?:minLength|min_length|minimumLength|password_min)\\s*[=:]\\s*[1-5]\\b",
+    "severity": "medium", "category": "password",
+    "description": "Password minimum length under 6 characters allows weak passwords.",
+    "cwe": "CWE-521", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set minimum password length to at least 8, preferably 12+ characters."
+  },
+  {
+    "id": "auth-password-plaintext-store",
+    "pattern": "(?:password|passwd)\\s*[=:]\\s*(?:req\\.|request\\.|body\\.)(?:(?!hash|bcrypt|argon|scrypt|pbkdf)[\\s\\S]){0,100}(?:save|create|insert|update)",
+    "severity": "critical", "category": "password",
+    "description": "Password stored without hashing enables mass credential theft on data breach.",
+    "cwe": "CWE-256", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Hash passwords with bcrypt/argon2 before storing in database."
+  },
+  {
+    "id": "auth-access-control-missing-go",
+    "pattern": "http\\.HandleFunc\\([^)]*(?:(?!middleware|auth|session|token)[\\s\\S])*?\\)",
+    "severity": "medium", "category": "access-control",
+    "description": "Go HTTP handler without auth middleware may expose endpoint publicly.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["go"], "file_types": ["*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "health", "public"],
+    "fix_hint": "Wrap handler with authentication middleware."
+  },
+  {
+    "id": "auth-idor-graphql",
+    "pattern": "(?:findById|findOne|getUser|getAccount)\\s*\\([^)]*args\\.(?:id|userId|accountId)",
+    "severity": "high", "category": "access-control",
+    "description": "GraphQL resolver fetching by user-supplied ID without authorization check enables IDOR.",
+    "cwe": "CWE-639", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Verify authenticated user owns or has permission to access the requested resource."
+  },
+  {
+    "id": "auth-mass-assignment-rails",
+    "pattern": "\\.(?:create|update|new)\\(params\\.permit!\\)",
+    "severity": "high", "category": "access-control",
+    "description": "Rails permit! allows all params enabling mass assignment of admin/role fields.",
+    "cwe": "CWE-915", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["ruby"], "file_types": ["*.rb"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use params.permit(:name, :email) with explicit allowed fields."
+  },
+  {
+    "id": "auth-mass-assignment-django",
+    "pattern": "(?:Model|form)\\.objects\\.create\\(\\*\\*request\\.(?:POST|data|body)",
+    "severity": "high", "category": "access-control",
+    "description": "Django model creation from unpacked request data enables mass assignment.",
+    "cwe": "CWE-915", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use Django forms or explicitly pick allowed fields from request data."
+  },
+  {
+    "id": "auth-2fa-bypass",
+    "pattern": "(?:twoFactor|mfa|otp|2fa)(?:(?!verify|validate|check)[\\s\\S]){0,50}(?:skip|bypass|disable)\\s*[=:]\\s*true",
+    "severity": "critical", "category": "access-control",
+    "description": "2FA/MFA bypass flag allows authentication without second factor.",
+    "cwe": "CWE-308", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never allow 2FA bypass in production; remove bypass flags."
+  },
+  {
+    "id": "auth-remember-me-weak",
+    "pattern": "(?:rememberMe|remember_me|stay_logged_in)\\s*[=:]\\s*(?:req\\.|body\\.)(?:(?!token|hash|secure)[\\s\\S]){0,50}(?:cookie|session)",
+    "severity": "medium", "category": "session",
+    "description": "Remember-me without secure token implementation enables persistent session theft.",
+    "cwe": "CWE-613", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.java"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use cryptographically random remember-me tokens stored hashed in database."
+  },
+  {
+    "id": "auth-apikey-no-rotation",
+    "pattern": "(?:API_KEY|api_key|apiKey)\\s*[=:]\\s*['\"][A-Za-z0-9_-]{20,}['\"]\\s*(?:#|//)\\s*(?:never|permanent|static|fixed)",
+    "severity": "medium", "category": "api-key",
+    "description": "API key marked as permanent/never-rotating increases blast radius on compromise.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.js", "*.ts", "*.py", "*.env", "*.yml"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Implement API key rotation; set expiry and rotate regularly."
+  },
+  {
+    "id": "auth-insecure-comparison",
+    "pattern": "(?:token|secret|apiKey|api_key|hash)\\s*(?:===?|!==?)\\s*(?:req\\.|request\\.|body\\.|params\\.)",
+    "severity": "high", "category": "password",
+    "description": "Direct string comparison of secrets is vulnerable to timing attacks.",
+    "cwe": "CWE-208", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["javascript", "typescript"], "file_types": ["*.js", "*.ts"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use crypto.timingSafeEqual() for constant-time secret comparison."
+  }
+]
