@@ -1,0 +1,1202 @@
+[
+  {
+    "id": "iac-tf-s3-public-read",
+    "pattern": "acl\\s*=\\s*\"public-read\"",
+    "severity": "critical", "category": "terraform-s3",
+    "description": "Terraform S3 bucket with public-read ACL exposes data to the internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-2.1.5",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove public ACL; use bucket policy with least-privilege access."
+  },
+  {
+    "id": "iac-tf-s3-public-read-write",
+    "pattern": "acl\\s*=\\s*\"public-read-write\"",
+    "severity": "critical", "category": "terraform-s3",
+    "description": "Terraform S3 bucket with public-read-write ACL allows anyone to write objects.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-2.1.5",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set acl = \"private\" and use IAM policies for access control."
+  },
+  {
+    "id": "iac-tf-s3-no-encryption",
+    "pattern": "resource\\s+\"aws_s3_bucket\"\\s+\"[^\"]+\"\\s*\\{(?:(?!server_side_encryption_configuration)[\\s\\S])*?\\}",
+    "severity": "high", "category": "terraform-s3",
+    "description": "S3 bucket without server-side encryption at rest risks data exposure if accessed.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": "CIS-2.1.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add server_side_encryption_configuration with aws:kms or AES256."
+  },
+  {
+    "id": "iac-tf-s3-versioning-disabled",
+    "pattern": "versioning\\s*\\{[\\s\\S]*?enabled\\s*=\\s*false",
+    "severity": "medium", "category": "terraform-s3",
+    "description": "S3 bucket versioning disabled prevents recovery from accidental deletion or overwrite.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": "CIS-2.1.3",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set versioning { enabled = true } for data protection."
+  },
+  {
+    "id": "iac-tf-s3-no-logging",
+    "pattern": "resource\\s+\"aws_s3_bucket\"\\s+\"[^\"]+\"\\s*\\{(?:(?!logging)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-s3",
+    "description": "S3 bucket without access logging prevents forensic investigation of data access.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": "CIS-2.1.2",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add logging { target_bucket = aws_s3_bucket.log_bucket.id } block."
+  },
+  {
+    "id": "iac-tf-s3-block-public-false",
+    "pattern": "(?:block_public_acls|block_public_policy|ignore_public_acls|restrict_public_buckets)\\s*=\\s*false",
+    "severity": "high", "category": "terraform-s3",
+    "description": "S3 public access block disabled allows public exposure of bucket contents.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-2.1.5",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set all four block_public_* fields to true in aws_s3_bucket_public_access_block."
+  },
+  {
+    "id": "iac-tf-s3-no-mfa-delete",
+    "pattern": "versioning\\s*\\{[\\s\\S]*?(?:mfa_delete\\s*=\\s*false|(?!mfa_delete))",
+    "severity": "medium", "category": "terraform-s3",
+    "description": "S3 bucket without MFA delete allows unauthorized version deletion.",
+    "cwe": "CWE-284", "cve": null, "owasp": null, "benchmark": "CIS-2.1.3",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Enable mfa_delete = true in the versioning block."
+  },
+  {
+    "id": "iac-tf-sg-ingress-all",
+    "pattern": "ingress\\s*\\{[\\s\\S]*?cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"\\s*\\]",
+    "severity": "high", "category": "terraform-network",
+    "description": "Security group allows inbound traffic from any IP (0.0.0.0/0).",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict cidr_blocks to known IP ranges or VPC CIDR."
+  },
+  {
+    "id": "iac-tf-sg-ingress-ipv6-all",
+    "pattern": "ingress\\s*\\{[\\s\\S]*?ipv6_cidr_blocks\\s*=\\s*\\[\\s*\"::/0\"\\s*\\]",
+    "severity": "high", "category": "terraform-network",
+    "description": "Security group allows inbound traffic from any IPv6 address.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict ipv6_cidr_blocks to specific IPv6 ranges."
+  },
+  {
+    "id": "iac-tf-sg-ssh-open",
+    "pattern": "ingress\\s*\\{[\\s\\S]*?from_port\\s*=\\s*22[\\s\\S]*?cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"",
+    "severity": "critical", "category": "terraform-network",
+    "description": "SSH port 22 open to the internet enables brute-force attacks on servers.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict SSH access to VPN/bastion host CIDR blocks only."
+  },
+  {
+    "id": "iac-tf-sg-rdp-open",
+    "pattern": "ingress\\s*\\{[\\s\\S]*?from_port\\s*=\\s*3389[\\s\\S]*?cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"",
+    "severity": "critical", "category": "terraform-network",
+    "description": "RDP port 3389 open to the internet enables remote desktop brute-force attacks.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.2",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict RDP access to VPN CIDR blocks; use AWS SSM for remote access."
+  },
+  {
+    "id": "iac-tf-sg-db-open",
+    "pattern": "ingress\\s*\\{[\\s\\S]*?from_port\\s*=\\s*(?:3306|5432|1433|27017)[\\s\\S]*?cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"",
+    "severity": "critical", "category": "terraform-network",
+    "description": "Database port open to the internet exposes database to unauthorized access.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.3",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Place databases in private subnets; restrict access to application security groups."
+  },
+  {
+    "id": "iac-tf-no-vpc-flow-logs",
+    "pattern": "resource\\s+\"aws_vpc\"\\s+\"[^\"]+\"\\s*\\{(?:(?!aws_flow_log)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-network",
+    "description": "VPC without flow logs prevents detection of suspicious network activity.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": "CIS-3.9",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Create an aws_flow_log resource for the VPC with CloudWatch or S3 destination."
+  },
+  {
+    "id": "iac-tf-eks-public-endpoint",
+    "pattern": "endpoint_public_access\\s*=\\s*true",
+    "severity": "high", "category": "terraform-network",
+    "description": "EKS cluster with public API endpoint exposes Kubernetes API to the internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set endpoint_public_access = false and use VPN/private endpoint."
+  },
+  {
+    "id": "iac-tf-alb-no-ssl",
+    "pattern": "resource\\s+\"aws_lb_listener\"[\\s\\S]*?protocol\\s*=\\s*\"HTTP\"",
+    "severity": "high", "category": "terraform-network",
+    "description": "ALB listener using HTTP instead of HTTPS transmits data in cleartext.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "redirect"],
+    "fix_hint": "Use protocol = \"HTTPS\" with ssl_policy and certificate_arn."
+  },
+  {
+    "id": "iac-tf-elasticache-no-transit-encryption",
+    "pattern": "resource\\s+\"aws_elasticache_replication_group\"[\\s\\S]*?transit_encryption_enabled\\s*=\\s*false",
+    "severity": "medium", "category": "terraform-network",
+    "description": "ElastiCache without in-transit encryption allows traffic interception.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set transit_encryption_enabled = true on the replication group."
+  },
+  {
+    "id": "iac-tf-no-waf",
+    "pattern": "resource\\s+\"aws_(?:lb|cloudfront_distribution)\"[\\s\\S]*?(?:(?!web_acl_id)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-network",
+    "description": "ALB or CloudFront without WAF association lacks layer-7 attack protection.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Associate an aws_wafv2_web_acl with the ALB or CloudFront distribution."
+  },
+  {
+    "id": "iac-tf-sg-egress-all",
+    "pattern": "egress\\s*\\{[\\s\\S]*?cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"\\s*\\][\\s\\S]*?from_port\\s*=\\s*0[\\s\\S]*?to_port\\s*=\\s*0",
+    "severity": "medium", "category": "terraform-network",
+    "description": "Security group allows all outbound traffic enabling data exfiltration.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict egress to required ports and destinations only."
+  },
+  {
+    "id": "iac-tf-iam-wildcard-action",
+    "pattern": "\"Action\"\\s*:\\s*(?:\"\\*\"|\\[\\s*\"\\*\"\\s*\\])[\\s\\S]*?\"Effect\"\\s*:\\s*\"Allow\"",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "IAM policy with Action:* and Effect:Allow grants full AWS access.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.16",
+    "languages": ["*"], "file_types": ["*.tf", "*.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Follow least-privilege principle; specify only required Actions."
+  },
+  {
+    "id": "iac-tf-iam-effect-allow-action-star",
+    "pattern": "effect\\s*=\\s*\"Allow\"[\\s\\S]*?actions\\s*=\\s*\\[\\s*\"\\*\"\\s*\\]",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "Terraform IAM statement with Allow and wildcard actions is overpermissive.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.16",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Enumerate specific actions needed instead of using wildcard."
+  },
+  {
+    "id": "iac-tf-iam-wildcard-resource",
+    "pattern": "\"Resource\"\\s*:\\s*(?:\"\\*\"|\\[\\s*\"\\*\"\\s*\\])",
+    "severity": "high", "category": "terraform-iam",
+    "description": "IAM policy with Resource:* applies permissions to all resources.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.16",
+    "languages": ["*"], "file_types": ["*.tf", "*.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Scope resources to specific ARNs using least-privilege."
+  },
+  {
+    "id": "iac-tf-lambda-admin-role",
+    "pattern": "(?:policy_arn|managed_policy_arns)\\s*=\\s*[\\s\\S]*?AdministratorAccess",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "Lambda with AdministratorAccess policy can perform any AWS action.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Create a custom IAM role with only the permissions the Lambda needs."
+  },
+  {
+    "id": "iac-tf-iam-inline-policy",
+    "pattern": "resource\\s+\"aws_iam_user_policy\"",
+    "severity": "medium", "category": "terraform-iam",
+    "description": "IAM inline policy on user is harder to audit than managed policies.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.15",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use aws_iam_group_policy_attachment with managed policies instead."
+  },
+  {
+    "id": "iac-tf-iam-no-mfa",
+    "pattern": "resource\\s+\"aws_iam_user\"[\\s\\S]*?(?:(?!mfa|condition)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-iam",
+    "description": "IAM user without MFA condition allows single-factor authentication.",
+    "cwe": "CWE-308", "cve": null, "owasp": "A07:2021", "benchmark": "CIS-1.10",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add condition { test = \"Bool\" variable = \"aws:MultiFactorAuthPresent\" values = [\"true\"] }."
+  },
+  {
+    "id": "iac-tf-iam-assume-role-star",
+    "pattern": "assume_role_policy[\\s\\S]*?Principal[\\s\\S]*?\"\\*\"",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "IAM role trust policy with wildcard principal allows any entity to assume the role.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict Principal to specific AWS account IDs or service principals."
+  },
+  {
+    "id": "iac-tf-iam-cross-account-no-condition",
+    "pattern": "assume_role_policy[\\s\\S]*?arn:aws:iam::\\d{12}:root[\\s\\S]*?(?:(?!Condition)[\\s\\S])*?\\}",
+    "severity": "high", "category": "terraform-iam",
+    "description": "Cross-account role trust without conditions allows any principal in that account.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Condition with aws:PrincipalArn or externalId for cross-account access."
+  },
+  {
+    "id": "iac-tf-iam-iam-star-actions",
+    "pattern": "\"Action\"\\s*:\\s*(?:\\[\\s*)?\"iam:\\*\"",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "IAM policy granting iam:* allows creating new admins and backdoor accounts.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf", "*.json"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Grant only specific IAM actions needed (iam:PassRole, iam:GetRole, etc.)."
+  },
+  {
+    "id": "iac-tf-iam-access-key-root",
+    "pattern": "resource\\s+\"aws_iam_access_key\"[\\s\\S]*?user\\s*=\\s*\"root\"",
+    "severity": "critical", "category": "terraform-iam",
+    "description": "Creating access keys for root account bypasses all IAM restrictions.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.4",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Never create access keys for root; use IAM users/roles instead."
+  },
+  {
+    "id": "iac-tf-rds-publicly-accessible",
+    "pattern": "publicly_accessible\\s*=\\s*true",
+    "severity": "critical", "category": "terraform-data",
+    "description": "RDS instance publicly accessible exposes database to internet-based attacks.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-2.3.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set publicly_accessible = false and access via private subnet or VPN."
+  },
+  {
+    "id": "iac-tf-no-cloudtrail",
+    "pattern": "provider\\s+\"aws\"[\\s\\S]*?(?:(?!aws_cloudtrail)[\\s\\S])*$",
+    "severity": "high", "category": "terraform-data",
+    "description": "AWS account without CloudTrail loses all API activity audit trail.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": "CIS-3.1",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Create an aws_cloudtrail resource with multi-region and S3 logging."
+  },
+  {
+    "id": "iac-tf-sqs-no-encryption",
+    "pattern": "resource\\s+\"aws_sqs_queue\"[\\s\\S]*?(?:(?!kms_master_key_id)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "SQS queue without KMS encryption exposes message content at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set kms_master_key_id on the SQS queue for encryption at rest."
+  },
+  {
+    "id": "iac-tf-sns-no-encryption",
+    "pattern": "resource\\s+\"aws_sns_topic\"[\\s\\S]*?(?:(?!kms_master_key_id)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "SNS topic without KMS encryption exposes notification content at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set kms_master_key_id on the SNS topic for encryption at rest."
+  },
+  {
+    "id": "iac-tf-ecr-no-scan",
+    "pattern": "resource\\s+\"aws_ecr_repository\"[\\s\\S]*?(?:(?!image_scanning_configuration)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "ECR repository without image scanning misses known CVEs in container images.",
+    "cwe": "CWE-1035", "cve": null, "owasp": "A06:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add image_scanning_configuration { scan_on_push = true }."
+  },
+  {
+    "id": "iac-tf-dynamodb-no-pitr",
+    "pattern": "resource\\s+\"aws_dynamodb_table\"[\\s\\S]*?(?:(?!point_in_time_recovery)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "DynamoDB table without point-in-time recovery risks unrecoverable data loss.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add point_in_time_recovery { enabled = true }."
+  },
+  {
+    "id": "iac-tf-kms-no-rotation",
+    "pattern": "enable_key_rotation\\s*=\\s*false",
+    "severity": "medium", "category": "terraform-data",
+    "description": "KMS key without rotation increases risk from long-lived key material.",
+    "cwe": "CWE-320", "cve": null, "owasp": "A02:2021", "benchmark": "CIS-2.8",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enable_key_rotation = true on the aws_kms_key."
+  },
+  {
+    "id": "iac-tf-elasticsearch-no-encryption",
+    "pattern": "resource\\s+\"aws_elasticsearch_domain\"[\\s\\S]*?encrypt_at_rest\\s*\\{[\\s\\S]*?enabled\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "Elasticsearch domain without encryption at rest exposes indexed data.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encrypt_at_rest { enabled = true } with a KMS key."
+  },
+  {
+    "id": "iac-tf-redshift-no-encryption",
+    "pattern": "resource\\s+\"aws_redshift_cluster\"[\\s\\S]*?encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "Redshift cluster without encryption at rest exposes data warehouse contents.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encrypted = true and specify a kms_key_id."
+  },
+  {
+    "id": "iac-tf-rds-no-multi-az",
+    "pattern": "resource\\s+\"aws_db_instance\"[\\s\\S]*?multi_az\\s*=\\s*false",
+    "severity": "low", "category": "terraform-data",
+    "description": "RDS without multi-AZ has no automatic failover on availability zone failure.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set multi_az = true for production databases."
+  },
+  {
+    "id": "iac-tf-rds-no-storage-encryption",
+    "pattern": "resource\\s+\"aws_db_instance\"[\\s\\S]*?storage_encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "RDS without storage encryption exposes database files at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set storage_encrypted = true and specify kms_key_id."
+  },
+  {
+    "id": "iac-tf-secrets-in-tfvars",
+    "pattern": "(?:password|secret|api_key|token|private_key)\\s*=\\s*\"[^\"]{8,}\"",
+    "severity": "critical", "category": "terraform-state",
+    "description": "Secrets hardcoded in .tfvars files are stored in plaintext and version control.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tfvars", "*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "changeme", "placeholder"],
+    "fix_hint": "Use AWS Secrets Manager, HashiCorp Vault, or environment variables for secrets."
+  },
+  {
+    "id": "iac-tf-backend-local",
+    "pattern": "backend\\s+\"local\"",
+    "severity": "medium", "category": "terraform-state",
+    "description": "Local Terraform backend stores state on disk without encryption or team access.",
+    "cwe": "CWE-311", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use backend \"s3\" with encryption and DynamoDB state locking."
+  },
+  {
+    "id": "iac-tf-backend-no-encryption",
+    "pattern": "backend\\s+\"s3\"\\s*\\{[\\s\\S]*?encrypt\\s*=\\s*false",
+    "severity": "high", "category": "terraform-state",
+    "description": "S3 backend without encryption stores sensitive state data in plaintext.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encrypt = true in the S3 backend configuration."
+  },
+  {
+    "id": "iac-tf-outdated-aws-provider",
+    "pattern": "source\\s*=\\s*\"hashicorp/aws\"[\\s\\S]*?version\\s*=\\s*\"[~><=]*\\s*[0-3]\\.",
+    "severity": "medium", "category": "terraform-state",
+    "description": "Outdated AWS provider version may contain known security vulnerabilities.",
+    "cwe": "CWE-1035", "cve": null, "owasp": "A06:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Update to the latest AWS provider version and test for breaking changes."
+  },
+  {
+    "id": "iac-tf-state-in-git",
+    "pattern": "terraform\\.tfstate",
+    "severity": "critical", "category": "terraform-state",
+    "description": "Terraform state file in version control exposes secrets and infrastructure details.",
+    "cwe": "CWE-200", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": [".gitignore"],
+    "false_positive_hints": ["test", "example"],
+    "fix_hint": "Add *.tfstate to .gitignore and use remote state backend."
+  },
+  {
+    "id": "iac-cfn-s3-public-read",
+    "pattern": "AccessControl:\\s*(?:PublicRead|PublicReadWrite)",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation S3 bucket with public access control exposes data.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-2.1.5",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove AccessControl; use bucket policy with explicit deny for public access."
+  },
+  {
+    "id": "iac-cfn-sg-ingress-open",
+    "pattern": "CidrIp:\\s*(?:0\\.0\\.0\\.0/0|::/0)",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation security group ingress open to all IPs.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.1",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict CidrIp to known IP ranges or reference VPC CIDR parameter."
+  },
+  {
+    "id": "iac-cfn-iam-wildcard",
+    "pattern": "Action:\\s*(?:'\\*'|\"\\*\"|\\*)",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation IAM policy with Action:* grants unrestricted permissions.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.16",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify only required actions following least-privilege principle."
+  },
+  {
+    "id": "iac-cfn-rds-public",
+    "pattern": "PubliclyAccessible:\\s*(?:true|'true'|\"true\")",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation RDS with PubliclyAccessible enables internet access to database.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set PubliclyAccessible: false and place RDS in private subnet."
+  },
+  {
+    "id": "iac-cfn-lambda-admin-role",
+    "pattern": "AWS::Lambda::Function[\\s\\S]*?(?:AdministratorAccess|PowerUserAccess)",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation Lambda with administrator access can perform any AWS action.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Create a least-privilege execution role for the Lambda function."
+  },
+  {
+    "id": "iac-cfn-alb-no-ssl",
+    "pattern": "AWS::ElasticLoadBalancingV2::Listener[\\s\\S]*?Protocol:\\s*HTTP(?!S)",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation ALB listener on HTTP without redirect to HTTPS.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "redirect"],
+    "fix_hint": "Use Protocol: HTTPS with SslPolicy or redirect HTTP to HTTPS."
+  },
+  {
+    "id": "iac-cfn-ecs-privileged",
+    "pattern": "AWS::ECS::TaskDefinition[\\s\\S]*?Privileged:\\s*(?:true|'true')",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation ECS task with privileged mode can escape container.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set Privileged: false unless absolutely required for the workload."
+  },
+  {
+    "id": "iac-cfn-no-cloudtrail",
+    "pattern": "AWSTemplateFormatVersion[\\s\\S]*?(?:(?!AWS::CloudTrail::Trail)[\\s\\S])*$",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation stack without CloudTrail loses API audit visibility.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": "CIS-3.1",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add AWS::CloudTrail::Trail resource with multi-region and S3 logging."
+  },
+  {
+    "id": "iac-cfn-s3-no-encryption",
+    "pattern": "AWS::S3::Bucket[\\s\\S]*?(?:(?!BucketEncryption)[\\s\\S])*?Type:",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation S3 bucket without BucketEncryption stores data in plaintext.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": "CIS-2.1.1",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add BucketEncryption with SSEAlgorithm: aws:kms or AES256."
+  },
+  {
+    "id": "iac-cfn-cognito-no-mfa",
+    "pattern": "AWS::Cognito::UserPool[\\s\\S]*?MfaConfiguration:\\s*OFF",
+    "severity": "medium", "category": "cloudformation",
+    "description": "Cognito user pool with MFA disabled allows single-factor authentication.",
+    "cwe": "CWE-308", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set MfaConfiguration: ON or OPTIONAL with SoftwareTokenMfa."
+  },
+  {
+    "id": "iac-arm-storage-no-https",
+    "pattern": "supportsHttpsTrafficOnly\"?:\\s*false",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM storage account allowing HTTP enables man-in-the-middle attacks.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set supportsHttpsTrafficOnly: true on the storage account."
+  },
+  {
+    "id": "iac-arm-nsg-wildcard",
+    "pattern": "\"sourceAddressPrefix\"\\s*:\\s*\"\\*\"",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM NSG rule with wildcard source allows traffic from any IP.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify explicit source address prefix or service tag."
+  },
+  {
+    "id": "iac-arm-nsg-dest-wildcard",
+    "pattern": "\"destinationAddressPrefix\"\\s*:\\s*\"\\*\"",
+    "severity": "medium", "category": "arm-template",
+    "description": "ARM NSG rule with wildcard destination allows traffic to any IP.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify explicit destination address prefix or service tag."
+  },
+  {
+    "id": "iac-arm-keyvault-no-soft-delete",
+    "pattern": "enableSoftDelete\"?:\\s*false",
+    "severity": "medium", "category": "arm-template",
+    "description": "ARM Key Vault without soft delete allows permanent secret destruction.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enableSoftDelete: true and enablePurgeProtection: true."
+  },
+  {
+    "id": "iac-arm-aks-no-rbac",
+    "pattern": "enableRBAC\"?:\\s*false",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM AKS without RBAC allows any authenticated user full cluster access.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enableRBAC: true on the AKS managedCluster resource."
+  },
+  {
+    "id": "iac-arm-sql-no-audit",
+    "pattern": "Microsoft\\.Sql/servers[\\s\\S]*?(?:(?!auditingSettings)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "arm-template",
+    "description": "ARM SQL Server without auditing loses database activity visibility.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Microsoft.Sql/servers/auditingSettings child resource."
+  },
+  {
+    "id": "iac-arm-no-diagnostics",
+    "pattern": "Microsoft\\.(?:Web|Compute|Network)[\\s\\S]*?(?:(?!diagnosticSettings)[\\s\\S])*?\\}",
+    "severity": "low", "category": "arm-template",
+    "description": "ARM resource without diagnostic settings limits observability.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add Microsoft.Insights/diagnosticSettings child resource."
+  },
+  {
+    "id": "iac-arm-storage-public-access",
+    "pattern": "allowBlobPublicAccess\"?:\\s*true",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM storage account with public blob access exposes containers.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set allowBlobPublicAccess: false on the storage account."
+  },
+  {
+    "id": "iac-arm-sql-firewall-all",
+    "pattern": "startIpAddress\"?:\\s*\"0\\.0\\.0\\.0\"[\\s\\S]*?endIpAddress\"?:\\s*\"255\\.255\\.255\\.255\"",
+    "severity": "critical", "category": "arm-template",
+    "description": "ARM SQL firewall rule allowing all IPs exposes database to internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict IP range to known application and management IPs."
+  },
+  {
+    "id": "iac-pulumi-s3-public",
+    "pattern": "new\\s+aws\\.s3\\.Bucket\\([\\s\\S]*?acl:\\s*['\"]public",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi S3 bucket with public ACL exposes data to the internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove public ACL; use bucket policy with least-privilege access."
+  },
+  {
+    "id": "iac-pulumi-py-s3-public",
+    "pattern": "aws\\.s3\\.Bucket\\([\\s\\S]*?acl=['\"]public",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi Python S3 bucket with public ACL exposes data.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Remove public ACL; use bucket policy with least-privilege access."
+  },
+  {
+    "id": "iac-pulumi-sg-open",
+    "pattern": "new\\s+aws\\.ec2\\.SecurityGroup[\\s\\S]*?cidrBlocks:\\s*\\[\\s*['\"]0\\.0\\.0\\.0/0['\"]",
+    "severity": "high", "category": "pulumi",
+    "description": "Pulumi security group open to all IPs on ingress.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict cidrBlocks to known IP ranges."
+  },
+  {
+    "id": "iac-pulumi-py-sg-open",
+    "pattern": "aws\\.ec2\\.SecurityGroup[\\s\\S]*?cidr_blocks=\\[['\"]0\\.0\\.0\\.0/0['\"]",
+    "severity": "high", "category": "pulumi",
+    "description": "Pulumi Python security group open to all IPs.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict cidr_blocks to known IP ranges."
+  },
+  {
+    "id": "iac-pulumi-iam-wildcard",
+    "pattern": "new\\s+aws\\.iam\\.Policy[\\s\\S]*?['\"]\\*['\"][\\s\\S]*?Allow",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi IAM policy with wildcard action and Allow effect.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify only required IAM actions following least-privilege."
+  },
+  {
+    "id": "iac-pulumi-rds-public",
+    "pattern": "(?:new\\s+aws\\.rds\\.Instance|aws\\.rds\\.Instance\\()[\\s\\S]*?publiclyAccessible:\\s*true",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi RDS instance publicly accessible exposes database to internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set publiclyAccessible: false and access via VPN/private network."
+  },
+  {
+    "id": "iac-pulumi-py-rds-public",
+    "pattern": "aws\\.rds\\.Instance\\([\\s\\S]*?publicly_accessible=True",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi Python RDS publicly accessible exposes database to internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set publicly_accessible=False and use private subnets."
+  },
+  {
+    "id": "iac-pulumi-no-encryption",
+    "pattern": "new\\s+aws\\.s3\\.Bucket\\([\\s\\S]*?(?:(?!serverSideEncryption)[\\s\\S])*?\\)",
+    "severity": "high", "category": "pulumi",
+    "description": "Pulumi S3 bucket without server-side encryption at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add serverSideEncryptionConfiguration with AES256 or aws:kms."
+  },
+  {
+    "id": "iac-tf-cloudfront-no-waf",
+    "pattern": "resource\\s+\"aws_cloudfront_distribution\"[\\s\\S]*?(?:(?!web_acl_id)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-network",
+    "description": "CloudFront without WAF lacks protection against DDoS and application attacks.",
+    "cwe": "CWE-693", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Associate an aws_wafv2_web_acl_association with the CloudFront distribution."
+  },
+  {
+    "id": "iac-tf-cloudfront-http",
+    "pattern": "viewer_protocol_policy\\s*=\\s*\"allow-all\"",
+    "severity": "high", "category": "terraform-network",
+    "description": "CloudFront allowing HTTP viewer connections transmits data in cleartext.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set viewer_protocol_policy = \"redirect-to-https\" or \"https-only\"."
+  },
+  {
+    "id": "iac-tf-api-gw-no-auth",
+    "pattern": "resource\\s+\"aws_api_gateway_method\"[\\s\\S]*?authorization\\s*=\\s*\"NONE\"",
+    "severity": "high", "category": "terraform-network",
+    "description": "API Gateway method with no authorization allows unauthenticated access.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "health"],
+    "fix_hint": "Set authorization to AWS_IAM, COGNITO_USER_POOLS, or CUSTOM."
+  },
+  {
+    "id": "iac-tf-lambda-no-vpc",
+    "pattern": "resource\\s+\"aws_lambda_function\"[\\s\\S]*?(?:(?!vpc_config)[\\s\\S])*?\\}",
+    "severity": "low", "category": "terraform-network",
+    "description": "Lambda without VPC config has unrestricted internet access for data exfiltration.",
+    "cwe": "CWE-284", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add vpc_config with private subnets and security groups."
+  },
+  {
+    "id": "iac-tf-ebs-no-encryption",
+    "pattern": "resource\\s+\"aws_ebs_volume\"[\\s\\S]*?encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "EBS volume without encryption at rest exposes data on underlying storage.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encrypted = true and specify kms_key_id."
+  },
+  {
+    "id": "iac-tf-efs-no-encryption",
+    "pattern": "resource\\s+\"aws_efs_file_system\"[\\s\\S]*?encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "EFS filesystem without encryption at rest exposes shared file data.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encrypted = true on the EFS file system."
+  },
+  {
+    "id": "iac-cfn-sg-ssh-open",
+    "pattern": "FromPort:\\s*22[\\s\\S]*?CidrIp:\\s*0\\.0\\.0\\.0/0",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation security group SSH open to internet enables brute-force.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.1",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict SSH CidrIp to bastion host or VPN IP range."
+  },
+  {
+    "id": "iac-cfn-sg-rdp-open",
+    "pattern": "FromPort:\\s*3389[\\s\\S]*?CidrIp:\\s*0\\.0\\.0\\.0/0",
+    "severity": "critical", "category": "cloudformation",
+    "description": "CloudFormation security group RDP open to internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-4.2",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Restrict RDP CidrIp to VPN IP range; use AWS SSM for remote access."
+  },
+  {
+    "id": "iac-cfn-kms-no-rotation",
+    "pattern": "AWS::KMS::Key[\\s\\S]*?EnableKeyRotation:\\s*false",
+    "severity": "medium", "category": "cloudformation",
+    "description": "CloudFormation KMS key without rotation increases key compromise risk.",
+    "cwe": "CWE-320", "cve": null, "owasp": "A02:2021", "benchmark": "CIS-2.8",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set EnableKeyRotation: true on the KMS key."
+  },
+  {
+    "id": "iac-tf-ec2-imdsv1",
+    "pattern": "http_tokens\\s*=\\s*\"optional\"",
+    "severity": "high", "category": "terraform-network",
+    "description": "EC2 instance allowing IMDSv1 enables SSRF-based metadata credential theft.",
+    "cwe": "CWE-918", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set http_tokens = \"required\" to enforce IMDSv2."
+  },
+  {
+    "id": "iac-tf-secretsmanager-no-rotation",
+    "pattern": "resource\\s+\"aws_secretsmanager_secret\"[\\s\\S]*?(?:(?!rotation)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "Secrets Manager secret without rotation policy uses long-lived credentials.",
+    "cwe": "CWE-320", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add aws_secretsmanager_secret_rotation with a rotation Lambda."
+  },
+  {
+    "id": "iac-tf-rds-no-backup",
+    "pattern": "backup_retention_period\\s*=\\s*0",
+    "severity": "medium", "category": "terraform-data",
+    "description": "RDS with no backup retention period risks unrecoverable data loss.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set backup_retention_period to at least 7 for production databases."
+  },
+  {
+    "id": "iac-tf-rds-no-deletion-protection",
+    "pattern": "deletion_protection\\s*=\\s*false",
+    "severity": "low", "category": "terraform-data",
+    "description": "RDS without deletion protection can be accidentally destroyed.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set deletion_protection = true for production databases."
+  },
+  {
+    "id": "iac-tf-ec2-public-ip",
+    "pattern": "associate_public_ip_address\\s*=\\s*true",
+    "severity": "medium", "category": "terraform-network",
+    "description": "EC2 instance with public IP exposes it directly to internet traffic.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use private subnets with NAT gateway; access via bastion or SSM."
+  },
+  {
+    "id": "iac-cfn-ec2-public-ip",
+    "pattern": "AssociatePublicIpAddress:\\s*(?:true|'true')",
+    "severity": "medium", "category": "cloudformation",
+    "description": "CloudFormation EC2 instance with public IP address.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Place instances in private subnets; use NAT gateway for outbound."
+  },
+  {
+    "id": "iac-tf-opensearch-public",
+    "pattern": "resource\\s+\"aws_opensearch_domain\"[\\s\\S]*?enforce_https\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "OpenSearch domain without HTTPS enforcement transmits data in cleartext.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enforce_https = true in domain_endpoint_options."
+  },
+  {
+    "id": "iac-tf-cloudwatch-no-encryption",
+    "pattern": "resource\\s+\"aws_cloudwatch_log_group\"[\\s\\S]*?(?:(?!kms_key_id)[\\s\\S])*?\\}",
+    "severity": "low", "category": "terraform-data",
+    "description": "CloudWatch log group without KMS encryption stores logs in plaintext.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set kms_key_id on the CloudWatch log group for encryption."
+  },
+  {
+    "id": "iac-tf-glue-no-encryption",
+    "pattern": "resource\\s+\"aws_glue_security_configuration\"[\\s\\S]*?(?:(?!encryption_configuration)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "Glue without encryption configuration exposes ETL data in transit and at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add encryption_configuration block with S3 and CloudWatch encryption."
+  },
+  {
+    "id": "iac-tf-neptune-no-encryption",
+    "pattern": "resource\\s+\"aws_neptune_cluster\"[\\s\\S]*?storage_encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "Neptune cluster without storage encryption exposes graph data at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set storage_encrypted = true on the Neptune cluster."
+  },
+  {
+    "id": "iac-tf-docdb-no-encryption",
+    "pattern": "resource\\s+\"aws_docdb_cluster\"[\\s\\S]*?storage_encrypted\\s*=\\s*false",
+    "severity": "high", "category": "terraform-data",
+    "description": "DocumentDB cluster without encryption at rest exposes document data.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set storage_encrypted = true on the DocumentDB cluster."
+  },
+  {
+    "id": "iac-tf-msk-no-encryption",
+    "pattern": "resource\\s+\"aws_msk_cluster\"[\\s\\S]*?encryption_in_transit[\\s\\S]*?client_broker\\s*=\\s*\"TLS_PLAINTEXT\"",
+    "severity": "high", "category": "terraform-data",
+    "description": "MSK cluster allowing plaintext client connections exposes Kafka messages.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set client_broker = \"TLS\" to enforce encrypted connections."
+  },
+  {
+    "id": "iac-tf-sagemaker-no-encryption",
+    "pattern": "resource\\s+\"aws_sagemaker_notebook_instance\"[\\s\\S]*?(?:(?!kms_key_id)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "SageMaker notebook without KMS encryption exposes ML data at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set kms_key_id on the SageMaker notebook instance."
+  },
+  {
+    "id": "iac-tf-sagemaker-direct-internet",
+    "pattern": "direct_internet_access\\s*=\\s*\"Enabled\"",
+    "severity": "medium", "category": "terraform-network",
+    "description": "SageMaker notebook with direct internet access enables data exfiltration.",
+    "cwe": "CWE-284", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set direct_internet_access = \"Disabled\" and use VPC endpoints."
+  },
+  {
+    "id": "iac-cfn-rds-no-encryption",
+    "pattern": "AWS::RDS::DBInstance[\\s\\S]*?StorageEncrypted:\\s*false",
+    "severity": "high", "category": "cloudformation",
+    "description": "CloudFormation RDS without storage encryption exposes database at rest.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set StorageEncrypted: true on the RDS instance."
+  },
+  {
+    "id": "iac-cfn-dynamodb-no-encryption",
+    "pattern": "AWS::DynamoDB::Table[\\s\\S]*?(?:(?!SSESpecification)[\\s\\S])*?Type:",
+    "severity": "medium", "category": "cloudformation",
+    "description": "CloudFormation DynamoDB table without server-side encryption.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add SSESpecification: { SSEEnabled: true } with KMS key."
+  },
+  {
+    "id": "iac-pulumi-eks-public",
+    "pattern": "new\\s+aws\\.eks\\.Cluster[\\s\\S]*?endpointPublicAccess:\\s*true",
+    "severity": "high", "category": "pulumi",
+    "description": "Pulumi EKS cluster with public API endpoint exposes Kubernetes to internet.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["typescript", "javascript"], "file_types": ["*.ts", "*.js"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set endpointPublicAccess: false and use private endpoint."
+  },
+  {
+    "id": "iac-tf-guardduty-disabled",
+    "pattern": "resource\\s+\"aws_guardduty_detector\"[\\s\\S]*?enable\\s*=\\s*false",
+    "severity": "medium", "category": "terraform-data",
+    "description": "GuardDuty disabled loses threat detection for the AWS account.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enable = true on the GuardDuty detector."
+  },
+  {
+    "id": "iac-tf-config-disabled",
+    "pattern": "resource\\s+\"aws_config_configuration_recorder_status\"[\\s\\S]*?is_enabled\\s*=\\s*false",
+    "severity": "medium", "category": "terraform-data",
+    "description": "AWS Config disabled loses continuous compliance monitoring.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": "CIS-3.5",
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set is_enabled = true to enable continuous resource recording."
+  },
+  {
+    "id": "iac-tf-athena-no-encryption",
+    "pattern": "resource\\s+\"aws_athena_workgroup\"[\\s\\S]*?(?:(?!encryption_configuration)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "Athena workgroup without encryption exposes query results.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add encryption_configuration with SSE_KMS in result_configuration."
+  },
+  {
+    "id": "iac-tf-kinesis-no-encryption",
+    "pattern": "resource\\s+\"aws_kinesis_stream\"[\\s\\S]*?encryption_type\\s*=\\s*\"NONE\"",
+    "severity": "medium", "category": "terraform-data",
+    "description": "Kinesis stream without encryption exposes streaming data.",
+    "cwe": "CWE-311", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set encryption_type = \"KMS\" with a kms_key_id."
+  },
+  {
+    "id": "iac-arm-keyvault-no-purge-protection",
+    "pattern": "enablePurgeProtection\"?:\\s*false",
+    "severity": "medium", "category": "arm-template",
+    "description": "ARM Key Vault without purge protection allows permanent secret destruction.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set enablePurgeProtection: true to prevent permanent deletion."
+  },
+  {
+    "id": "iac-arm-webapp-http",
+    "pattern": "httpsOnly\"?:\\s*false",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM Web App allowing HTTP traffic transmits data in cleartext.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set httpsOnly: true on the Web App resource."
+  },
+  {
+    "id": "iac-arm-min-tls",
+    "pattern": "minimumTlsVersion\"?:\\s*\"(?:1\\.0|1\\.1|TLS1_0|TLS1_1)\"",
+    "severity": "high", "category": "arm-template",
+    "description": "ARM resource with minimum TLS below 1.2 is vulnerable to protocol attacks.",
+    "cwe": "CWE-326", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.json", "*.bicep"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set minimumTlsVersion to \"1.2\" or higher."
+  },
+  {
+    "id": "iac-tf-ecr-mutable-tags",
+    "pattern": "image_tag_mutability\\s*=\\s*\"MUTABLE\"",
+    "severity": "medium", "category": "terraform-data",
+    "description": "ECR with mutable image tags allows overwriting images enabling supply chain attacks.",
+    "cwe": "CWE-829", "cve": null, "owasp": "A08:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set image_tag_mutability = \"IMMUTABLE\" to prevent tag overwrites."
+  },
+  {
+    "id": "iac-tf-lambda-env-secrets",
+    "pattern": "resource\\s+\"aws_lambda_function\"[\\s\\S]*?environment\\s*\\{[\\s\\S]*?(?:PASSWORD|SECRET|API_KEY|TOKEN)\\s*=\\s*\"[^\"]+\"",
+    "severity": "critical", "category": "terraform-state",
+    "description": "Lambda environment variable with hardcoded secret is visible in state and console.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "changeme"],
+    "fix_hint": "Use AWS Secrets Manager with dynamic reference; not hardcoded env vars."
+  },
+  {
+    "id": "iac-tf-rds-no-iam-auth",
+    "pattern": "resource\\s+\"aws_db_instance\"[\\s\\S]*?iam_database_authentication_enabled\\s*=\\s*false",
+    "severity": "low", "category": "terraform-data",
+    "description": "RDS without IAM authentication requires static database passwords.",
+    "cwe": "CWE-798", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Set iam_database_authentication_enabled = true for token-based auth."
+  },
+  {
+    "id": "iac-tf-s3-no-lifecycle",
+    "pattern": "resource\\s+\"aws_s3_bucket\"[\\s\\S]*?(?:(?!lifecycle_rule)[\\s\\S])*?\\}",
+    "severity": "low", "category": "terraform-s3",
+    "description": "S3 bucket without lifecycle rules may accumulate stale data and increase costs.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add lifecycle_rule with expiration for non-critical data and transition to Glacier."
+  },
+  {
+    "id": "iac-tf-ecs-no-logging",
+    "pattern": "resource\\s+\"aws_ecs_task_definition\"[\\s\\S]*?(?:(?!logConfiguration)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "ECS task without log configuration loses container output and error visibility.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add logConfiguration with awslogs driver pointing to CloudWatch."
+  },
+  {
+    "id": "iac-tf-cognito-no-password-policy",
+    "pattern": "resource\\s+\"aws_cognito_user_pool\"[\\s\\S]*?(?:(?!password_policy)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-data",
+    "description": "Cognito user pool without password policy allows weak user passwords.",
+    "cwe": "CWE-521", "cve": null, "owasp": "A07:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add password_policy with minimum_length >= 12 and require symbols/numbers."
+  },
+  {
+    "id": "iac-tf-sns-no-access-policy",
+    "pattern": "resource\\s+\"aws_sns_topic\"[\\s\\S]*?(?:(?!policy)[\\s\\S])*?\\}",
+    "severity": "low", "category": "terraform-data",
+    "description": "SNS topic without access policy may use overly permissive defaults.",
+    "cwe": "CWE-284", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add explicit SNS topic policy restricting publish/subscribe to specific principals."
+  },
+  {
+    "id": "iac-cfn-s3-no-versioning",
+    "pattern": "AWS::S3::Bucket[\\s\\S]*?(?:(?!VersioningConfiguration)[\\s\\S])*?Type:",
+    "severity": "medium", "category": "cloudformation",
+    "description": "CloudFormation S3 bucket without versioning risks unrecoverable data loss.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": "CIS-2.1.3",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add VersioningConfiguration: { Status: Enabled }."
+  },
+  {
+    "id": "iac-cfn-iam-user-inline",
+    "pattern": "AWS::IAM::User[\\s\\S]*?Policies:",
+    "severity": "medium", "category": "cloudformation",
+    "description": "CloudFormation IAM user with inline policies harder to audit than managed.",
+    "cwe": "CWE-284", "cve": null, "owasp": "A01:2021", "benchmark": "CIS-1.15",
+    "languages": ["*"], "file_types": ["*.yml", "*.yaml", "*.json", "*.template"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use managed policies attached via groups instead of inline user policies."
+  },
+  {
+    "id": "iac-tf-waf-no-logging",
+    "pattern": "resource\\s+\"aws_wafv2_web_acl\"[\\s\\S]*?(?:(?!logging_configuration)[\\s\\S])*?\\}",
+    "severity": "medium", "category": "terraform-network",
+    "description": "WAFv2 without logging configuration prevents forensic analysis of blocked requests.",
+    "cwe": "CWE-778", "cve": null, "owasp": "A09:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Add aws_wafv2_web_acl_logging_configuration resource with S3/CloudWatch destination."
+  },
+  {
+    "id": "iac-tf-route53-no-dnssec",
+    "pattern": "resource\\s+\"aws_route53_zone\"[\\s\\S]*?(?:(?!dnssec)[\\s\\S])*?\\}",
+    "severity": "low", "category": "terraform-network",
+    "description": "Route53 zone without DNSSEC signing allows DNS spoofing attacks.",
+    "cwe": "CWE-693", "cve": null, "owasp": null, "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Enable DNSSEC signing on the Route53 hosted zone."
+  },
+  {
+    "id": "iac-tf-nlb-no-tls",
+    "pattern": "resource\\s+\"aws_lb_listener\"[\\s\\S]*?protocol\\s*=\\s*\"TCP\"",
+    "severity": "medium", "category": "terraform-network",
+    "description": "NLB listener using TCP without TLS transmits data in plaintext.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "internal"],
+    "fix_hint": "Use protocol = \"TLS\" with ssl_policy for encrypted network load balancing."
+  },
+  {
+    "id": "iac-pulumi-py-iam-wildcard",
+    "pattern": "aws\\.iam\\.Policy\\([\\s\\S]*?['\"]\\*['\"][\\s\\S]*?Allow",
+    "severity": "critical", "category": "pulumi",
+    "description": "Pulumi Python IAM policy with wildcard action and Allow.",
+    "cwe": "CWE-250", "cve": null, "owasp": "A01:2021", "benchmark": null,
+    "languages": ["python"], "file_types": ["*.py"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Specify only required IAM actions following least-privilege."
+  },
+  {
+    "id": "iac-tf-alb-ssl-weak-policy",
+    "pattern": "ssl_policy\\s*=\\s*\"ELBSecurityPolicy-2016-08\"",
+    "severity": "medium", "category": "terraform-network",
+    "description": "ALB using outdated 2016 SSL policy supports weak cipher suites.",
+    "cwe": "CWE-326", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use ssl_policy = \"ELBSecurityPolicy-TLS13-1-2-2021-06\" or newer."
+  },
+  {
+    "id": "iac-tf-s3-cors-wildcard",
+    "pattern": "cors_rule\\s*\\{[\\s\\S]*?allowed_origins\\s*=\\s*\\[\\s*\"\\*\"\\s*\\]",
+    "severity": "medium", "category": "terraform-s3",
+    "description": "S3 CORS with wildcard origin allows any website to read bucket contents.",
+    "cwe": "CWE-346", "cve": null, "owasp": "A05:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake", "public"],
+    "fix_hint": "Restrict allowed_origins to specific trusted domains."
+  },
+  {
+    "id": "iac-tf-transfer-server-no-tls",
+    "pattern": "resource\\s+\"aws_transfer_server\"[\\s\\S]*?protocols\\s*=\\s*\\[\\s*\"FTP\"",
+    "severity": "high", "category": "terraform-network",
+    "description": "AWS Transfer Family using FTP instead of SFTP transmits files without encryption.",
+    "cwe": "CWE-319", "cve": null, "owasp": "A02:2021", "benchmark": null,
+    "languages": ["*"], "file_types": ["*.tf"],
+    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "fix_hint": "Use protocols = [\"SFTP\"] or [\"FTPS\"] for encrypted file transfer."
+  }
+]
