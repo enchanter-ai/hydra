@@ -9,9 +9,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["html", "markdown"],
-    "file_types": ["*.html", "*.md", "*.htm"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "html",
+      "markdown"
+    ],
+    "file_types": [
+      "*.html",
+      "*.md",
+      "*.htm"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hidden instructions from HTML comments; they attempt to hijack AI assistant behavior."
   },
   {
@@ -24,9 +38,28 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove injected directives from code comments; these target AI code review tools."
   },
   {
@@ -39,9 +72,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["python"],
-    "file_types": ["*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "python"
+    ],
+    "file_types": [
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove prompt injection attempts from Python comments."
   },
   {
@@ -54,9 +98,32 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "ruby", "markdown"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "ruby",
+      "markdown"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.rb",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove zero-width space characters (U+200B) from source files."
   },
   {
@@ -69,9 +136,32 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "ruby", "markdown"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "ruby",
+      "markdown"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.rb",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove zero-width joiner characters (U+200D) from source files."
   },
   {
@@ -84,9 +174,30 @@
     "cve": "CVE-2021-42574",
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "ruby"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "ruby"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.rb"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove RTL override characters (U+202E); these create Trojan Source attacks."
   },
   {
@@ -99,9 +210,32 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "ruby", "markdown"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "ruby",
+      "markdown"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.rb",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove soft hyphen characters (U+00AD) from source files."
   },
   {
@@ -114,9 +248,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove system prompt extraction attempts from repository files."
   },
   {
@@ -129,9 +277,29 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html", "javascript", "typescript", "python"],
-    "file_types": ["*.md", "*.html", "*.js", "*.ts", "*.py", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove instruction override text from the file."
   },
   {
@@ -144,9 +312,29 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html", "javascript", "typescript", "python"],
-    "file_types": ["*.md", "*.html", "*.js", "*.ts", "*.py", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove fake instruction replacement text from repository files."
   },
   {
@@ -159,9 +347,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove role reassignment language from repository files."
   },
   {
@@ -174,9 +376,30 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "html"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.html"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "html"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.html"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Decode and inspect base64 strings in comments; remove if they contain hidden instructions."
   },
   {
@@ -189,9 +412,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["html", "markdown"],
-    "file_types": ["*.html", "*.htm", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "html",
+      "markdown"
+    ],
+    "file_types": [
+      "*.html",
+      "*.htm",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hidden text elements; they may contain instructions targeting AI assistants."
   },
   {
@@ -204,9 +441,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hidden markdown links containing instruction-like text in the URL."
   },
   {
@@ -219,9 +467,26 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "rust"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.rs"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "rust"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.rs"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Rename variables that use prompt injection vocabulary."
   },
   {
@@ -234,9 +499,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-targeted directives from README files."
   },
   {
@@ -249,9 +525,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-targeted directives from CONTRIBUTING.md."
   },
   {
@@ -264,9 +551,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["shell"],
-    "file_types": [".env.example", ".env.sample"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "shell"
+    ],
+    "file_types": [
+      ".env.example",
+      ".env.sample"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove prompt injection text from env example files."
   },
   {
@@ -279,9 +578,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["shell"],
-    "file_types": ["*.sh"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "shell"
+    ],
+    "file_types": [
+      "*.sh"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Do not include AI-targeting instructions in commit messages."
   },
   {
@@ -294,9 +604,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-targeting directives from PR/issue templates."
   },
   {
@@ -309,9 +630,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["csv", "json"],
-    "file_types": ["*.csv", "*.json", "*.jsonl"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "csv",
+      "json"
+    ],
+    "file_types": [
+      "*.csv",
+      "*.json",
+      "*.jsonl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Sanitize data files to remove AI-targeting instruction text."
   },
   {
@@ -324,9 +659,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["python"],
-    "file_types": ["*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "python"
+    ],
+    "file_types": [
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-addressed text from docstrings."
   },
   {
@@ -339,9 +685,30 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go", "ruby"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go", "*.rb"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go",
+      "ruby"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go",
+      "*.rb"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-targeted directive comments from source code."
   },
   {
@@ -354,9 +721,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove prompt injection strings from JSON data fields."
   },
   {
@@ -369,9 +747,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove AI-targeting directives from changelog files."
   },
   {
@@ -384,9 +774,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove injected instructions from MCP tool descriptions."
   },
   {
@@ -399,9 +801,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove action-chaining instructions from MCP tool descriptions."
   },
   {
@@ -414,9 +828,21 @@
     "cve": null,
     "owasp": "A10:2021",
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use only HTTPS URLs to trusted external endpoints in MCP tool configurations."
   },
   {
@@ -429,9 +855,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove data forwarding instructions from MCP tool descriptions."
   },
   {
@@ -444,9 +882,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Apply least-privilege: grant only the specific permissions the MCP tool actually needs."
   },
   {
@@ -459,9 +909,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Enable sandboxing for MCP tool execution."
   },
   {
@@ -474,9 +936,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Only connect to trusted, verified MCP servers; pin versions and verify checksums."
   },
   {
@@ -489,9 +963,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Rename MCP tools to avoid shadowing built-in tool names."
   },
   {
@@ -504,9 +990,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add authentication to the MCP transport layer."
   },
   {
@@ -519,9 +1017,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Restrict MCP resource URIs to project-scoped paths only."
   },
   {
@@ -534,9 +1044,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["*.json", "mcp.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "*.json",
+      "mcp.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Define strict input schemas with required properties and type constraints for MCP tools."
   },
   {
@@ -549,9 +1071,28 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "ruby", "java"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.rb", "*.java"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "ruby",
+      "java"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.rb",
+      "*.java"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never encode secrets for output; use secure secret storage and access patterns."
   },
   {
@@ -564,9 +1105,26 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Do not URL-encode secrets; they should never appear in URLs."
   },
   {
@@ -579,9 +1137,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove dynamic data from image URLs; use server-side rendering for dynamic content."
   },
   {
@@ -594,9 +1163,24 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Do not encode secrets in any format for output."
   },
   {
@@ -609,9 +1193,26 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "go"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.go"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "go"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.go"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never embed secrets in DNS queries; this is a data exfiltration technique."
   },
   {
@@ -624,9 +1225,24 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never send secrets to external webhooks; use secure vault retrieval patterns."
   },
   {
@@ -639,9 +1255,22 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript"],
-    "file_types": ["*.js", "*.ts"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review character encoding operations on model output for potential data exfiltration."
   },
   {
@@ -654,9 +1283,22 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript"],
-    "file_types": ["*.js", "*.ts"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never send process.env contents to external URLs."
   },
   {
@@ -669,9 +1311,24 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never copy secrets to the clipboard; use secure secret injection methods."
   },
   {
@@ -684,9 +1341,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove DAN jailbreak patterns from repository files."
   },
   {
@@ -699,9 +1370,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove role reassignment jailbreak text from repository files."
   },
   {
@@ -714,9 +1399,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hypothetical framing jailbreak text from repository files."
   },
   {
@@ -729,9 +1428,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove encoding trick jailbreak text from repository files."
   },
   {
@@ -744,9 +1457,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove multi-language jailbreak instructions from repository files."
   },
   {
@@ -759,9 +1486,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove nested instruction jailbreak text from repository files."
   },
   {
@@ -774,9 +1515,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove token manipulation jailbreak patterns from repository files."
   },
   {
@@ -789,9 +1544,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove emotional manipulation jailbreak text from repository files."
   },
   {
@@ -804,9 +1573,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove authority impersonation text from repository files."
   },
   {
@@ -819,9 +1602,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove markdown blocks labeled with prompt injection keywords."
   },
   {
@@ -834,9 +1628,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove fake mode activation text from repository files."
   },
   {
@@ -849,9 +1657,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove self-modification directives from repository files."
   },
   {
@@ -864,9 +1686,29 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html", "javascript", "typescript", "python"],
-    "file_types": ["*.md", "*.html", "*.txt", "*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt",
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove safety-disabling instructions from repository files."
   },
   {
@@ -879,9 +1721,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove instructions to install suspicious packages."
   },
   {
@@ -894,9 +1750,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove instructions to write to system directories."
   },
   {
@@ -909,9 +1779,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove instructions for executing dangerous shell commands."
   },
   {
@@ -924,9 +1808,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Do not instruct AI to write secrets to .env files; use secure secret management."
   },
   {
@@ -939,9 +1837,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove self-replication instructions targeting AI agents."
   },
   {
@@ -954,9 +1864,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Do not delete AI safety configuration files."
   },
   {
@@ -969,9 +1893,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "shell"],
-    "file_types": ["*.md", "*.sh", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "shell"
+    ],
+    "file_types": [
+      "*.md",
+      "*.sh",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never commit secrets to version control; use .gitignore for sensitive files."
   },
   {
@@ -984,9 +1922,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove system prompt extraction attempts from repository files."
   },
   {
@@ -999,9 +1951,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove membership inference probes from repository files."
   },
   {
@@ -1014,9 +1980,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove model inversion attack patterns from repository files."
   },
   {
@@ -1029,9 +2009,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove error-triggering prompt leak patterns from repository files."
   },
   {
@@ -1044,9 +2038,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove direct system prompt extraction queries from repository files."
   },
   {
@@ -1059,9 +2067,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove verbatim prompt extraction requests from repository files."
   },
   {
@@ -1074,9 +2096,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review and remove hidden security bypass instructions from .cursorrules."
   },
   {
@@ -1089,9 +2122,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review and remove hidden directives from copilot-instructions.md."
   },
   {
@@ -1104,9 +2148,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": ["*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review and remove security bypass instructions from CLAUDE.md/AGENTS.md."
   },
   {
@@ -1119,9 +2174,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Strip all invisible Unicode characters from rules files."
   },
   {
@@ -1134,9 +2201,27 @@
     "cve": "CVE-2021-42574",
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "javascript", "typescript", "python"],
-    "file_types": [".cursorrules", "*.md", "*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md",
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Replace Cyrillic homoglyphs with their Latin equivalents."
   },
   {
@@ -1149,9 +2234,27 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "markdown"],
-    "file_types": [".cursorrules", "*.md", "*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md",
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove executable code from rules file comments."
   },
   {
@@ -1164,9 +2267,26 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": [".cursorrules", "*.md", "*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md",
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Decode and inspect base64 payloads in rules files; remove if malicious."
   },
   {
@@ -1179,9 +2299,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove file-write-triggered injection rules from AI configuration files."
   },
   {
@@ -1194,9 +2326,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove commit-triggered injection rules from AI configuration files."
   },
   {
@@ -1209,9 +2353,27 @@
     "cve": "CVE-2021-42574",
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "javascript", "typescript", "python"],
-    "file_types": [".cursorrules", "*.md", "*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md",
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove all bidirectional override characters from source and rules files."
   },
   {
@@ -1224,9 +2386,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove instructions to skip security reviews from AI rules files."
   },
   {
@@ -1239,9 +2413,21 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown"],
-    "file_types": [".cursorrules", "*.md"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "*.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove automatic approval instructions from AI rules files."
   },
   {
@@ -1254,9 +2440,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json"],
-    "file_types": ["package.json"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      "package.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Verify version pins for historically compromised packages and use lockfiles."
   },
   {
@@ -1269,9 +2466,24 @@
     "cve": null,
     "owasp": "A03:2021",
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Replace eval() with a safe parsing mechanism; never use eval on untrusted input."
   },
   {
@@ -1284,9 +2496,24 @@
     "cve": null,
     "owasp": "A03:2021",
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Replace string interpolation with parameterized queries."
   },
   {
@@ -1299,9 +2526,28 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java", "go"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java", "*.go"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java",
+      "go"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Replace hardcoded credentials with environment variable lookups."
   },
   {
@@ -1314,9 +2560,20 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": null,
-    "languages": ["python"],
-    "file_types": ["*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "python"
+    ],
+    "file_types": [
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use safetensors format instead of pickle for model loading; verify model checksums."
   },
   {
@@ -1329,9 +2586,20 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["python"],
-    "file_types": ["*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "python"
+    ],
+    "file_types": [
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set trust_remote_code=False and use only verified models, or audit the remote code first."
   },
   {
@@ -1344,9 +2612,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove summarization-based prompt leak attempts from repository files."
   },
   {
@@ -1359,9 +2641,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove fake debug mode prompt leak patterns from repository files."
   },
   {
@@ -1374,9 +2670,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove prompt reformatting extraction patterns from repository files."
   },
   {
@@ -1389,9 +2699,29 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html", "javascript", "typescript", "python"],
-    "file_types": ["*.md", "*.html", "*.js", "*.ts", "*.py", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html",
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review and remove suspicious keyword clusters from files."
   },
   {
@@ -1404,9 +2734,26 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python", "java"],
-    "file_types": ["*.js", "*.ts", "*.py", "*.java"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python",
+      "java"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove prompt injection text from error messages."
   },
   {
@@ -1419,9 +2766,24 @@
     "cve": null,
     "owasp": "A03:2021",
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Replace shell execution with library calls; use parameterized subprocess invocations."
   },
   {
@@ -1434,9 +2796,23 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["markdown", "html"],
-    "file_types": ["*.md", "*.html", "*.txt"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.html",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove opposite-day jailbreak patterns from repository files."
   },
   {
@@ -1449,9 +2825,24 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["json", "javascript", "typescript"],
-    "file_types": ["*.json", "*.js", "*.ts"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "json",
+      "javascript",
+      "typescript"
+    ],
+    "file_types": [
+      "*.json",
+      "*.js",
+      "*.ts"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Sanitize API response data before passing it to AI processing pipelines."
   },
   {
@@ -1464,9 +2855,24 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Review and remove scheduled exfiltration patterns."
   },
   {
@@ -1479,9 +2885,345 @@
     "cve": null,
     "owasp": null,
     "benchmark": null,
-    "languages": ["javascript", "typescript", "python"],
-    "file_types": ["*.js", "*.ts", "*.py"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Verify the package name is correct and not a typosquatted malicious package."
+  },
+  {
+    "id": "ai-mcp-tool-description-inject",
+    "pattern": "(?:description|toolDescription)\\s*[=:]\\s*['\"][^'\"]*(?:ignore|override|system|execute|shell|admin)",
+    "severity": "critical",
+    "category": "mcp-attack",
+    "description": "MCP tool description containing instruction-like keywords may poison agent behavior.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": "A03:2021",
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.json",
+      "*.ts",
+      "*.js",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Review MCP tool descriptions for hidden instructions; keep descriptions factual."
+  },
+  {
+    "id": "ai-exfil-dns-subdomain-v2",
+    "pattern": "\\$\\{[^}]*\\}\\.(?:evil|attacker|exfil|leak|oob)[^.]*\\.\\w+",
+    "severity": "critical",
+    "category": "data-exfiltration",
+    "description": "DNS exfiltration pattern encoding secrets as subdomains of attacker domain.",
+    "cwe": "CWE-200",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java",
+      "*.go"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Block outbound DNS with variable interpolation to untrusted domains."
+  },
+  {
+    "id": "ai-rules-invisible-homoglyph",
+    "pattern": "[\\u0410-\\u044F\\u0391-\\u03C9\\u0600-\\u06FF]",
+    "severity": "high",
+    "category": "rules-backdoor",
+    "description": "Non-Latin characters (Cyrillic, Greek, Arabic) in code rules files may be homoglyph attacks.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "CLAUDE.md",
+      "AGENTS.md",
+      ".github/copilot-instructions.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "i18n",
+      "translation",
+      "locale"
+    ],
+    "fix_hint": "Review rules files for non-ASCII characters that may be homoglyphs."
+  },
+  {
+    "id": "ai-jailbreak-developer-mode-v2",
+    "pattern": "(?:developer\\s+mode|dev\\s+mode|maintenance\\s+mode)\\s+(?:enabled|activated|on)",
+    "severity": "high",
+    "category": "jailbreak",
+    "description": "Developer/maintenance mode activation pattern may be a jailbreak attempt.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.md",
+      "*.txt",
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake",
+      "changelog"
+    ],
+    "fix_hint": "Ignore developer mode instructions in user-facing content."
+  },
+  {
+    "id": "ai-agent-write-env",
+    "pattern": "(?:write|create|modify|edit|append)\\s+(?:to\\s+)?(?:\\.env|credentials|secrets|private_key)",
+    "severity": "high",
+    "category": "agent-abuse",
+    "description": "Instruction to modify .env or secrets files may be social engineering attack on AI agent.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.md",
+      "*.txt",
+      "*.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake",
+      "docs",
+      "guide"
+    ],
+    "fix_hint": "Verify intent before modifying security-sensitive files."
+  },
+  {
+    "id": "ai-indirect-inject-csv",
+    "pattern": "(?:IMPORTANT|NOTE|INSTRUCTION|SYSTEM|ADMIN|OVERRIDE)[:\\s]+(?:ignore|disregard|forget|override|execute)",
+    "severity": "high",
+    "category": "indirect-injection",
+    "description": "Instruction-like text in data files attempting indirect prompt injection.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.csv",
+      "*.json",
+      "*.xml",
+      "*.yaml",
+      "*.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Sanitize data files before processing with AI; treat data as untrusted."
+  },
+  {
+    "id": "ai-model-pickle-load",
+    "pattern": "(?:torch|tensorflow|joblib|pickle)\\.load\\([^)]*(?:url|download|remote|user|untrusted)",
+    "severity": "critical",
+    "category": "ai-supply-chain",
+    "description": "Loading AI model from untrusted source via pickle enables arbitrary code execution.",
+    "cwe": "CWE-502",
+    "cve": null,
+    "owasp": "A08:2021",
+    "benchmark": null,
+    "languages": [
+      "python"
+    ],
+    "file_types": [
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Use safetensors format; verify model checksums before loading."
+  },
+  {
+    "id": "ai-prompt-base64-encoded",
+    "pattern": "(?:atob|base64\\.b64decode|Base64\\.decode)\\([^)]*\\)(?:(?!test|example)[\\s\\S]){0,50}(?:eval|exec|system|prompt)",
+    "severity": "high",
+    "category": "prompt-injection",
+    "description": "Base64-decoded content passed to eval/exec may contain hidden prompt injection.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py",
+      "*.java"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Never execute decoded content without validation; treat as untrusted."
+  },
+  {
+    "id": "ai-rules-base64-payload",
+    "pattern": "(?:base64|b64|encoded|decode)[\\s\\S]{0,20}(?:[A-Za-z0-9+/=]{40,})",
+    "severity": "high",
+    "category": "rules-backdoor",
+    "description": "Base64-encoded payload in rules file may contain obfuscated malicious instructions.",
+    "cwe": "CWE-94",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      ".cursorrules",
+      "CLAUDE.md",
+      "AGENTS.md",
+      ".github/copilot-instructions.md"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "image",
+      "icon"
+    ],
+    "fix_hint": "Decode and review base64 content in rules files; remove if suspicious."
+  },
+  {
+    "id": "ai-training-extract-repeat",
+    "pattern": "(?:repeat|print|output|show|display)\\s+(?:the\\s+)?(?:above|previous|system|initial)\\s+(?:prompt|instructions|message|text)",
+    "severity": "medium",
+    "category": "training-extraction",
+    "description": "Prompt extraction attempt trying to reveal system instructions.",
+    "cwe": "CWE-200",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "*.md",
+      "*.txt",
+      "*.json"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake",
+      "docs"
+    ],
+    "fix_hint": "Block prompt extraction patterns; don't reveal system prompts."
+  },
+  {
+    "id": "ai-mcp-no-auth",
+    "pattern": "(?:StdioServerTransport|SSEServerTransport)\\([\\s\\S]*?(?:(?!auth|token|apiKey|secret)[\\s\\S])*?\\)",
+    "severity": "high",
+    "category": "mcp-attack",
+    "description": "MCP server transport without authentication allows unauthorized tool access.",
+    "cwe": "CWE-284",
+    "cve": null,
+    "owasp": "A07:2021",
+    "benchmark": null,
+    "languages": [
+      "javascript",
+      "typescript",
+      "python"
+    ],
+    "file_types": [
+      "*.js",
+      "*.ts",
+      "*.py"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake",
+      "local"
+    ],
+    "fix_hint": "Add authentication to MCP server transport; validate client tokens."
   }
 ]
