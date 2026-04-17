@@ -1,6 +1,6 @@
 # Reaper Development Roadmap
 
-**Vision:** Build the most comprehensive security guardrail system for AI-assisted development. 8 named algorithms, 5 plugins, real-time protection backed by real CVEs.
+**Vision:** Build the most comprehensive security guardrail system for AI-assisted development. 8 named algorithms, 5 plugins, 2,011 patterns across 20 databases, 98 CWEs — real-time protection backed by real CVEs.
 
 ## Phases
 
@@ -23,8 +23,10 @@ Real-time detection of secrets and vulnerabilities in every file write.
 | audit-trail | R8: Bayesian Threat Convergence | Shipped |
 
 ### Milestone
-- 200+ secret patterns with grep-based <50ms matching
-- OWASP Top 10 coverage with CWE mapping
+- 310 secret patterns with grep-based <50ms matching
+- OWASP Top 10 coverage with CWE mapping + 15 extended pattern databases (1,124 new patterns)
+- 2,011 total patterns covering CI/CD, containers, IaC, crypto, auth, SSRF, API, AI/LLM, ReDoS, deserialization, file ops, logging, prototype pollution, supply chain, HTTP headers
+- 98 unique CWEs, 30+ CVE references
 - JSONL audit logging with 10MB rotation
 - Dark-themed HTML security reports
 
