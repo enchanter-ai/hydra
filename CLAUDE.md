@@ -6,15 +6,15 @@ Audience: Claude. Reaper intercepts secrets, OWASP vulnerabilities, dangerous co
 
 These apply to every skill in every plugin. Load once; do not re-derive.
 
-- @shared/discipline.md — coding conduct: think-first, simplicity, surgical edits, goal-driven loops
-- @shared/context.md — attention-budget hygiene, U-curve placement, checkpoint protocol
-- @shared/verification.md — independent checks, baseline snapshots, dry-run for destructive ops
-- @shared/delegation.md — subagent contracts, tool whitelisting, parallel vs. serial rules
-- @shared/failure-modes.md — 14-code taxonomy for accumulated-learning logs
-- @shared/tool-use.md — tool-choice hygiene, error payload contract, parallel-dispatch rules
-- @shared/skill-authoring.md — SKILL.md frontmatter discipline, discovery test
-- @shared/hooks.md — advisory-only hooks, injection over denial, fail-open
-- @shared/precedent.md — log self-observed failures to `state/precedent-log.md`; consult before risky steps
+- @shared/conduct/discipline.md — coding conduct: think-first, simplicity, surgical edits, goal-driven loops
+- @shared/conduct/context.md — attention-budget hygiene, U-curve placement, checkpoint protocol
+- @shared/conduct/verification.md — independent checks, baseline snapshots, dry-run for destructive ops
+- @shared/conduct/delegation.md — subagent contracts, tool whitelisting, parallel vs. serial rules
+- @shared/conduct/failure-modes.md — 14-code taxonomy for accumulated-learning logs
+- @shared/conduct/tool-use.md — tool-choice hygiene, error payload contract, parallel-dispatch rules
+- @shared/conduct/skill-authoring.md — SKILL.md frontmatter discipline, discovery test
+- @shared/conduct/hooks.md — advisory-only hooks, injection over denial, fail-open
+- @shared/conduct/precedent.md — log self-observed failures to `state/precedent-log.md`; consult before risky steps
 
 When a module conflicts with a plugin-local instruction, the plugin wins — but log the override.
 

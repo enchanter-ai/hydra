@@ -39,14 +39,15 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 - [The Numbers](#the-numbers)
 - [Why This Exists](#why-this-exists)
 - [How It Works](#how-it-works)
-- [The 20 Pattern Databases](#the-20-pattern-databases)
 - [What Makes Reaper Different](#what-makes-reaper-different)
 - [The Full Lifecycle](#the-full-lifecycle)
-- [Install](#install)
+- [The 20 Pattern Databases](#the-20-pattern-databases)
 - [5 Plugins, 5 Agents, 2,011 Patterns](#5-plugins-5-agents-2011-patterns)
 - [What You Get Per Session](#what-you-get-per-session)
+- [Install](#install)
 - [The Science Behind Reaper](#the-science-behind-reaper)
 - [vs Everything Else](#vs-everything-else)
+- [Agent Conduct (9 Modules)](#agent-conduct-9-modules)
 - [Architecture](#architecture)
 - [Testing](#testing)
 - [Contributing](#contributing)
@@ -370,21 +371,21 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 | Dependencies | **bash + jq (stdlib)** | GitHub | Node.js | Python | SaaS |
 | Price | **Free (MIT)** | Free (public) / $$ | $$$ | Free / $$$ | $$$ |
 
-## Behavioral modules
+## Agent Conduct (9 Modules)
 
-Every skill inherits a set of reusable behavioral contracts from [shared/](shared/) — loaded once into [CLAUDE.md](CLAUDE.md), applied across all plugins.
+Every skill inherits a reusable behavioral contract from [shared/](shared/) — loaded once into [CLAUDE.md](CLAUDE.md), applied across all plugins. This is how Claude *acts* inside Reaper: deterministic, surgical, verifiable. Not a suggestion; a contract.
 
 | Module | What it governs |
 |--------|-----------------|
-| [discipline.md](shared/discipline.md) | Coding conduct: think-first, simplicity, surgical edits, goal-driven loops |
-| [context.md](shared/context.md) | Attention-budget hygiene, U-curve placement, checkpoint protocol |
-| [verification.md](shared/verification.md) | Independent checks, baseline snapshots, dry-run for destructive ops |
-| [delegation.md](shared/delegation.md) | Subagent contracts, tool whitelisting, parallel vs. serial rules |
-| [failure-modes.md](shared/failure-modes.md) | 14-code taxonomy for accumulated-learning logs |
-| [tool-use.md](shared/tool-use.md) | Tool-choice hygiene, error payload contract, parallel-dispatch rules |
-| [skill-authoring.md](shared/skill-authoring.md) | SKILL.md frontmatter discipline, discovery test |
-| [hooks.md](shared/hooks.md) | Advisory-only hooks, injection over denial, fail-open |
-| [precedent.md](shared/precedent.md) | Log self-observed failures to `state/precedent-log.md`; consult before risky steps |
+| [discipline.md](shared/conduct/discipline.md) | Coding conduct: think-first, simplicity, surgical edits, goal-driven loops |
+| [context.md](shared/conduct/context.md) | Attention-budget hygiene, U-curve placement, checkpoint protocol |
+| [verification.md](shared/conduct/verification.md) | Independent checks, baseline snapshots, dry-run for destructive ops |
+| [delegation.md](shared/conduct/delegation.md) | Subagent contracts, tool whitelisting, parallel vs. serial rules |
+| [failure-modes.md](shared/conduct/failure-modes.md) | 14-code taxonomy for accumulated-learning logs |
+| [tool-use.md](shared/conduct/tool-use.md) | Tool-choice hygiene, error payload contract, parallel-dispatch rules |
+| [skill-authoring.md](shared/conduct/skill-authoring.md) | SKILL.md frontmatter discipline, discovery test |
+| [hooks.md](shared/conduct/hooks.md) | Advisory-only hooks, injection over denial, fail-open |
+| [precedent.md](shared/conduct/precedent.md) | Log self-observed failures to `state/precedent-log.md`; consult before risky steps |
 
 ## Architecture
 
