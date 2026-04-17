@@ -9,9 +9,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-4.1",
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add USER nonroot or USER 1000 before CMD/ENTRYPOINT."
   },
   {
@@ -24,9 +36,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-4.1",
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add a USER directive before CMD/ENTRYPOINT."
   },
   {
@@ -39,9 +63,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use .dockerignore to exclude sensitive files; COPY only needed files explicitly."
   },
   {
@@ -54,9 +90,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": "CIS-4.7",
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Pin base images to specific version tags or SHA digests."
   },
   {
@@ -69,9 +117,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": "CIS-4.7",
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Always specify explicit version tags or SHA digests in FROM."
   },
   {
@@ -84,9 +144,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use RUN curl -o file URL && sha256sum --check checksum && COPY instead of ADD."
   },
   {
@@ -99,9 +171,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use Docker secrets, build-time --secret mount, or runtime environment variables."
   },
   {
@@ -114,9 +198,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use --secret flag with BuildKit: RUN --mount=type=secret,id=mysecret."
   },
   {
@@ -129,9 +225,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-4.6",
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add HEALTHCHECK instruction to detect application failures."
   },
   {
@@ -144,9 +252,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use tini or dumb-init as PID 1, or use --init flag with docker run."
   },
   {
@@ -159,9 +279,21 @@
     "cve": null,
     "owasp": "A06:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use apt-get install --no-install-recommends to minimize image size."
   },
   {
@@ -174,9 +306,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add && rm -rf /var/lib/apt/lists/* after apt-get install."
   },
   {
@@ -189,9 +333,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove SSH from containers; use kubectl exec or docker exec for debugging."
   },
   {
@@ -204,9 +360,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use internal networking; expose database ports only to application containers."
   },
   {
@@ -219,9 +387,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Download file, verify checksum, then execute separately."
   },
   {
@@ -234,9 +414,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove sudo; use multi-stage builds with appropriate USER directives."
   },
   {
@@ -249,9 +441,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set WORKDIR to a non-root directory early in the Dockerfile."
   },
   {
@@ -264,9 +468,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use BuildKit --secret mount instead of ENV/ARG for secrets."
   },
   {
@@ -279,9 +495,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use minimal permissions (e.g., chmod 755 for executables, 644 for files)."
   },
   {
@@ -294,9 +522,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use apk add --no-cache to avoid caching package index."
   },
   {
@@ -309,9 +549,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove RDP exposure from containers."
   },
   {
@@ -324,9 +576,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Install packages in a virtual environment or use --user flag with non-root USER."
   },
   {
@@ -339,9 +603,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Switch to non-root USER before npm install."
   },
   {
@@ -354,9 +630,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use IAM roles, instance profiles, or runtime environment variables for AWS credentials."
   },
   {
@@ -369,9 +657,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": null,
-    "languages": ["dockerfile"],
-    "file_types": ["Dockerfile", "Dockerfile.*"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "dockerfile"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "Dockerfile.*"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use COPY and explicit tar extraction with safe flags."
   },
   {
@@ -384,9 +684,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.1",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove privileged: true; use specific capabilities if needed."
   },
   {
@@ -399,9 +711,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.4",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hostNetwork: true; use Kubernetes services for networking."
   },
   {
@@ -414,9 +738,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.2",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hostPID: true; containers should use their own PID namespace."
   },
   {
@@ -429,9 +765,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.3",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove hostIPC: true; use Kubernetes volumes for inter-container communication."
   },
   {
@@ -444,9 +792,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.8",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Drop ALL capabilities and add only specific ones needed."
   },
   {
@@ -459,9 +819,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.8",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove SYS_ADMIN capability; use specific capabilities instead."
   },
   {
@@ -474,9 +846,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.8",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Drop NET_RAW unless the application specifically needs raw socket access."
   },
   {
@@ -489,9 +873,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.8",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove SYS_PTRACE; use ephemeral debug containers if needed."
   },
   {
@@ -504,9 +900,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.5",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set allowPrivilegeEscalation: false in securityContext."
   },
   {
@@ -519,9 +927,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.4.1",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add resources.limits.cpu and resources.limits.memory to all containers."
   },
   {
@@ -534,9 +954,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Avoid hostPath volumes; use PersistentVolumeClaims instead."
   },
   {
@@ -549,9 +981,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use ConfigMaps instead of mounting host /etc directory."
   },
   {
@@ -564,9 +1008,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never mount Docker socket; use kaniko or buildah for in-cluster builds."
   },
   {
@@ -579,9 +1035,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.1.5",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set automountServiceAccountToken: false unless the pod needs API access."
   },
   {
@@ -594,9 +1062,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.6",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set runAsUser to a non-root UID (e.g., 1000) and runAsNonRoot: true."
   },
   {
@@ -609,9 +1089,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add sizeLimit to emptyDir volumes (e.g., emptyDir: {sizeLimit: 1Gi})."
   },
   {
@@ -624,9 +1116,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use kubectl proxy for dashboard access; never expose via NodePort/LoadBalancer."
   },
   {
@@ -639,9 +1143,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Upgrade to Helm 3 which removes Tiller; or enable TLS for Tiller."
   },
   {
@@ -654,9 +1170,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.1.3",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Specify only required verbs (get, list, watch, create, update, delete)."
   },
   {
@@ -669,9 +1197,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.1.3",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Specify only the exact resources needed."
   },
   {
@@ -684,9 +1224,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.7",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set readOnlyRootFilesystem: true and use emptyDir for writable paths."
   },
   {
@@ -699,9 +1251,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.7.2",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add seccompProfile: {type: RuntimeDefault} to securityContext."
   },
   {
@@ -714,9 +1278,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.1.5",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Create dedicated service accounts for pods that need API access."
   },
   {
@@ -729,9 +1305,21 @@
     "cve": "CVE-2020-8554",
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Avoid externalIPs; use LoadBalancer services or Ingress controllers."
   },
   {
@@ -744,9 +1332,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add TLS section to Ingress with a valid certificate."
   },
   {
@@ -759,9 +1359,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use ClusterIP services; expose only through Ingress with authentication."
   },
   {
@@ -774,9 +1386,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": "CIS-1.2.1",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set --anonymous-auth=false on the API server."
   },
   {
@@ -789,9 +1413,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": "CIS-1.2.29",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Configure encryption-at-rest for etcd using EncryptionConfiguration."
   },
   {
@@ -804,9 +1440,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Pin images to specific tags or set imagePullPolicy: Always with :latest."
   },
   {
@@ -819,9 +1467,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Mount secrets as volumes instead of environment variables."
   },
   {
@@ -834,9 +1494,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never mount /proc from host; containers have their own /proc."
   },
   {
@@ -849,9 +1521,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never mount /sys from host."
   },
   {
@@ -864,9 +1548,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.2.9",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use PersistentVolumeClaims instead of hostPath."
   },
   {
@@ -879,9 +1575,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.2.6",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set runAsNonRoot: true in pod securityContext."
   },
   {
@@ -894,9 +1602,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.1.1",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use fine-grained RBAC with specific apiGroups, resources, and verbs."
   },
   {
@@ -909,9 +1629,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add loadBalancerSourceRanges to restrict access to known CIDRs."
   },
   {
@@ -924,9 +1656,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use external secrets operators (Vault, AWS Secrets Manager, SealedSecrets)."
   },
   {
@@ -939,9 +1683,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": "CIS-1.2.19",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set --insecure-port=0 to disable unencrypted API server access."
   },
   {
@@ -954,9 +1710,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-1.2.18",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set --profiling=false on API server and controller manager."
   },
   {
@@ -969,9 +1737,21 @@
     "cve": null,
     "owasp": "A09:2021",
     "benchmark": "CIS-1.2.22",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Configure --audit-log-path with proper audit policy."
   },
   {
@@ -984,9 +1764,21 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use Helm secrets plugin or reference external secret stores."
   },
   {
@@ -999,9 +1791,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yaml", "*.yml", "*.tpl"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yaml",
+      "*.yml",
+      "*.tpl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add securityContext with runAsNonRoot, readOnlyRootFilesystem, and drop ALL capabilities."
   },
   {
@@ -1014,9 +1819,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yaml", "*.yml", "*.tpl"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yaml",
+      "*.yml",
+      "*.tpl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Default privileged to false in chart values."
   },
   {
@@ -1029,9 +1847,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Upgrade to Helm 3 which eliminates the Tiller component."
   },
   {
@@ -1044,9 +1874,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["Chart.yaml", "requirements.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "Chart.yaml",
+      "requirements.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Always use HTTPS for Helm chart repositories."
   },
   {
@@ -1059,9 +1901,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set default resource limits and requests in values.yaml."
   },
   {
@@ -1074,9 +1928,22 @@
     "cve": null,
     "owasp": "A06:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yaml", "*.yml", "*.tpl"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yaml",
+      "*.yml",
+      "*.tpl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Update to current API versions (e.g., apps/v1 for Deployments)."
   },
   {
@@ -1089,9 +1956,21 @@
     "cve": null,
     "owasp": "A08:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Default to a specific version tag in chart values."
   },
   {
@@ -1104,9 +1983,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Create a dedicated service account with minimal permissions for each workload."
   },
   {
@@ -1119,9 +2010,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Configure TLS in Ingress values with valid certificate references."
   },
   {
@@ -1134,9 +2037,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yaml", "*.yml", "*.tpl"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yaml",
+      "*.yml",
+      "*.tpl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Default hostNetwork to false in chart values."
   },
   {
@@ -1149,9 +2065,21 @@
     "cve": null,
     "owasp": "A02:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["values.yaml", "values.*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "values.yaml",
+      "values.*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use encrypted storage classes for sensitive data."
   },
   {
@@ -1164,9 +2092,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove privileged: true; use specific capabilities if needed."
   },
   {
@@ -1179,9 +2120,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use bridge networking with explicit port mappings."
   },
   {
@@ -1194,9 +2148,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use Docker-in-Docker or rootless alternatives instead of mounting the socket."
   },
   {
@@ -1209,9 +2176,22 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Mount only specific files from /etc that are needed."
   },
   {
@@ -1224,9 +2204,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never mount /proc from host into containers."
   },
   {
@@ -1239,9 +2232,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Never mount /sys from host into containers."
   },
   {
@@ -1254,9 +2260,22 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use .env files with .gitignore or Docker secrets."
   },
   {
@@ -1269,9 +2288,22 @@
     "cve": null,
     "owasp": "A07:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use .env files with .gitignore or Docker secrets."
   },
   {
@@ -1284,9 +2316,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Drop ALL capabilities and add only specific ones needed."
   },
   {
@@ -1299,9 +2344,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove SYS_ADMIN; use specific capabilities instead."
   },
   {
@@ -1314,9 +2372,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove pid: host unless absolutely required for monitoring."
   },
   {
@@ -1329,9 +2400,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Bind to 127.0.0.1 for local-only access or use specific interface IPs."
   },
   {
@@ -1344,9 +2428,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add mem_limit or deploy.resources.limits.memory to services."
   },
   {
@@ -1359,9 +2456,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add healthcheck to services with restart: always."
   },
   {
@@ -1374,9 +2484,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set user to a non-root UID (e.g., user: '1000:1000')."
   },
   {
@@ -1389,9 +2512,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use default or custom seccomp/apparmor profiles."
   },
   {
@@ -1404,9 +2540,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Add read_only: true with tmpfs mounts for writable paths."
   },
   {
@@ -1419,9 +2568,22 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["docker-compose.yml", "docker-compose.*.yml", "compose.yml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.*.yml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Remove ipc: host; use standard container IPC isolation."
   },
   {
@@ -1434,9 +2596,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": null,
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Restrict pods/exec to specific service accounts and namespaces."
   },
   {
@@ -1449,9 +2623,21 @@
     "cve": null,
     "owasp": "A01:2021",
     "benchmark": "CIS-5.1.3",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Specify exact apiGroups needed."
   },
   {
@@ -1464,9 +2650,21 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.7.1",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Use pod-security.kubernetes.io/enforce: restricted for production namespaces."
   },
   {
@@ -1479,9 +2677,405 @@
     "cve": null,
     "owasp": "A05:2021",
     "benchmark": "CIS-5.1.5",
-    "languages": ["yaml"],
-    "file_types": ["*.yml", "*.yaml"],
-    "false_positive_hints": ["test", "example", "mock", "fixture", "spec", "fake"],
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
     "fix_hint": "Set automountServiceAccountToken: false on ServiceAccount unless API access is needed."
+  },
+  {
+    "id": "container-k8s-ingress-no-tls-v2",
+    "pattern": "kind:\\s*Ingress[\\s\\S]*?(?:(?!tls:)[\\s\\S])*?$",
+    "severity": "high",
+    "category": "kubernetes",
+    "description": "Kubernetes Ingress without TLS configuration exposes traffic in cleartext.",
+    "cwe": "CWE-319",
+    "cve": null,
+    "owasp": "A02:2021",
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Add tls: section with secretName containing TLS certificate."
+  },
+  {
+    "id": "container-docker-sudo",
+    "pattern": "^RUN\\s+.*sudo\\s+",
+    "severity": "medium",
+    "category": "dockerfile",
+    "description": "Using sudo in Dockerfile indicates running as non-root then escalating — use USER root instead.",
+    "cwe": "CWE-250",
+    "cve": null,
+    "owasp": "A05:2021",
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Switch USER before RUN commands that need root; drop privileges after."
+  },
+  {
+    "id": "container-compose-no-mem-limit-v2",
+    "pattern": "services:[\\s\\S]*?(?:(?!mem_limit|memory|deploy)[\\s\\S])*?image:",
+    "severity": "low",
+    "category": "docker-compose",
+    "description": "Docker Compose service without memory limit can exhaust host resources.",
+    "cwe": "CWE-400",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.yaml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Add mem_limit or deploy.resources.limits.memory to each service."
+  },
+  {
+    "id": "container-docker-run-pid1",
+    "pattern": "(?:CMD|ENTRYPOINT)\\s+\\[?['\"](?:node|python|java|ruby|dotnet|php)",
+    "severity": "medium",
+    "category": "dockerfile",
+    "description": "Application running as PID 1 without init system won't handle signals or zombie processes.",
+    "cwe": "CWE-400",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake",
+      "tini",
+      "dumb-init"
+    ],
+    "fix_hint": "Use tini or dumb-init as ENTRYPOINT; add --init flag to docker run."
+  },
+  {
+    "id": "container-k8s-no-seccomp",
+    "pattern": "kind:\\s*Pod[\\s\\S]*?containers:[\\s\\S]*?(?:(?!seccompProfile)[\\s\\S])*?---",
+    "severity": "medium",
+    "category": "kubernetes",
+    "description": "Kubernetes Pod without seccomp profile allows unrestricted system calls.",
+    "cwe": "CWE-250",
+    "cve": null,
+    "owasp": "A05:2021",
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Add seccompProfile: { type: RuntimeDefault } to securityContext."
+  },
+  {
+    "id": "container-docker-apt-no-cleanup",
+    "pattern": "RUN\\s+apt-get\\s+(?:install|update)(?:(?!rm\\s+-rf|clean)[\\s\\S])*?$",
+    "severity": "low",
+    "category": "dockerfile",
+    "description": "apt-get without cleanup bloats image with cached package lists.",
+    "cwe": "CWE-400",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Chain apt-get install && rm -rf /var/lib/apt/lists/* in same RUN layer."
+  },
+  {
+    "id": "container-k8s-clusterrole-wildcard",
+    "pattern": "kind:\\s*ClusterRole[\\s\\S]*?(?:verbs|resources):\\s*\\[\\s*['\"]?\\*",
+    "severity": "critical",
+    "category": "kubernetes",
+    "description": "ClusterRole with wildcard verbs or resources grants unrestricted cluster-wide access.",
+    "cwe": "CWE-250",
+    "cve": null,
+    "owasp": "A01:2021",
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Specify exact verbs and resources following least-privilege principle."
+  },
+  {
+    "id": "container-docker-workdir-missing",
+    "pattern": "^FROM\\s+[\\s\\S]*?(?:(?!WORKDIR)[\\s\\S])*?^(?:COPY|ADD|RUN)\\s+",
+    "severity": "low",
+    "category": "dockerfile",
+    "description": "Dockerfile without WORKDIR uses / as working directory which may cause permission issues.",
+    "cwe": "CWE-693",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Set WORKDIR /app (or appropriate directory) before COPY/RUN commands."
+  },
+  {
+    "id": "container-compose-restart-no-health",
+    "pattern": "restart:\\s*always(?:(?!healthcheck)[\\s\\S])*?(?:image:|$)",
+    "severity": "low",
+    "category": "docker-compose",
+    "description": "restart: always without healthcheck causes crash-looping containers to restart indefinitely.",
+    "cwe": "CWE-400",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.yaml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Add healthcheck or use restart: on-failure with max retry count."
+  },
+  {
+    "id": "container-helm-deprecated-api-v2",
+    "pattern": "apiVersion:\\s*(?:extensions/v1beta1|apps/v1beta1|apps/v1beta2)",
+    "severity": "medium",
+    "category": "helm",
+    "description": "Helm template using deprecated Kubernetes API version that will be removed.",
+    "cwe": "CWE-693",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yaml",
+      "*.yml",
+      "*.tpl"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Update to stable API versions: apps/v1, networking.k8s.io/v1."
+  },
+  {
+    "id": "container-docker-expose-sensitive",
+    "pattern": "EXPOSE\\s+(?:22|3306|5432|6379|27017|9200|2379|8500|8300)",
+    "severity": "medium",
+    "category": "dockerfile",
+    "description": "Dockerfile exposes sensitive service port (SSH, DB, cache, etcd) that should be internal-only.",
+    "cwe": "CWE-200",
+    "cve": null,
+    "owasp": "A05:2021",
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Only EXPOSE application ports; access DB/cache through internal networks."
+  },
+  {
+    "id": "container-docker-add-url",
+    "pattern": "ADD\\s+https?://",
+    "severity": "medium",
+    "category": "dockerfile",
+    "description": "ADD with URL downloads without verification; use COPY + curl with checksum instead.",
+    "cwe": "CWE-829",
+    "cve": null,
+    "owasp": "A08:2021",
+    "benchmark": null,
+    "languages": [
+      "*"
+    ],
+    "file_types": [
+      "Dockerfile",
+      "*.dockerfile"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Use RUN curl -fsSL URL -o file && sha256sum -c checksum instead of ADD URL."
+  },
+  {
+    "id": "container-k8s-no-liveness-probe",
+    "pattern": "kind:\\s*Deployment[\\s\\S]*?containers:[\\s\\S]*?(?:(?!livenessProbe)[\\s\\S])*?---",
+    "severity": "low",
+    "category": "kubernetes",
+    "description": "Kubernetes container without liveness probe won't be restarted when deadlocked.",
+    "cwe": "CWE-693",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "*.yml",
+      "*.yaml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Add livenessProbe with httpGet or tcpSocket to detect deadlocked containers."
+  },
+  {
+    "id": "container-compose-env-file-parent",
+    "pattern": "env_file:\\s*-?\\s*\\.\\./",
+    "severity": "medium",
+    "category": "docker-compose",
+    "description": "docker-compose env_file referencing parent directory may expose secrets outside project.",
+    "cwe": "CWE-200",
+    "cve": null,
+    "owasp": null,
+    "benchmark": null,
+    "languages": [
+      "yaml"
+    ],
+    "file_types": [
+      "docker-compose.yml",
+      "docker-compose.yaml",
+      "compose.yml"
+    ],
+    "false_positive_hints": [
+      "test",
+      "example",
+      "mock",
+      "fixture",
+      "spec",
+      "fake"
+    ],
+    "fix_hint": "Keep env files within project directory; don't reference parent paths."
   }
 ]
