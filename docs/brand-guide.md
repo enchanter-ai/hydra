@@ -19,6 +19,8 @@
 
 ## Plugin Structure Standard
 
+Every @enchanted-plugins product is cloned from [`enchanted-plugins/schematic`](https://github.com/enchanted-plugins/schematic) — the canonical repo template. The tree below is the shape `schematic` ships. New siblings clone it, fill placeholders, and rename `plugins/example-subplugin/` before first commit.
+
 Every @enchanted-plugins product follows this exact structure:
 
 ```
@@ -36,7 +38,8 @@ Every @enchanted-plugins product follows this exact structure:
 │       └── README.md
 ├── shared/
 │   ├── scripts/                          # Python stdlib only
-│   └── patterns/                         # JSON pattern databases
+│   ├── references/                       # knowledge base (if applicable)
+│   └── models-registry.json              # (if applicable)
 ├── tests/
 │   ├── run-all.sh
 │   └── <plugin>/test-*.sh
@@ -72,10 +75,10 @@ Every product README must include:
 Every algorithm follows: `[Method] [Domain] [Action]`
 
 Examples:
-- Aho-Corasick Pattern Engine (multi-pattern string matching)
+- Gauss Convergence Method (standard deviation minimization)
 - Shannon Entropy Analysis (information-theoretic secret detection)
-- Markov Action Classification (state-based command risk assessment)
-- Bayesian Threat Convergence (cross-session security posture tracking)
+- Bayesian Trust Scoring (prior-posterior change risk assessment)
+- Markov Drift Detection (hidden state transition recognition)
 
 ## Commit Message Standard
 
@@ -94,15 +97,14 @@ One logical change per commit. Never batch unrelated changes.
 | Tier | Model | Role | When to use |
 |------|-------|------|-------------|
 | Orchestrator | Opus | Judgment, design, intent | Main skill that interacts with user |
-| Executor | Sonnet | Script execution, analysis | Background deep scanning, context analysis |
-| Validator | Haiku | Pass/fail checks, file validation | Quick secret scanning, event logging |
+| Executor | Sonnet | Script execution, analysis | Background convergence, deep review |
+| Validator | Haiku | Pass/fail checks, file validation | Quick verification, format checks |
 
 ## Report Standard
 
-Every product generates dark-themed single-page HTML reports:
+Every product generates dark-themed single-page PDF reports:
 - Background: `#0A0A0A`
 - Surface: `#141414`
 - Borders: `rgba(255,255,255,0.04)`
-- Brand accent: `#f85149` (Reaper red)
-- Generated via `report-gen.py`
-- Content: severity bars, CWE pills, findings list, verdict with next steps
+- Generated via `report-gen.py` → `html-to-pdf.py` (Edge/Chrome headless)
+- Content: score bars, technique pills, audit findings, verdict with next steps
