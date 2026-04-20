@@ -6,6 +6,7 @@
   <img alt="2,011 security patterns" src="https://img.shields.io/badge/Patterns-2,011-58a6ff?style=for-the-badge">
   <img alt="98 CWEs covered" src="https://img.shields.io/badge/CWEs-98-d29922?style=for-the-badge">
   <img alt="Zero dependencies (bash plus jq)" src="https://img.shields.io/badge/Deps-0-f85149?style=for-the-badge">
+  <a href="https://www.repostatus.org/#active"><img alt="Project Status: Active" src="https://www.repostatus.org/badges/latest/active.svg"></a>
 </p>
 
 > **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
@@ -38,6 +39,17 @@ Reaper takes its name from the **Reaper Leviathan of Subnautica** — you hear i
 
 The question this plugin answers: *Is it safe?*
 
+## Who this is for
+
+- Teams who've accepted that AI-assisted development opens attack surfaces traditional scanners don't cover — poisoned `.claude/settings.json` hooks, prompt-injection-to-RCE chains, typosquatted deps the agent pulled in.
+- Security-conscious developers who want findings keyed to real CVEs and CWEs, not vendor branding.
+- Engineers running in environments where cloud security SaaS isn't an option — Reaper is bash + jq, no dependencies, no outbound calls.
+
+Not for:
+
+- Replacing your language-native linter / type-checker — Reaper complements them, doesn't duplicate them.
+- Environments where advisory warnings are insufficient — Reaper's hooks inform, they don't silently block (see [shared/conduct/hooks.md](shared/conduct/hooks.md)).
+
 ## Contents
 
 - [The Numbers](#the-numbers)
@@ -46,15 +58,20 @@ The question this plugin answers: *Is it safe?*
 - [What Makes Reaper Different](#what-makes-reaper-different)
 - [The Full Lifecycle](#the-full-lifecycle)
 - [Install](#install)
+- [Quickstart](#quickstart)
 - [5 Plugins, 5 Agents, 2,011 Patterns](#5-plugins-5-agents-2011-patterns)
 - [What You Get Per Session](#what-you-get-per-session)
+- [Roadmap](#roadmap)
 - [The Science Behind Reaper](#the-science-behind-reaper)
 - [The 20 Pattern Databases](#the-20-pattern-databases)
 - [vs Everything Else](#vs-everything-else)
 - [Agent Conduct (9 Modules)](#agent-conduct-9-modules)
 - [Architecture](#architecture)
 - [Testing](#testing)
+- [Acknowledgments](#acknowledgments)
+- [Versioning & release cadence](#versioning--release-cadence)
 - [Contributing](#contributing)
+- [Citation](#citation)
 - [License](#license)
 
 ## The Numbers
@@ -208,6 +225,18 @@ Claude Code resolves the dependency list and installs all 5 plugins. Verify with
 bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/reaper/main/install.sh)
 ```
 
+## Quickstart
+
+Install, scan the repo, read the findings. Sixty seconds:
+
+```
+/plugin install full@reaper
+/reaper:config-check
+/reaper:vulns
+```
+
+Expected: `/reaper:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 117 signatures. `/reaper:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/reaper:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
+
 ## 5 Plugins, 5 Agents, 2,011 Patterns
 
 | Plugin | Command | What | Agent |
@@ -235,6 +264,10 @@ Three hook events fan out into three color-coded journals — one per defense la
 Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
 
 </sub>
+
+## Roadmap
+
+Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](https://github.com/enchanted-plugins/flux/blob/main/docs/ecosystem.md). For upcoming work specific to Reaper, see issues tagged [roadmap](https://github.com/enchanted-plugins/reaper/labels/roadmap). Pattern-database additions (new CVEs, OWASP LLM Top 10 revisions, new CWE coverage) ship in minor / patch releases; the ROADMAP captures engine-level changes.
 
 ```
 plugins/audit-trail/state/
@@ -413,9 +446,44 @@ bash tests/run-all.sh
 - Path sanitization (2 tests)
 - Pattern database integrity (6 tests — JSON validity, schema compliance, unique IDs, minimum counts, CWE coverage, regex compilation)
 
+## Acknowledgments
+
+Reaper builds on foundations laid by others:
+
+- **[Claude Code](https://github.com/anthropics/claude-code)** (Anthropic) — the plugin surface this work extends.
+- **[OWASP](https://owasp.org/)** — LLM Top 10 coverage and CWE reference material.
+- **[MITRE ATT&CK](https://attack.mitre.org/)** — technique cross-references in the audit trail.
+- **[Keep a Changelog](https://keepachangelog.com/)** — CHANGELOG convention.
+- **[Semantic Versioning](https://semver.org/)** — versioning contract.
+- **[Contributor Covenant](https://www.contributor-covenant.org/)** — Code of Conduct.
+- **[repostatus.org](https://www.repostatus.org/)** — status badge.
+- **[Citation File Format](https://citation-file-format.github.io/)** — citation metadata.
+- **[Conventional Commits](https://www.conventionalcommits.org/)** — commit convention.
+
+Every one of the 2,011 patterns traces back to a real CVE, research paper, or breach writeup; the audit trail records these references per-finding.
+
+## Versioning & release cadence
+
+Reaper follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Breaking changes land on major bumps only; the [CHANGELOG](CHANGELOG.md) flags them explicitly. Release cadence is opportunistic — tags land when accumulated fixes or features justify a cut, not on a fixed schedule. Pattern-database refreshes (new CVEs, CWE revisions, OWASP updates) are **not** breaking and ship in minor / patch releases; hook-contract, audit-schema, or severity-scale changes **are** breaking. Migration notes between majors live in [docs/upgrading.md](docs/upgrading.md).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Citation
+
+If you use this project in research or derivative work, please cite it:
+
+```bibtex
+@software{reaper_2026,
+  title = {Reaper},
+  author = {{Klaiderman}},
+  year = {2026},
+  url = {https://github.com/enchanted-plugins/reaper}
+}
+```
+
+See [CITATION.cff](CITATION.cff) for additional formats (APA, MLA, EndNote).
 
 ## License
 
