@@ -102,8 +102,8 @@ Reaper doesn't scan after the fact. It **intercepts** — before secrets hit dis
 At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 105 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
 
 <p align="center">
-  <a href="docs/assets/hooks.mmd" title="View hook-binding diagram source (Mermaid)">
-    <img src="docs/assets/hooks.svg"
+  <a href="docs/assets/pipeline.mmd" title="View hook-binding diagram source (Mermaid)">
+    <img src="docs/assets/pipeline.svg"
          alt="Reaper hook bindings: SessionStart runs config-shield (R5), PreToolUse/Bash runs action-guard (R4 + R7), PostToolUse/Write·Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; audit-trail (R8) observes all hooks and applies Bayesian threat EMA"
          width="100%" style="max-width:1100px;">
   </a>
@@ -111,7 +111,7 @@ At **SessionStart**, config-shield scans repo configs for CVE-matched attack sig
 
 <sub align="center">
 
-Source: [docs/assets/hooks.mmd](docs/assets/hooks.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
+Source: [docs/assets/pipeline.mmd](docs/assets/pipeline.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
 
 </sub>
 
