@@ -10,8 +10,6 @@
 
 > **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
 
-Named after the **Reaper Leviathan** from Subnautica — you hear it before you see it. It hunts in the dark. Nothing gets past it.
-
 **5 plugins. 5 agents. 2,011 patterns. 8 algorithms. 98 CWEs. 20 attack databases. Zero dependencies.**
 
 Built from blood — every pattern traces back to a real CVE, a real breach, or a real research paper.
@@ -33,6 +31,12 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 > Total overhead: < 50ms per file write. You didn't notice it running.
 
 ---
+
+## Origin
+
+Reaper takes its name from the **Reaper Leviathan of Subnautica** — you hear it before you see it, it hunts in the dark, and nothing gets past it. Security scanning is the same job: hear the signal in the noise, or lose something irreplaceable.
+
+The question this plugin answers: *Is it safe?*
 
 ## Contents
 
@@ -396,6 +400,12 @@ bash tests/run-all.sh
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Origin
+
+Reaper takes its name from **Subnautica** — a game where the ocean is beautiful, and the darkness hides creatures that hunt by sound. You're never truly safe, and the only way to survive is to assume something is listening. This plugin inherits the stance: assume the repo is adversarial, assume the config is poisoned, assume the output contains a secret. Then go look for it.
+
+The plugin answers the fourth of the Five Questions every AI-assisted session surfaces: *"Is it safe?"* See [docs/ecosystem.md](docs/ecosystem.md) for the full map.
 
 ## License
 
