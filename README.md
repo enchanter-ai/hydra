@@ -45,11 +45,11 @@ The question this plugin answers: *Is it safe?*
 - [How It Works](#how-it-works)
 - [What Makes Reaper Different](#what-makes-reaper-different)
 - [The Full Lifecycle](#the-full-lifecycle)
-- [The 20 Pattern Databases](#the-20-pattern-databases)
+- [Install](#install)
 - [5 Plugins, 5 Agents, 2,011 Patterns](#5-plugins-5-agents-2011-patterns)
 - [What You Get Per Session](#what-you-get-per-session)
-- [Install](#install)
 - [The Science Behind Reaper](#the-science-behind-reaper)
+- [The 20 Pattern Databases](#the-20-pattern-databases)
 - [vs Everything Else](#vs-everything-else)
 - [Agent Conduct (9 Modules)](#agent-conduct-9-modules)
 - [Architecture](#architecture)
@@ -116,45 +116,6 @@ Source: [docs/assets/hooks.mmd](docs/assets/hooks.mmd) · Regeneration command i
 </sub>
 
 No permission prompts. No manual scanning. Every tool call is monitored. Dangerous commands are blocked before they execute.
-
-## The 20 Pattern Databases
-
-### Threat Intelligence (2,011 patterns across 20 databases)
-
-| Database | Patterns | What it detects |
-|----------|----------|-----------------|
-| **secrets.json** | 310 | AWS, GCP, Azure, OpenAI, Anthropic, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings — 80+ providers |
-| **vulns.json** | 156 | SQL injection, XSS, path traversal, command injection, SSRF, deserialization, CORS, insecure random, SSTI — OWASP Top 10 |
-| **dangerous-ops.json** | 105 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, reverse shells, K8s delete, Docker privileged, Terraform destroy |
-| **config-attacks.json** | 117 | CVE-2025-59536, CVE-2026-21852, CVE-2025-54135 — .claude hooks, .vscode autorun, .npmrc hijack, hidden Unicode |
-| **slopsquatting.json** | 199 | AI-hallucinated packages across npm, PyPI, Cargo, Go, RubyGems + Levenshtein typosquats |
-| **cicd-attacks.json** | 130 | GitHub Actions `${{ }}` injection, `pull_request_target` abuse, Jenkins Groovy escape, GitLab CI dind, Azure DevOps variable injection |
-| **container-security.json** | 113 | Dockerfile USER root, K8s privileged containers, hostNetwork, capabilities ALL, Helm secrets, docker-compose socket mounts |
-| **iac-misconfig.json** | 120 | Terraform S3 public, IAM wildcard, open security groups — CloudFormation, ARM templates, Pulumi equivalents |
-| **crypto-weakness.json** | 90 | MD5/SHA1, DES/RC4, ECB mode, hardcoded keys, weak RSA, bcrypt low rounds, TLS verification disabled |
-| **auth-bypass.json** | 80 | JWT alg:none, session fixation, CSRF disabled, OAuth missing state, mass assignment, IDOR patterns |
-| **ssrf-patterns.json** | 61 | Cloud metadata (AWS/GCP/Azure/Alibaba), localhost bypass (hex/octal/IPv6), scheme abuse (gopher/file/dict), user-URL fetch |
-| **api-security.json** | 81 | GraphQL introspection, no rate limit on login, CORS reflect origin, WebSocket no auth, gRPC no TLS |
-| **ai-agent-attacks.json** | 110 | Prompt injection, MCP tool poisoning, CamoLeak exfiltration, jailbreaks, rules file backdoors, invisible Unicode |
-| **regex-dos.json** | 44 | Nested quantifiers `(a+)+`, overlapping alternation, evil email regex, `new RegExp(userInput)` |
-| **deserialization.json** | 69 | Java ObjectInputStream, Python pickle, PHP unserialize, Ruby Marshal, .NET BinaryFormatter, Node serialize |
-| **file-operations.json** | 50 | Zip slip, symlink race, TOCTOU, predictable temp files, upload without validation, LFI/RFI |
-| **logging-forgery.json** | 41 | Log4Shell `${jndi:ldap://}`, CRLF injection, passwords in logs, ANSI escape injection |
-| **prototype-pollution.json** | 35 | `__proto__` assignment, lodash.merge (CVE-2018-3721), JSON.parse spread, Express req.body pollution |
-| **dependency-confusion.json** | 50 | npm preinstall abuse, lockfile registry mismatch, version wildcards, protestware, manifest confusion |
-| **header-security.json** | 50 | CSP unsafe-inline/unsafe-eval, missing HSTS, X-Frame-Options ALLOWALL, directory listing, .git exposure |
-
-### Coverage by Attack Surface
-
-| Attack Surface | Databases | Combined Patterns |
-|----------------|-----------|-------------------|
-| **Secrets & credentials** | secrets, crypto-weakness | 400 |
-| **Code vulnerabilities** | vulns, deserialization, file-operations, regex-dos, prototype-pollution, logging-forgery | 395 |
-| **Infrastructure** | container-security, iac-misconfig, header-security | 283 |
-| **CI/CD & supply chain** | cicd-attacks, dependency-confusion, slopsquatting | 379 |
-| **Auth & API** | auth-bypass, ssrf-patterns, api-security | 222 |
-| **AI/LLM agent** | ai-agent-attacks, config-attacks | 227 |
-| **Dangerous commands** | dangerous-ops | 105 |
 
 ## What Makes Reaper Different
 
@@ -339,6 +300,45 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 
 *Full derivations: [`docs/science/README.md`](docs/science/README.md). Every formula maps to running code in `shared/scripts/`.*
 
+## The 20 Pattern Databases
+
+### Threat Intelligence (2,011 patterns across 20 databases)
+
+| Database | Patterns | What it detects |
+|----------|----------|-----------------|
+| **secrets.json** | 310 | AWS, GCP, Azure, OpenAI, Anthropic, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings — 80+ providers |
+| **vulns.json** | 156 | SQL injection, XSS, path traversal, command injection, SSRF, deserialization, CORS, insecure random, SSTI — OWASP Top 10 |
+| **dangerous-ops.json** | 105 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, reverse shells, K8s delete, Docker privileged, Terraform destroy |
+| **config-attacks.json** | 117 | CVE-2025-59536, CVE-2026-21852, CVE-2025-54135 — .claude hooks, .vscode autorun, .npmrc hijack, hidden Unicode |
+| **slopsquatting.json** | 199 | AI-hallucinated packages across npm, PyPI, Cargo, Go, RubyGems + Levenshtein typosquats |
+| **cicd-attacks.json** | 130 | GitHub Actions `${{ }}` injection, `pull_request_target` abuse, Jenkins Groovy escape, GitLab CI dind, Azure DevOps variable injection |
+| **container-security.json** | 113 | Dockerfile USER root, K8s privileged containers, hostNetwork, capabilities ALL, Helm secrets, docker-compose socket mounts |
+| **iac-misconfig.json** | 120 | Terraform S3 public, IAM wildcard, open security groups — CloudFormation, ARM templates, Pulumi equivalents |
+| **crypto-weakness.json** | 90 | MD5/SHA1, DES/RC4, ECB mode, hardcoded keys, weak RSA, bcrypt low rounds, TLS verification disabled |
+| **auth-bypass.json** | 80 | JWT alg:none, session fixation, CSRF disabled, OAuth missing state, mass assignment, IDOR patterns |
+| **ssrf-patterns.json** | 61 | Cloud metadata (AWS/GCP/Azure/Alibaba), localhost bypass (hex/octal/IPv6), scheme abuse (gopher/file/dict), user-URL fetch |
+| **api-security.json** | 81 | GraphQL introspection, no rate limit on login, CORS reflect origin, WebSocket no auth, gRPC no TLS |
+| **ai-agent-attacks.json** | 110 | Prompt injection, MCP tool poisoning, CamoLeak exfiltration, jailbreaks, rules file backdoors, invisible Unicode |
+| **regex-dos.json** | 44 | Nested quantifiers `(a+)+`, overlapping alternation, evil email regex, `new RegExp(userInput)` |
+| **deserialization.json** | 69 | Java ObjectInputStream, Python pickle, PHP unserialize, Ruby Marshal, .NET BinaryFormatter, Node serialize |
+| **file-operations.json** | 50 | Zip slip, symlink race, TOCTOU, predictable temp files, upload without validation, LFI/RFI |
+| **logging-forgery.json** | 41 | Log4Shell `${jndi:ldap://}`, CRLF injection, passwords in logs, ANSI escape injection |
+| **prototype-pollution.json** | 35 | `__proto__` assignment, lodash.merge (CVE-2018-3721), JSON.parse spread, Express req.body pollution |
+| **dependency-confusion.json** | 50 | npm preinstall abuse, lockfile registry mismatch, version wildcards, protestware, manifest confusion |
+| **header-security.json** | 50 | CSP unsafe-inline/unsafe-eval, missing HSTS, X-Frame-Options ALLOWALL, directory listing, .git exposure |
+
+### Coverage by Attack Surface
+
+| Attack Surface | Databases | Combined Patterns |
+|----------------|-----------|-------------------|
+| **Secrets & credentials** | secrets, crypto-weakness | 400 |
+| **Code vulnerabilities** | vulns, deserialization, file-operations, regex-dos, prototype-pollution, logging-forgery | 395 |
+| **Infrastructure** | container-security, iac-misconfig, header-security | 283 |
+| **CI/CD & supply chain** | cicd-attacks, dependency-confusion, slopsquatting | 379 |
+| **Auth & API** | auth-bypass, ssrf-patterns, api-security | 222 |
+| **AI/LLM agent** | ai-agent-attacks, config-attacks | 227 |
+| **Dangerous commands** | dangerous-ops | 105 |
+
 ## vs Everything Else
 
 | | Reaper | GitHub Secret Scanning | Snyk | semgrep | GitGuardian |
@@ -400,12 +400,6 @@ bash tests/run-all.sh
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Origin
-
-Reaper takes its name from **Subnautica** — a game where the ocean is beautiful, and the darkness hides creatures that hunt by sound. You're never truly safe, and the only way to survive is to assume something is listening. This plugin inherits the stance: assume the repo is adversarial, assume the config is poisoned, assume the output contains a secret. Then go look for it.
-
-The plugin answers the fourth of the Five Questions every AI-assisted session surfaces: *"Is it safe?"* See [docs/ecosystem.md](docs/ecosystem.md) for the full map.
 
 ## License
 
