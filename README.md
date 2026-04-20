@@ -220,6 +220,22 @@ bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/reaper/main/i
 
 ## What You Get Per Session
 
+Three hook events fan out into three color-coded journals — one per defense layer — and converge on the dark-themed HTML security report + the `/reaper:*` query surface. Color maps defense layers to journals: blue = secret-scanner (R1 + R2 detection) · red = action-guard (R4 + R7 blocking) · yellow = audit-trail (R8 aggregate posture).
+
+<p align="center">
+  <a href="docs/assets/state-flow.mmd" title="View state-flow diagram source (Mermaid)">
+    <img src="docs/assets/state-flow.svg"
+         alt="Reaper per-session state flow: three hooks (SessionStart config-shield, PreToolUse Bash action-guard, PostToolUse Write|Edit secret-scanner+vuln-detector) feed three color-coded journals (secret-scanner audit+metrics, action-guard audit+config, audit-trail audit+metrics) converging on /tmp/reaper-report.html and the /reaper:* query surface"
+         width="100%" style="max-width:1100px;">
+  </a>
+</p>
+
+<sub align="center">
+
+Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration command in [docs/assets/README.md](docs/assets/README.md).
+
+</sub>
+
 ```
 plugins/audit-trail/state/
 ├── audit.jsonl         Every security event, JSONL, 10MB rotation

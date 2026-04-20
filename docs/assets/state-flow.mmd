@@ -1,0 +1,78 @@
+---
+title: Reaper per-session state flow
+config:
+  look: neo
+  theme: dark
+  flowchart:
+    curve: basis
+    padding: 18
+    nodeSpacing: 44
+    rankSpacing: 54
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 14
+      bottom: 18
+---
+flowchart TB
+    TitleBlock["<div style='font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-align:center;min-width:940px;padding:6px 10px;line-height:1.8'><div style='color:#58a6ff;font-size:15px;letter-spacing:6px;border-bottom:1px solid #1e3a5f;padding-bottom:10px;margin-bottom:10px'>REAPER &nbsp;·&nbsp; STATE&nbsp;FLOW &nbsp;·&nbsp; SECURITY&nbsp;JOURNALS</div><div style='display:flex;gap:40px;justify-content:center;font-size:11px;color:#8b949e;letter-spacing:2px'><span>DWG&nbsp;&nbsp;<b style='color:#e6edf3'>RPR-003</b></span><span>REV&nbsp;&nbsp;<b style='color:#e6edf3'>A.1</b></span><span>SCALE&nbsp;&nbsp;<b style='color:#e6edf3'>1:1</b></span><span>JOURNALS&nbsp;&nbsp;<b style='color:#e6edf3'>n&nbsp;=&nbsp;3</b></span><span>SHEET&nbsp;&nbsp;<b style='color:#e6edf3'>01&nbsp;/&nbsp;01</b></span></div></div>"]
+
+    subgraph sources["<div style='text-align:center;min-width:940px;font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>EVENT&nbsp;SOURCES&nbsp;&nbsp;·&nbsp;&nbsp;HOOK&nbsp;FIRES</div>"]
+        direction LR
+        Start["<b>SessionStart</b><br/><small style='color:#6e7681'>config-shield</small>"]
+        Pre["<b>PreToolUse</b><br/><small style='color:#6e7681'>Bash (action-guard)</small>"]
+        Post["<b>PostToolUse</b><br/><small style='color:#6e7681'>Write · Edit (secret-scanner · vuln-detector)</small>"]
+    end
+
+    subgraph ss["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;01</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>secret-scanner / state /</b></div>"]
+        direction LR
+        ss_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>R1 Aho-Corasick + R2 entropy findings · masked values</small></div>"]
+        ss_met["<div style='text-align:center;line-height:1.7'><code>metrics.jsonl</code><br/><small style='color:#6e7681'>scan counts + timing</small></div>"]
+    end
+
+    subgraph ag["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;02</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>action-guard / state /</b></div>"]
+        direction LR
+        ag_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>R4 + R7 blocked/warned commands with reasons</small></div>"]
+        ag_cfg["<div style='text-align:center;line-height:1.7'><code>config.json</code><br/><small style='color:#6e7681'>strictness mode · strict · balanced · permissive</small></div>"]
+    end
+
+    subgraph at["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;03</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>audit-trail / state /</b></div>"]
+        direction LR
+        at_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>Every security event · JSONL · 10MB rotation</small></div>"]
+        at_met["<div style='text-align:center;line-height:1.7'><code>metrics.jsonl</code><br/><small style='color:#6e7681'>R8 EMA aggregate scan metrics · security posture</small></div>"]
+    end
+
+    Report["<div style='text-align:center;line-height:1.8;padding:4px 12px'><b style='letter-spacing:1.5px;color:#3fb950'>/tmp/reaper-report.html</b><br/><em style='color:#8b949e;font-size:12px'>severity bars · CWE pills · finding breakdown · CLEAN / CAUTION / WARNING / CRITICAL</em></div>"]
+    Query(["<b>/reaper:*</b><br/><small style='color:#8b949e'>8 skill-invoked commands</small>"])
+
+    TitleBlock ~~~ sources
+    Post --> ss_aud
+    ss_aud --> ss_met
+    Pre --> ag_aud
+    Start --> ag_cfg
+    Post --> at_aud
+    ss_aud --> at_aud
+    ag_aud --> at_aud
+    at_aud --> at_met
+    at_aud --> Report
+    at_met --> Report
+    ss_aud --> Query
+    ag_aud --> Query
+    at_aud --> Query
+
+    classDef titleBlock fill:#06111f,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3,rx:4,ry:4
+    classDef sourceNode fill:#0a1628,stroke:#1e3a5f,stroke-width:1.5px,color:#e6edf3,rx:8,ry:8
+    classDef journalLine fill:#0a1628,stroke:#1e3a5f,stroke-width:1px,color:#c9d1d9,rx:6,ry:6
+    classDef reportNode fill:#0f1d33,stroke:#3fb950,stroke-width:2px,color:#3fb950,rx:8,ry:8
+    classDef queryNode fill:#0f1d33,stroke:#3fb950,stroke-width:1.5px,color:#3fb950,rx:14,ry:14
+
+    class TitleBlock titleBlock
+    class Start,Pre,Post sourceNode
+    class ss_aud,ss_met,ag_aud,ag_cfg,at_aud,at_met journalLine
+    class Report reportNode
+    class Query queryNode
+
+    style ss fill:#0f1d33,stroke:#58a6ff,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style ag fill:#0f1d33,stroke:#d75952,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style at fill:#0f1d33,stroke:#d29922,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+
+    linkStyle default stroke:#8b949e,stroke-width:1.5px
