@@ -110,7 +110,7 @@ Discovered by Adversa AI: when a command contains enough subcommands, safety fil
 
 ---
 
-## R8. Bayesian Threat Convergence
+## R8. EMA Posture Decay
 
 **Problem:** Track security posture across sessions with exponential moving average.
 

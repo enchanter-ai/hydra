@@ -14,7 +14,7 @@ Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plug
 To install this plugin on its own: `/plugin install reaper-audit-trail@reaper`. `audit-trail` only has events to log because `secret-scanner`, `vuln-detector`, `action-guard`, and `config-shield` emit them. On its own, you get an empty JSONL file and a report with no findings.
 
 ## Algorithm
-- **R8: Bayesian Threat Convergence** — cross-session EMA of threat rates
+- **R8: EMA Posture Decay** — cross-session EMA of threat rates (α=0.3)
 
 ## Hook
 - **PostToolUse** on ALL tools — logs every tool use for compliance and review

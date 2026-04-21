@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-R8: Bayesian Threat Convergence
+R8: EMA Posture Decay
 Cross-session security posture tracking with EMA (alpha=0.3).
 Tracks recurring vulnerability types, dismissed patterns, and threat rates.
 

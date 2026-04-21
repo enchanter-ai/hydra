@@ -14,7 +14,7 @@ Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plug
 To install this plugin on its own: `/plugin install reaper-vuln-detector@reaper`. `vuln-detector` flags injection/XSS/SSRF at the code layer — but the same bug pattern often stores credentials (`secret-scanner`), runs them via Bash (`action-guard`), lives in a config file (`config-shield`), and needs to be logged for review (`audit-trail`). On its own, you get one layer of defense-in-depth instead of five.
 
 ## Algorithm
-- **R3: OWASP Vulnerability Graph** — language-aware pattern matching with CWE mapping
+- **R3: CWE-Mapped Pattern Detector** — 156 language-aware vulnerability patterns mapped to OWASP Top 10 and CWE categories
 
 ## Hook
 - **PostToolUse** on Write/Edit/MultiEdit — scans file content for vulnerability patterns

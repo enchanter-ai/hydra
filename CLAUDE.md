@@ -30,7 +30,7 @@ When a module conflicts with a plugin-local instruction, the plugin wins — but
 
 ## Algorithms
 
-R1 Aho-Corasick Pattern Engine · R2 Shannon Entropy Analysis · R3 OWASP Vulnerability Graph · R4 Markov Action Classification · R5 Config Poisoning Detection · R6 Phantom Dependency Detection · R7 Subcommand Overflow · R8 Bayesian Threat Convergence. Derivations: `docs/science/README.md`.
+R1 Aho-Corasick Pattern Engine · R2 Shannon Entropy Analysis · R3 OWASP Vulnerability Graph · R4 Markov Action Classification · R5 Config Poisoning Detection · R6 Phantom Dependency Detection · R7 Subcommand Overflow · R8 EMA Posture Decay. Derivations: `docs/science/README.md`.
 
 Pattern databases: **20 files, 2,011 patterns, 98 CWEs.** Original 5 (secrets 310, vulns 156, dangerous-ops 105, config-attacks 117, slopsquatting 199) + 15 new databases: cicd-attacks 130, container-security 113, iac-misconfig 120, crypto-weakness 90, auth-bypass 80, ssrf-patterns 61, api-security 81, ai-agent-attacks 110, regex-dos 44, deserialization 69, file-operations 50, logging-forgery 41, prototype-pollution 35, dependency-confusion 50, header-security 50.
 

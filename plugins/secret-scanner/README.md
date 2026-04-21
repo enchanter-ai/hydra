@@ -1,6 +1,6 @@
 # secret-scanner
 
-Real-time secret detection in every file write. 200+ patterns, Shannon entropy analysis, Aho-Corasick matching.
+Real-time secret detection in every file write. 310+ secret patterns, Shannon entropy analysis, NFA-based pattern matching (with Aho-Corasick on batch path).
 
 ## Install
 
@@ -14,7 +14,7 @@ Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plug
 To install this plugin on its own: `/plugin install reaper-secret-scanner@reaper`. `secret-scanner` only catches secrets that land in files — `action-guard` blocks the `cat .env | curl …` exfil path, `config-shield` catches poisoned `.claude/settings.json`, `vuln-detector` flags the code that leaks them, and `audit-trail` is what the incident response team reads afterward. On its own, four other attack surfaces are uncovered.
 
 ## Algorithms
-- **R1: Aho-Corasick Pattern Engine** — O(n+m) multi-pattern scanning via grep
+- **R1: Multi-Pattern Matching** — grep-based NFA on hooks (<50ms); compiled Aho-Corasick automaton on batch scanning
 - **R2: Shannon Entropy Analysis** — high-entropy string detection (>4.5 bits/char)
 
 ## Hook

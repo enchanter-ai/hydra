@@ -116,12 +116,12 @@ Every pattern exists because something real happened to a real developer.
 
 Reaper doesn't scan after the fact. It **intercepts** — before secrets hit disk, before dangerous commands execute, before malicious configs load.
 
-At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 113 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
+At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 113 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 EMA posture decay across sessions. The diagram below shows the bindings.
 
 <p align="center">
   <a href="docs/assets/pipeline.mmd" title="View hook-binding diagram source (Mermaid)">
     <img src="docs/assets/pipeline.svg"
-         alt="Reaper hook bindings: SessionStart runs config-shield (R5), PreToolUse/Bash runs action-guard (R4 + R7), PostToolUse/Write·Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; audit-trail (R8) observes all hooks and applies Bayesian threat EMA"
+         alt="Reaper hook bindings: SessionStart runs config-shield (R5), PreToolUse/Bash runs action-guard (R4 + R7), PostToolUse/Write·Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; audit-trail (R8) observes all hooks and applies EMA posture decay"
          width="100%" style="max-width:1100px;">
   </a>
 </p>
@@ -180,7 +180,7 @@ The full value never appears in stderr, audit logs, metrics, or reports. Not in 
 
 ### It learns across sessions
 
-The **Bayesian Threat Convergence** engine (R8) tracks security posture over time:
+The **EMA Posture Decay** engine (R8) tracks security posture over time:
 
 <p align="center"><img src="docs/assets/math/r8-ema.svg" alt="r_new = alpha · s_current + (1 - alpha) · r_prior; alpha = 0.3"></p>
 
@@ -193,7 +193,7 @@ A single session flows left to right through five stages. **Config Shield** runs
 <p align="center">
   <a href="docs/assets/lifecycle.mmd" title="View session-lifecycle diagram source (Mermaid)">
     <img src="docs/assets/lifecycle.svg"
-         alt="Reaper full lifecycle: 5 stages — Config Shield (SessionStart · R5) → Action Guard (PreToolUse · R4 + R7) → Secret Scanner (PostToolUse · R1 + R2) → Vuln Detector (PostToolUse · R3) → Audit Trail (all hooks · R8 Bayesian EMA)"
+         alt="Reaper full lifecycle: 5 stages — Config Shield (SessionStart · R5) → Action Guard (PreToolUse · R4 + R7) → Secret Scanner (PostToolUse · R1 + R2) → Vuln Detector (PostToolUse · R3) → Audit Trail (all hooks · R8 EMA posture decay)"
          width="100%" style="max-width:1100px;">
   </a>
 </p>
@@ -337,7 +337,7 @@ Levenshtein distance for typosquat detection. 199 known hallucinated/malicious p
 
 Adversa AI discovered that safety filters fail when overwhelmed with subcommands. Reaper counts before matching.
 
-### R8: Bayesian Threat Convergence
+### R8: EMA Posture Decay
 
 <p align="center"><img src="docs/assets/math/r8-ema.svg" alt="r_new = alpha · s_current + (1 - alpha) · r_prior; alpha = 0.3"></p>
 
