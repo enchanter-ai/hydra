@@ -287,7 +287,6 @@
     "action": "block",
     "description": "Deleting Kubernetes namespace — destroys all resources in namespace"
   },
-
   {
     "id": "kubectl-delete-deployment-all",
     "pattern": "kubectl\\s+delete\\s+(?:deployment|deploy|pod|svc|service|statefulset|daemonset|job|cronjob|ingress|configmap|secret|pvc)\\s+--all",
@@ -336,7 +335,6 @@
     "action": "warn",
     "description": "Kubernetes port-forward on all interfaces — exposes internal services"
   },
-
   {
     "id": "docker-system-prune",
     "pattern": "docker\\s+system\\s+prune\\s+.*-a",
@@ -393,7 +391,6 @@
     "action": "warn",
     "description": "Docker with host PID namespace — can see/signal host processes"
   },
-
   {
     "id": "terraform-destroy",
     "pattern": "terraform\\s+destroy",
@@ -426,7 +423,6 @@
     "action": "warn",
     "description": "Terraform force-unlock — may cause state corruption if lock is legitimate"
   },
-
   {
     "id": "aws-s3-rm-recursive",
     "pattern": "aws\\s+s3\\s+(?:rm|rb)\\s+.*--recursive",
@@ -491,7 +487,6 @@
     "action": "warn",
     "description": "AWS Lambda function deletion — service disruption"
   },
-
   {
     "id": "mongo-drop-database",
     "pattern": "(?:mongo|mongosh)\\s+.*(?:dropDatabase|db\\.dropDatabase)",
@@ -540,7 +535,6 @@
     "action": "block",
     "description": "MySQL database drop — irreversible data loss"
   },
-
   {
     "id": "iptables-policy-drop",
     "pattern": "iptables\\s+.*-P\\s+(?:INPUT|FORWARD|OUTPUT)\\s+DROP",
@@ -565,7 +559,6 @@
     "action": "warn",
     "description": "iptables NAT redirect — traffic interception"
   },
-
   {
     "id": "systemctl-disable-critical",
     "pattern": "systemctl\\s+(?:disable|stop|mask)\\s+(?:sshd|firewalld|iptables|fail2ban|auditd|apparmor|selinux)",
@@ -606,7 +599,6 @@
     "action": "block",
     "description": "Disabling SELinux — removes mandatory access controls"
   },
-
   {
     "id": "pip-install-production",
     "pattern": "pip\\s+install\\s+--(?:upgrade|force-reinstall)\\s+pip",
@@ -623,7 +615,6 @@
     "action": "warn",
     "description": "Python one-liner with eval/exec — arbitrary code execution"
   },
-
   {
     "id": "unset-critical-env",
     "pattern": "unset\\s+(?:PATH|HOME|USER|SHELL|LD_LIBRARY_PATH|LD_PRELOAD|JAVA_HOME|PYTHONPATH|NODE_PATH|GOPATH)",
@@ -648,7 +639,6 @@
     "action": "block",
     "description": "Setting LD_PRELOAD — library injection / privilege escalation"
   },
-
   {
     "id": "shred-wipe",
     "pattern": "(?:shred|wipe|srm)\\s+",
@@ -681,7 +671,6 @@
     "action": "warn",
     "description": "Truncating system log — destroys forensic evidence"
   },
-
   {
     "id": "git-push-protected-branch",
     "pattern": "git\\s+push\\s+.*(?:origin|upstream)\\s+(?:main|master|production|release|develop)(?:\\s|$)",
@@ -706,7 +695,6 @@
     "action": "warn",
     "description": "Modifying CI/CD configuration — pipeline tampering risk"
   },
-
   {
     "id": "npm-install-global-untrusted",
     "pattern": "npm\\s+(?:install|i)\\s+(?:-g|--global)\\s+(?!@types/|typescript|npm|yarn|pnpm|eslint|prettier)",
@@ -739,7 +727,6 @@
     "action": "warn",
     "description": "Changing npm registry to non-default — supply chain risk"
   },
-
   {
     "id": "gcloud-project-delete",
     "pattern": "gcloud\\s+projects?\\s+delete",
@@ -764,7 +751,6 @@
     "action": "block",
     "description": "Azure resource group deletion — destroys all resources in group"
   },
-
   {
     "id": "helm-delete-purge",
     "pattern": "helm\\s+(?:delete|uninstall)\\s+.*(?:--purge|--no-hooks)",
@@ -773,7 +759,6 @@
     "action": "warn",
     "description": "Helm release deletion with purge — removes release history"
   },
-
   {
     "id": "etcdctl-delete",
     "pattern": "etcdctl\\s+(?:del|delete)\\s+.*(?:--prefix|/)",
@@ -782,7 +767,6 @@
     "action": "block",
     "description": "etcd prefix deletion — may destroy cluster state"
   },
-
   {
     "id": "ssh-add-wildcard",
     "pattern": "ssh-add\\s+(?:-D|--delete-all)",
@@ -791,7 +775,6 @@
     "action": "warn",
     "description": "Removing all SSH keys from agent — may break SSH access"
   },
-
   {
     "id": "gpg-delete-keys",
     "pattern": "gpg\\s+--delete-(?:secret-)?keys",
@@ -800,7 +783,6 @@
     "action": "warn",
     "description": "Deleting GPG keys — may lose ability to decrypt data"
   },
-
   {
     "id": "dd-if-dev-zero",
     "pattern": "dd\\s+if=/dev/(?:zero|urandom)\\s+of=(?!/dev/null)",
@@ -809,7 +791,6 @@
     "action": "block",
     "description": "Writing zeros/random to device/file — data destruction"
   },
-
   {
     "id": "history-clear",
     "pattern": "(?:history\\s+-c|>\\s*~/?\\.(?:bash_history|zsh_history)|HISTSIZE=0|unset\\s+HISTFILE)",
@@ -818,7 +799,6 @@
     "action": "warn",
     "description": "Clearing/disabling shell history — anti-forensics"
   },
-
   {
     "id": "nc-listen",
     "pattern": "(?:nc|ncat|netcat)\\s+.*-l\\s*.*-p",
@@ -827,7 +807,6 @@
     "action": "warn",
     "description": "Netcat listener — potential backdoor"
   },
-
   {
     "id": "scp-to-external",
     "pattern": "scp\\s+.*(?:/etc/|/var/|~/).*@(?!localhost|127\\.0\\.0\\.1)",
@@ -836,7 +815,6 @@
     "action": "warn",
     "description": "SCP sensitive files to external host — data exfiltration risk"
   },
-
   {
     "id": "aws-s3-public-acl",
     "pattern": "aws\\s+s3(?:api)?\\s+(?:put-bucket-acl|put-object-acl).*(?:public-read|public-read-write|authenticated-read)",
@@ -845,7 +823,6 @@
     "action": "block",
     "description": "AWS S3 public ACL — exposes data to the internet"
   },
-
   {
     "id": "docker-exec-root",
     "pattern": "docker\\s+exec\\s+.*(?:-u\\s+root|--user\\s+root)",
@@ -854,7 +831,6 @@
     "action": "warn",
     "description": "Docker exec as root — elevated container privileges"
   },
-
   {
     "id": "npm-audit-fix-force",
     "pattern": "npm\\s+audit\\s+fix\\s+--force",
@@ -862,5 +838,69 @@
     "category": "supply-chain",
     "action": "warn",
     "description": "npm audit fix --force — may install breaking major version changes"
+  },
+  {
+    "id": "base64-decode-exec",
+    "pattern": "(?:echo|printf)\\s+['\\\"]?[A-Za-z0-9+/=]{40,}['\\\"]?\\s*\\|\\s*base64\\s+(?:-d|--decode)\\s*\\|\\s*(?:bash|sh|zsh|python|ruby|perl)",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Base64-encoded payload piped to base64 -d and executed — common obfuscation for hostile shell commands."
+  },
+  {
+    "id": "npx-untrusted-direct",
+    "pattern": "\\bnpx\\s+(?!(?:--yes\\s+)?(?:@anthropic-ai/|@enchanted-plugins/|@modelcontextprotocol/))[a-zA-Z0-9@_/.-]+\\s",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "npx execution of a package outside the trusted scope (@anthropic-ai, @enchanted-plugins, @modelcontextprotocol). Verify package provenance."
+  },
+  {
+    "id": "uvx-untrusted-direct",
+    "pattern": "\\buvx\\s+(?!--from\\s+git\\+https://github\\.com/(?:anthropics|enchanted-plugins)/)[a-zA-Z0-9@_/.-]+\\s",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "uvx execution of a package outside trusted GitHub orgs (anthropics, enchanted-plugins). Verify provenance."
+  },
+  {
+    "id": "claude-mcp-add-untrusted-launcher",
+    "pattern": "claude\\s+mcp\\s+add\\s+\\S+\\s+(?:npx|uvx|pnpm\\s+dlx)\\s+",
+    "severity": "critical",
+    "category": "network",
+    "action": "block",
+    "description": "Direct 'claude mcp add' of an arbitrary package via npx/uvx/pnpm dlx launcher — MCP supply chain exposure. Verify server identity first."
+  },
+  {
+    "id": "claude-plugin-install-untrusted",
+    "pattern": "(?:claude(?:-code)?\\s+)?/?plugin\\s+install\\s+(?!\\S*@(?:enchanted-plugins|anthropic|anthropics))\\S+@\\S+",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "Claude Code plugin install from an untrusted marketplace (not enchanted-plugins or anthropic). Verify maintainer + marketplace.json integrity."
+  },
+  {
+    "id": "mcp-inspector-http-unencrypted",
+    "pattern": "@modelcontextprotocol/inspector[^\\n]*--transport\\s+http\\s+http://(?!localhost|127\\.0\\.0\\.1)",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "MCP inspector using unencrypted http:// transport to a non-local host — credentials in transit."
+  },
+  {
+    "id": "git-clone-then-exec-chain",
+    "pattern": "git\\s+clone\\s+[^&;|]+(?:&&|;)\\s*(?:cd\\s+\\S+\\s*(?:&&|;)\\s*)?(?:curl|wget|bash|sh|make|npm\\s+(?:i|install)|pip\\s+install)",
+    "severity": "high",
+    "category": "network",
+    "action": "warn",
+    "description": "Clone-then-execute compound chain — clones untrusted repo and immediately runs code from it. Classic supply-chain attack surface."
+  },
+  {
+    "id": "hooks-install-write-local",
+    "pattern": "(?:echo|cat|tee|printf)[^\\n]*>\\s*\\.claude/settings(?:\\.local)?\\.json",
+    "severity": "high",
+    "category": "filesystem",
+    "action": "warn",
+    "description": "Direct Bash write to .claude/settings.json or settings.local.json bypasses hook-manifest review. Settings changes should go through /plugin install."
   }
 ]
