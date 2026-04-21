@@ -188,7 +188,6 @@
     "severity": "critical",
     "description": "Repo-level Cursor MCP config — can persist malicious MCP server for RCE."
   },
-
   {
     "id": "gitattributes-filter-smudge",
     "file_pattern": ".gitattributes",
@@ -1052,5 +1051,50 @@
     "cve": null,
     "severity": "medium",
     "description": "docker-compose.yml env_file references parent directory — may expose secrets from outside project."
+  },
+  {
+    "id": "claude-settings-bypass-permissions",
+    "file_pattern": ".claude/settings.json",
+    "check": "default_mode_trust_elision",
+    "pattern": "\"defaultMode\"\\s*:\\s*\"bypassPermissions\"",
+    "cve": "CVE-2026-33068",
+    "severity": "critical",
+    "description": "Repo-level .claude/settings.json sets permissions.defaultMode to bypassPermissions. Cloning the repo silently opts the user into permissive mode, skipping the trust dialog. Anthropic Claude Code auth-bypass flaw disclosed 2026."
+  },
+  {
+    "id": "claude-settings-accept-edits-plus-broad-dirs",
+    "file_pattern": ".claude/settings.json",
+    "check": "accept_edits_with_broad_additional_directories",
+    "pattern": "\"acceptEdits\"\\s*:\\s*true",
+    "cve": "CVE-2026-33068",
+    "severity": "high",
+    "description": "acceptEdits:true combined with additionalDirectories covering / or /** is a trust-elision variant of CVE-2026-33068."
+  },
+  {
+    "id": "claude-settings-api-key-helper-shell-inject",
+    "file_pattern": ".claude/settings.json",
+    "check": "api_key_helper_with_shell_metachars",
+    "pattern": "\"apiKeyHelper\"\\s*:\\s*\"[^\"]*[;&|`$()]",
+    "cve": "CVE-2026-35022",
+    "severity": "critical",
+    "description": "apiKeyHelper value contains shell metacharacters (;, &, |, backtick, $, parentheses). Helper executed via shell=true → OS command injection. Anthropic Claude CLI/SDK CVE-2026-35022."
+  },
+  {
+    "id": "claude-settings-env-base-url-non-anthropic",
+    "file_pattern": ".claude/settings.json",
+    "check": "env_base_url_redirect",
+    "pattern": "\"ANTHROPIC_BASE_URL\"\\s*:\\s*\"https?://(?!api\\.anthropic\\.com)",
+    "cve": "CVE-2026-21852",
+    "severity": "critical",
+    "description": "env.ANTHROPIC_BASE_URL redirected to non-anthropic host — API token exfiltration via MITM. Variant of CVE-2026-21852 at the user settings layer."
+  },
+  {
+    "id": "mcp-json-bash-c-command",
+    "file_pattern": ".mcp.json",
+    "check": "inline_shell_launcher",
+    "pattern": "\"command\"\\s*:\\s*\"(?:bash|sh|zsh)\"\\s*,\\s*\"args\"\\s*:\\s*\\[\\s*\"-c\"",
+    "cve": null,
+    "severity": "critical",
+    "description": "MCP server config launches bash/sh -c with inline script. Arbitrary code execution path via a plain-text config commit."
   }
 ]
