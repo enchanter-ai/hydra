@@ -3225,5 +3225,148 @@
       "local"
     ],
     "fix_hint": "Add authentication to MCP server transport; validate client tokens."
+  },
+  {
+    "id": "ai-mcp-schema-remote-ref",
+    "pattern": "\"\\$ref\"\\s*:\\s*\"https?://",
+    "severity": "critical",
+    "category": "mcp-attack",
+    "description": "MCP tool schema contains a JSON Schema $ref with a remote URL. Naive resolver fetches + parses → SSRF → RCE via schema-validation payload.",
+    "cwe": "CWE-918",
+    "cve": null,
+    "owasp": "LLM05 Supply-Chain",
+    "benchmark": "vulnerable-mcp-project",
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      ".mcp.json",
+      "*mcp*.json",
+      "*.mcp.json"
+    ],
+    "false_positive_hints": [
+      "example",
+      "demo",
+      "test",
+      "$schema",
+      "https://json-schema.org",
+      "https://modelcontextprotocol.io"
+    ]
+  },
+  {
+    "id": "ai-mcp-rug-pull-descriptor-mutation",
+    "pattern": "\"description\"\\s*:\\s*\"[^\"]{0,200}\"",
+    "severity": "high",
+    "category": "mcp-attack",
+    "description": "MCP tool descriptor (name, description, inputSchema) changed from the user-approved state. Stateful check — compute content hash of each tool descriptor at SessionStart and compare against prior-session hash in state. Post-approval mutation is a rug-pull attack class.",
+    "cwe": "CWE-494",
+    "cve": null,
+    "owasp": "LLM05 Supply-Chain",
+    "benchmark": "arxiv-2512.06556",
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      ".mcp.json",
+      "*mcp*.json"
+    ],
+    "requires_stateful_check": true,
+    "false_positive_hints": [
+      "first-session initialization (no prior hash to compare)"
+    ]
+  },
+  {
+    "id": "ai-mcp-tool-description-keyword-attention",
+    "pattern": "\"description\"\\s*:\\s*\"[^\"]*(?:<IMPORTANT>|ignore\\s+previous|system:|<\\|(?:start|end|im_start|im_end)\\|>|jailbreak)",
+    "severity": "critical",
+    "category": "mcp-attack",
+    "description": "MCP tool description contains prompt-injection attention-hijack tokens (<IMPORTANT>, ignore previous, system:, chat-template delimiters). Tool-description-poisoning beyond the basic ai-mcp-tool-poisoning-description pattern.",
+    "cwe": "CWE-77",
+    "cve": null,
+    "owasp": "LLM01 Prompt-Injection",
+    "benchmark": "invariant-labs-2025",
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      ".mcp.json",
+      "*mcp*.json"
+    ],
+    "false_positive_hints": [
+      "documentation",
+      "example",
+      "demo"
+    ]
+  },
+  {
+    "id": "ai-output-markdown-image-exfil",
+    "pattern": "!\\[[^\\]]*\\]\\(https?://(?!(?:github\\.com|githubusercontent\\.com|localhost|127\\.0\\.0\\.1))[^)]*\\?[^)]{8,}\\)",
+    "severity": "critical",
+    "category": "exfiltration",
+    "description": "Markdown image URL with query string to an untrusted host — lethal-trifecta exfiltration vector. Agent rendering triggers GET, leaking data in the query string. CamoLeak (CVE-2025-59145) / Superhuman-2026 class.",
+    "cwe": "CWE-200",
+    "cve": "CVE-2025-59145",
+    "owasp": "LLM02 Insecure-Output-Handling",
+    "benchmark": "camoleak",
+    "languages": [
+      "markdown",
+      "html"
+    ],
+    "file_types": [
+      "*.md",
+      "*.markdown",
+      "*.html",
+      "*.htm"
+    ],
+    "false_positive_hints": [
+      "github.com",
+      "githubusercontent.com",
+      "localhost",
+      "badge-shields"
+    ]
+  },
+  {
+    "id": "ai-output-ansi-escape-rewrite",
+    "pattern": "\\x1b\\[[\\d;]*[A-KJHfsu]",
+    "severity": "high",
+    "category": "output-smuggling",
+    "description": "ANSI escape sequence targeting cursor-move, clear-line, or screen-clear operations. When emitted from tool output (Bash stdout, tool_result), can rewrite terminal content that the agent reads as prior-turn context. Output-channel smuggling.",
+    "cwe": "CWE-150",
+    "cve": null,
+    "owasp": "LLM02 Insecure-Output-Handling",
+    "benchmark": "terminal-research-2025",
+    "languages": [
+      "binary",
+      "shell-output"
+    ],
+    "file_types": [
+      "*.log",
+      "*.txt"
+    ],
+    "false_positive_hints": [
+      "color-only escapes (m suffix)",
+      "documented colored test output"
+    ]
+  },
+  {
+    "id": "ai-mcp-tool-name-homoglyph",
+    "pattern": "\"name\"\\s*:\\s*\"[^\"]*[а-яА-ЯΑ-ωα-ωа-я][a-zA-Z]",
+    "severity": "critical",
+    "category": "mcp-attack",
+    "description": "MCP tool name contains Cyrillic / Greek homoglyph mixed with ASCII — spoofs a legitimate tool name for tool-shadowing across server boundaries.",
+    "cwe": "CWE-1007",
+    "cve": null,
+    "owasp": "LLM05 Supply-Chain",
+    "benchmark": "invariant-labs-2025",
+    "languages": [
+      "json"
+    ],
+    "file_types": [
+      ".mcp.json",
+      "*mcp*.json"
+    ],
+    "false_positive_hints": [
+      "intentional i18n tool names"
+    ]
   }
 ]
