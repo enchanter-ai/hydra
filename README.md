@@ -488,3 +488,13 @@ See [CITATION.cff](CITATION.cff) for additional formats (APA, MLA, EndNote).
 ## License
 
 MIT
+
+---
+
+## Role in the ecosystem
+
+Reaper is the **security layer** — and it runs first. At SessionStart, `config-shield` scans the repo for poisoned hooks, suspicious MCP servers, and obfuscated backdoors **before any agent has acted**, so downstream sibling plugins operate on a trusted surface. During the session, `action-guard`, `secret-scanner`, and `vuln-detector` fan out across tool events; `audit-trail` records every finding with severity + CVE/CWE reference.
+
+Reaper does not engineer prompts (Flux's lane), track tokens (Allay's lane), score change trust (Hornet's lane), review code correctness (Mantis's lane), or orchestrate git workflow (Weaver's lane). It decides whether the *environment* is hostile.
+
+See [docs/ecosystem.md § Data Flow Between Plugins](docs/ecosystem.md#data-flow-between-plugins) for the full map.
