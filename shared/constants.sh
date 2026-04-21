@@ -36,12 +36,13 @@ REAPER_LOCK_SUFFIX=".lock"
 # Session cache prefix
 REAPER_CACHE_PREFIX="/tmp/reaper-"
 
-# Bayesian Threat Convergence priors (R8)
-# Beta(2,8) — optimistic prior: most sessions are safe
+# R8 EMA Posture Decay — priors reserved for future Bayesian upgrade
+# Beta(2,8) optimistic prior. Currently unused by shared/scripts/learnings.py (pure EMA path).
+# Keep declared so a future Bayesian-posterior variant can read them without a config change.
 REAPER_THREAT_PRIOR_ALPHA=2
 REAPER_THREAT_PRIOR_BETA=8
 
-# EMA learning rate (R8: Bayesian Threat Convergence)
+# EMA learning rate (R8: EMA Posture Decay)
 REAPER_GAUSS_ALPHA="0.3"
 
 # Secret masking
