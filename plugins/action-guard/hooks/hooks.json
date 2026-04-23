@@ -1,5 +1,5 @@
 {
-  "description": "Reaper action-guard: classifies and blocks dangerous Bash commands",
+  "description": "Hydra action-guard: classifies and blocks dangerous Bash commands",
   "hooks": {
     "PreToolUse": [
       {

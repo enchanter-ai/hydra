@@ -135,7 +135,7 @@ def generate_html(audit_path, stats):
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Reaper Security Report</title>
+<title>Hydra Security Report</title>
 <style>
   * {{ margin:0; padding:0; box-sizing:border-box; }}
   body {{ background:#0A0A0A; color:#e6edf3; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:13px; line-height:1.5; }}
@@ -158,7 +158,7 @@ def generate_html(audit_path, stats):
 <body>
 <div class="brand-bar"></div>
 <div class="container">
-  <h1>Reaper <span>Security Report</span></h1>
+  <h1>Hydra <span>Security Report</span></h1>
   <div class="subtitle">Generated {now} — source: {os.path.basename(audit_path)}</div>
 
   <div class="verdict">
@@ -188,7 +188,7 @@ def generate_html(audit_path, stats):
   </div>
 
   <div class="footer">
-    <span>Reaper v1.0.0 — @enchanted-plugins</span>
+    <span>Hydra v1.0.0 — @enchanted-plugins</span>
     <span>{now}</span>
   </div>
 </div>
@@ -204,7 +204,7 @@ def main():
         sys.exit(1)
 
     audit_path = sys.argv[1]
-    output_path = sys.argv[2] if len(sys.argv) > 2 else "/tmp/reaper-report.html"
+    output_path = sys.argv[2] if len(sys.argv) > 2 else "/tmp/hydra-report.html"
 
     events = load_audit_events(audit_path)
     stats = aggregate_events(events)

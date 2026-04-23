@@ -1,11 +1,11 @@
 ---
-name: reaper:secrets
+name: hydra:secrets
 description: >
   Full project scan for secrets, credentials, and API keys.
   Shows findings grouped by severity with masked previews.
 ---
 
-When the user runs `/reaper:secrets`, perform a comprehensive secret scan.
+When the user runs `/hydra:secrets`, perform a comprehensive secret scan.
 
 ## Data Source
 
@@ -20,7 +20,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/entropy-analyzer.py" .
 ## Output Format
 
 ```
-## Reaper Secret Scan
+## Hydra Secret Scan
 
 ### Critical ([N])
 - **aws-access-key-id** in config.py:12 — masked: `AKIA...WXYZ`

@@ -3,9 +3,9 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-source "$REAPER_ROOT/shared/constants.sh"
-source "$REAPER_ROOT/shared/sanitize.sh"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+source "$HYDRA_ROOT/shared/constants.sh"
+source "$HYDRA_ROOT/shared/sanitize.sh"
 
 # Test 1: mask a long secret
 MASKED=$(mask_secret "AKIAIOSFODNN7EXAMPLE")

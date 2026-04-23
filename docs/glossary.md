@@ -1,10 +1,10 @@
-# Reaper glossary
+# Hydra glossary
 
-Terms of art used across Reaper. Short definitions; the algorithms live in [docs/science/README.md](science/README.md).
+Terms of art used across Hydra. Short definitions; the algorithms live in [docs/science/README.md](science/README.md).
 
 ## Rule classes
 
-Reaper's rule library is partitioned into classes. Each rule belongs to exactly one class; classes determine which hook fires and how the finding is routed.
+Hydra's rule library is partitioned into classes. Each rule belongs to exactly one class; classes determine which hook fires and how the finding is routed.
 
 | Class | Fires on | Hook | Example |
 |-------|----------|------|---------|
@@ -33,9 +33,9 @@ Each finding carries a severity. Severities are advisory (per [shared/conduct/ho
 
 ### OWASP LLM Top 10
 
-A curated list maintained by the [OWASP Foundation](https://owasp.org/www-project-top-10-for-large-language-model-applications/). Reaper covers:
+A curated list maintained by the [OWASP Foundation](https://owasp.org/www-project-top-10-for-large-language-model-applications/). Hydra covers:
 
-| Code | Name | Reaper rule class |
+| Code | Name | Hydra rule class |
 |------|------|-------------------|
 | LLM01 | Prompt injection | Action / Phantom |
 | LLM02 | Insecure output handling | Action |
@@ -50,13 +50,13 @@ A curated list maintained by the [OWASP Foundation](https://owasp.org/www-projec
 
 ### CWE
 
-[Common Weakness Enumeration](https://cwe.mitre.org/). Reaper's vuln-detector maps pattern matches to CWE IDs so findings can be deduplicated against scanners a user already runs.
+[Common Weakness Enumeration](https://cwe.mitre.org/). Hydra's vuln-detector maps pattern matches to CWE IDs so findings can be deduplicated against scanners a user already runs.
 
-Reaper ships with coverage for **98 CWEs** — see the README badge. The full mapping lives alongside the rule files in each sub-plugin's pattern source.
+Hydra ships with coverage for **98 CWEs** — see the README badge. The full mapping lives alongside the rule files in each sub-plugin's pattern source.
 
 ### MITRE ATT&CK
 
-Not a primary source, but Reaper cross-references high-severity findings to relevant ATT&CK technique IDs (e.g., `T1059` for command injection) in the audit trail, for teams that report upward to a security operations function.
+Not a primary source, but Hydra cross-references high-severity findings to relevant ATT&CK technique IDs (e.g., `T1059` for command injection) in the audit trail, for teams that report upward to a security operations function.
 
 ## Pattern-matching primitives
 
@@ -92,7 +92,7 @@ PostToolUse catch-all. Logs every security-relevant event — timestamp, class, 
 
 ## Verdicts
 
-Reaper does not issue DEPLOY / HOLD / FAIL like Flux. It issues **findings**:
+Hydra does not issue DEPLOY / HOLD / FAIL like Wixie. It issues **findings**:
 
 | Verdict | Meaning |
 |---------|---------|
@@ -104,7 +104,7 @@ The decision to proceed is always the human's or the orchestrator's — see [sha
 
 ## See also
 
-- [README.md](../README.md) — what Reaper does end-to-end.
+- [README.md](../README.md) — what Hydra does end-to-end.
 - [docs/getting-started.md](getting-started.md) — 5-minute first run.
 - [docs/science/README.md](science/README.md) — derivations for every algorithm referenced here.
-- [SECURITY.md](../SECURITY.md) — how to report security issues in Reaper itself.
+- [SECURITY.md](../SECURITY.md) — how to report security issues in Hydra itself.

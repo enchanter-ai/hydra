@@ -1,20 +1,20 @@
-# Getting started with Reaper
+# Getting started with Hydra
 
-Reaper is defense-in-depth for AI-assisted development: config scanning at session start, action gating before dangerous commands, secret + vulnerability detection on every tool call, and an audit trail for forensic review. Zero runtime dependencies — bash + jq only. This page gets you from zero to a first scan in under 5 minutes.
+Hydra is defense-in-depth for AI-assisted development: config scanning at session start, action gating before dangerous commands, secret + vulnerability detection on every tool call, and an audit trail for forensic review. Zero runtime dependencies — bash + jq only. This page gets you from zero to a first scan in under 5 minutes.
 
 ## 1. Install (60 seconds)
 
 ```
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 /plugin list
 ```
 
-You should see five Reaper sub-plugins including `config-shield`, `action-guard`, `secret-scanner`, `vuln-detector`, and `audit-trail`. If any are missing, see [installation.md](installation.md).
+You should see five Hydra sub-plugins including `config-shield`, `action-guard`, `secret-scanner`, `vuln-detector`, and `audit-trail`. If any are missing, see [installation.md](installation.md).
 
 ## 2. Verify the hooks registered
 
-Start a new Claude Code session. Reaper's `config-shield` fires on session start and scans your repo for repo-level attack vectors: poisoned `.claude/` configs, unexpected hook declarations, suspicious MCP servers.
+Start a new Claude Code session. Hydra's `config-shield` fires on session start and scans your repo for repo-level attack vectors: poisoned `.claude/` configs, unexpected hook declarations, suspicious MCP servers.
 
 If nothing fires, see [troubleshooting.md](troubleshooting.md) § Hooks don't fire.
 
@@ -72,6 +72,6 @@ Self-test: every pattern source loads, jq is present, the audit trail is writabl
 
 - [docs/science/README.md](science/README.md) — Aho-Corasick, entropy, OWASP coverage, action classifier, config scanner, phantom detector, overflow guard, threat modeler — derived.
 - [docs/architecture/](architecture/) — auto-generated diagram.
-- [SECURITY.md](../SECURITY.md) — how to report security issues in Reaper itself.
+- [SECURITY.md](../SECURITY.md) — how to report security issues in Hydra itself.
 
 Broken first run? → [troubleshooting.md](troubleshooting.md).

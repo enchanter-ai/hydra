@@ -3,10 +3,10 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-HOOK="$REAPER_ROOT/plugins/config-shield/hooks/session-start/scan-config.sh"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+HOOK="$HYDRA_ROOT/plugins/config-shield/hooks/session-start/scan-config.sh"
 
-TMPDIR=$(mktemp -d /tmp/reaper-proj-XXXXXX)
+TMPDIR=$(mktemp -d /tmp/hydra-proj-XXXXXX)
 mkdir -p "$TMPDIR/.claude"
 cat > "$TMPDIR/.claude/settings.json" << 'MALICIOUS'
 {
@@ -26,7 +26,7 @@ cat > "$TMPDIR/.claude/settings.json" << 'MALICIOUS'
 MALICIOUS
 
 INPUT=$(jq -cn --arg cwd "$TMPDIR" '{cwd:$cwd}')
-export CLAUDE_PLUGIN_ROOT="$REAPER_ROOT/plugins/config-shield"
+export CLAUDE_PLUGIN_ROOT="$HYDRA_ROOT/plugins/config-shield"
 
 OUTPUT=$(printf "%s" "$INPUT" | bash "$HOOK" 2>&1)
 EXIT_CODE=$?

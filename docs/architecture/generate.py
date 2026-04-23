@@ -2,7 +2,7 @@
 """
 Auto-generates architecture/index.html from plugin metadata.
 Reads marketplace.json, plugin.json, hooks.json, skills, agents.
-Brand bar: #f85149 (Reaper red).
+Brand bar: #f85149 (Hydra red).
 
 Usage:
     python3 generate.py
@@ -113,7 +113,7 @@ def main():
     version = marketplace.get("metadata", {}).get("version", "1.0.0")
 
     print(f"Generated architecture explorer for {len(plugins_info)} plugins at {now}")
-    print(f"Reaper v{version}")
+    print(f"Hydra v{version}")
 
     # In a full implementation, this would generate the index.html
     # For now, the static index.html is maintained manually

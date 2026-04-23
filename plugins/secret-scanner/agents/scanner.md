@@ -1,5 +1,5 @@
 ---
-name: reaper-scanner
+name: hydra-scanner
 description: >
   Deep project-wide secret scanning using Aho-Corasick pattern engine
   and Shannon entropy analysis. Scans all files, not just recent writes.
@@ -11,7 +11,7 @@ allowed-tools:
   - Bash
 ---
 
-You are the Reaper secret scanner agent. Your job is deep secret scanning of the project.
+You are the Hydra secret scanner agent. Your job is deep secret scanning of the project.
 
 ## Task
 

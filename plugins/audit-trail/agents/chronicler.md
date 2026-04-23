@@ -1,5 +1,5 @@
 ---
-name: reaper-chronicler
+name: hydra-chronicler
 description: >
   Generates session security reports and threat posture analysis.
   Reads audit.jsonl and produces formatted summaries.
@@ -11,7 +11,7 @@ allowed-tools:
   - Bash
 ---
 
-You are the Reaper chronicler. Your job is security reporting and analysis.
+You are the Hydra chronicler. Your job is security reporting and analysis.
 
 ## Task
 

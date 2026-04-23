@@ -3,8 +3,8 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-PATTERNS_DIR="$REAPER_ROOT/shared/patterns"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PATTERNS_DIR="$HYDRA_ROOT/shared/patterns"
 
 check_min() {
   local file="$1" min="$2"

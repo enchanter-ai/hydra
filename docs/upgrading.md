@@ -1,6 +1,6 @@
 # Upgrading
 
-Reaper follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Breaking changes only land on major version bumps (x.0.0).
+Hydra follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Breaking changes only land on major version bumps (x.0.0).
 
 ## Between majors
 
@@ -14,4 +14,4 @@ Pattern-database updates (OWASP LLM Top 10 revisions, new CWE coverage, new CVE 
 
 ## Current version
 
-See [CHANGELOG.md](../CHANGELOG.md) for the current version and recent changes. As of this writing Reaper is on v1.0.0; no breaking-change migrations are documented yet. This page is a stub until the next major bump.
+See [CHANGELOG.md](../CHANGELOG.md) for the current version and recent changes. As of this writing Hydra is on v1.0.0; no breaking-change migrations are documented yet. This page is a stub until the next major bump.

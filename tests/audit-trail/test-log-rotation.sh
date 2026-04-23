@@ -3,14 +3,14 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Source metrics.sh to test rotation directly
-source "$REAPER_ROOT/shared/constants.sh"
-source "$REAPER_ROOT/shared/metrics.sh"
+source "$HYDRA_ROOT/shared/constants.sh"
+source "$HYDRA_ROOT/shared/metrics.sh"
 
 # Create temp state dir with large audit file
-TMPDIR=$(mktemp -d /tmp/reaper-test-rotation-XXXXXX)
+TMPDIR=$(mktemp -d /tmp/hydra-test-rotation-XXXXXX)
 AUDIT_FILE="$TMPDIR/audit.jsonl"
 
 # Create a file larger than 10MB

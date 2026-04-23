@@ -4,14 +4,14 @@ Comprehensive security event logging with rotation and reporting.
 
 ## Install
 
-Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Reaper plugins via dependency resolution:
+Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Hydra plugins via dependency resolution:
 
 ```
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 ```
 
-To install this plugin on its own: `/plugin install reaper-audit-trail@reaper`. `audit-trail` only has events to log because `secret-scanner`, `vuln-detector`, `action-guard`, and `config-shield` emit them. On its own, you get an empty JSONL file and a report with no findings.
+To install this plugin on its own: `/plugin install hydra-audit-trail@hydra`. `audit-trail` only has events to log because `secret-scanner`, `vuln-detector`, `action-guard`, and `config-shield` emit them. On its own, you get an empty JSONL file and a report with no findings.
 
 ## Algorithm
 - **R8: EMA Posture Decay** — cross-session EMA of threat rates (α=0.3)
@@ -34,7 +34,7 @@ JSONL entries in `state/audit.jsonl`:
 - Cross-session learning via EMA
 
 ## Command
-`/reaper:audit` — event timeline, severity filters, report generation
+`/hydra:audit` — event timeline, severity filters, report generation
 
 ## Agent
 `chronicler` (Haiku) — session security summary and posture analysis

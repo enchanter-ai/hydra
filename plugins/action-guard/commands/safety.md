@@ -1,11 +1,11 @@
 ---
-name: reaper:safety
+name: hydra:safety
 description: >
   Show safety configuration, recent blocks and warnings,
   and classify any command for safety.
 ---
 
-When the user runs `/reaper:safety`, show the current safety status.
+When the user runs `/hydra:safety`, show the current safety status.
 
 ## Data Source
 
@@ -15,7 +15,7 @@ When the user runs `/reaper:safety`, show the current safety status.
 ## Output Format
 
 ```
-## Reaper Action Guard
+## Hydra Action Guard
 
 **Mode:** balanced (block dangerous, warn risky)
 **Available modes:** strict | balanced | permissive

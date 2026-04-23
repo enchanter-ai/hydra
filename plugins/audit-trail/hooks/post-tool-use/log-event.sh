@@ -24,7 +24,7 @@ source "${SHARED_DIR}/metrics.sh"
 source "${SHARED_DIR}/compat.sh"
 
 # ── Read hook input from stdin (capped at 1MB) ──
-HOOK_INPUT=$(reaper_read_stdin 1048576)
+HOOK_INPUT=$(hydra_read_stdin 1048576)
 
 if [[ -z "$HOOK_INPUT" ]]; then exit 0; fi
 

@@ -1,6 +1,6 @@
-# The Science Behind Reaper
+# The Science Behind Hydra
 
-Formal mathematical models powering every security engine in Reaper.
+Formal mathematical models powering every security engine in Hydra.
 
 These aren't abstractions. Every formula maps to running code.
 
@@ -104,7 +104,7 @@ Cross-references against known hallucinated packages and popular package names. 
 
 <p align="center"><img src="../assets/math/r7-overflow.svg" alt="Block(cmd) iff |split(cmd, separators)| > 50"></p>
 
-Discovered by Adversa AI: when a command contains enough subcommands, safety filters fail to evaluate all of them. Reaper counts subcommand parts before any pattern matching.
+Discovered by Adversa AI: when a command contains enough subcommands, safety filters fail to evaluate all of them. Hydra counts subcommand parts before any pattern matching.
 
 **Implementation:** `plugins/action-guard/hooks/pre-tool-use/guard-action.sh`
 

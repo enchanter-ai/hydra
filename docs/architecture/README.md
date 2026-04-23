@@ -1,4 +1,4 @@
-# Reaper Architecture
+# Hydra Architecture
 
 > Auto-generated from codebase by `generate.py`. Run `python docs/architecture/generate.py` to regenerate.
 

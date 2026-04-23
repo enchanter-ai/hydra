@@ -1856,7 +1856,7 @@
   },
   {
     "id": "ai-agent-abuse-delete-safety-files",
-    "pattern": "(?:delete|remove|rm)\\s+(?:.*)?(?:CLAUDE\\.md|AGENTS\\.md|\\.cursorrules|copilot-instructions|reaper|guardrail|security)",
+    "pattern": "(?:delete|remove|rm)\\s+(?:.*)?(?:CLAUDE\\.md|AGENTS\\.md|\\.cursorrules|copilot-instructions|hydra|guardrail|security)",
     "severity": "critical",
     "category": "agent-abuse",
     "description": "Instructions to delete AI safety configuration files attempt to remove security guardrails.",

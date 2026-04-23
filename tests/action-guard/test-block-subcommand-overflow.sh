@@ -3,10 +3,10 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-HOOK="$REAPER_ROOT/plugins/action-guard/hooks/pre-tool-use/guard-action.sh"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+HOOK="$HYDRA_ROOT/plugins/action-guard/hooks/pre-tool-use/guard-action.sh"
 
-TRANSCRIPT=$(mktemp /tmp/reaper-xscript-XXXXXX)
+TRANSCRIPT=$(mktemp /tmp/hydra-xscript-XXXXXX)
 echo "x" > "$TRANSCRIPT"
 
 # Build a command with 60 subcommands — should trigger R7 overflow detection
@@ -18,7 +18,7 @@ done
 INPUT=$(jq -cn --arg tool "Bash" --arg cmd "$CMD" --arg transcript "$TRANSCRIPT" \
   '{tool_name:$tool, tool_input:{command:$cmd}, transcript_path:$transcript}')
 
-export CLAUDE_PLUGIN_ROOT="$REAPER_ROOT/plugins/action-guard"
+export CLAUDE_PLUGIN_ROOT="$HYDRA_ROOT/plugins/action-guard"
 
 OUTPUT=$(printf "%s" "$INPUT" | bash "$HOOK" 2>&1)
 EXIT_CODE=$?

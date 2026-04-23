@@ -4,14 +4,14 @@ Pre-execution classification and blocking of dangerous Bash commands.
 
 ## Install
 
-Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Reaper plugins via dependency resolution:
+Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Hydra plugins via dependency resolution:
 
 ```
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 ```
 
-To install this plugin on its own: `/plugin install reaper-action-guard@reaper`. `action-guard` is the only Reaper plugin that actually *blocks* (exit 2 on Bash) — but its block decisions are only useful if `secret-scanner` catches the exfil payload on disk, `config-shield` catches the poisoned config that would disable it, `vuln-detector` catches the RCE bug upstream, and `audit-trail` records every block for incident review. On its own, the rest of the kill chain stays open.
+To install this plugin on its own: `/plugin install hydra-action-guard@hydra`. `action-guard` is the only Hydra plugin that actually *blocks* (exit 2 on Bash) — but its block decisions are only useful if `secret-scanner` catches the exfil payload on disk, `config-shield` catches the poisoned config that would disable it, `vuln-detector` catches the RCE bug upstream, and `audit-trail` records every block for incident review. On its own, the rest of the kill chain stays open.
 
 ## Algorithms
 - **R4: Markov Action Classification** — classify commands as SAFE/WARN/BLOCK
@@ -19,7 +19,7 @@ To install this plugin on its own: `/plugin install reaper-action-guard@reaper`.
 
 ## Hook
 - **PreToolUse** on Bash — classifies command BEFORE execution
-- **Uses exit 2 to BLOCK** — the only Reaper hook that blocks tool execution
+- **Uses exit 2 to BLOCK** — the only Hydra hook that blocks tool execution
 
 ## Strictness Modes
 | Mode | Block patterns | Warn patterns |
@@ -37,7 +37,7 @@ To install this plugin on its own: `/plugin install reaper-action-guard@reaper`.
 - 50+ subcommand commands
 
 ## Command
-`/reaper:safety` — show mode, recent blocks, classify commands
+`/hydra:safety` — show mode, recent blocks, classify commands
 
 ## Agent
 `guardian` (Sonnet) — evaluate ambiguous commands with full context

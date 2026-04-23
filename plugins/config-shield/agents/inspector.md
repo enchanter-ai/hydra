@@ -1,5 +1,5 @@
 ---
-name: reaper-inspector
+name: hydra-inspector
 description: >
   Deep config analysis. Decodes base64 payloads, detects obfuscated commands,
   traces MCP server trust chains. Runs full config-scanner.py analysis.
@@ -11,7 +11,7 @@ allowed-tools:
   - Bash
 ---
 
-You are the Reaper config inspector. Your job is deep config file analysis.
+You are the Hydra config inspector. Your job is deep config file analysis.
 
 ## Task
 

@@ -1,45 +1,45 @@
 {
-  "name": "reaper",
+  "name": "hydra",
   "owner": {
     "name": "enchanted-plugins"
   },
   "metadata": {
     "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, and audit logging.",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "full",
       "source": "./plugins/full",
-      "description": "Meta-plugin. One install pulls in all 5 Reaper plugins via dependency resolution.",
+      "description": "Meta-plugin. One install pulls in all 5 Hydra plugins via dependency resolution.",
       "category": "meta"
     },
     {
-      "name": "reaper-secret-scanner",
+      "name": "hydra-secret-scanner",
       "source": "./plugins/secret-scanner",
       "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
       "category": "security"
     },
     {
-      "name": "reaper-vuln-detector",
+      "name": "hydra-vuln-detector",
       "source": "./plugins/vuln-detector",
       "description": "OWASP Top 10 and CWE-mapped vulnerability detection in code changes.",
       "category": "security"
     },
     {
-      "name": "reaper-action-guard",
+      "name": "hydra-action-guard",
       "source": "./plugins/action-guard",
       "description": "Pre-execution classification and blocking of dangerous Bash commands.",
       "category": "security"
     },
     {
-      "name": "reaper-config-shield",
+      "name": "hydra-config-shield",
       "source": "./plugins/config-shield",
       "description": "Session-start scanning for malicious repository configuration files.",
       "category": "security"
     },
     {
-      "name": "reaper-audit-trail",
+      "name": "hydra-audit-trail",
       "source": "./plugins/audit-trail",
       "description": "Comprehensive security event logging with rotation and reporting.",
       "category": "security"

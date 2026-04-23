@@ -1,5 +1,5 @@
 {
-  "description": "Reaper config-shield: scans repository config files at session start",
+  "description": "Hydra config-shield: scans repository config files at session start",
   "hooks": {
     "SessionStart": [
       {

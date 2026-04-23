@@ -1,11 +1,11 @@
 ---
-name: reaper:config-check
+name: hydra:config-check
 description: >
   Scan all config files in the repository for attack vectors.
   Reports CVE references and remediation steps.
 ---
 
-When the user runs `/reaper:config-check`, scan all config files.
+When the user runs `/hydra:config-check`, scan all config files.
 
 ## Data Source
 
@@ -19,7 +19,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/config-scanner.py" .
 ## Output Format
 
 ```
-## Reaper Config Shield
+## Hydra Config Shield
 
 ### Critical
 **CVE-2025-59536** — .claude/settings.json

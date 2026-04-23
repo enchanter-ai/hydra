@@ -1,6 +1,6 @@
-# Reaper — Agent Contract
+# Hydra — Agent Contract
 
-Audience: Claude. Reaper intercepts secrets, OWASP vulnerabilities, dangerous commands, poisoned configs, and phantom dependencies — at write-time and before Bash executes, not after. Every rule is anchored in a real CVE, incident, or research paper.
+Audience: Claude. Hydra intercepts secrets, OWASP vulnerabilities, dangerous commands, poisoned configs, and phantom dependencies — at write-time and before Bash executes, not after. Every rule is anchored in a real CVE, incident, or research paper.
 
 ## Shared behavioral modules
 
@@ -38,10 +38,10 @@ Pattern databases: **20 files, 2,011 patterns, 98 CWEs.** Original 5 (secrets 31
 
 Markers: **[H]** hook-enforced · **[A]** advisory.
 
-1. **[H] IMPORTANT — Acknowledge every `[Reaper]` stderr.** Name the category (secret / vuln / command / config / phantom dep) and the severity. Do not paraphrase it away.
+1. **[H] IMPORTANT — Acknowledge every `[Hydra]` stderr.** Name the category (secret / vuln / command / config / phantom dep) and the severity. Do not paraphrase it away.
 2. **[H] YOU MUST NOT bypass a BLOCKED command.** action-guard returns exit 2 — the command did not execute. Do not retry with subcommand splitting, base64, shell substitution, or `eval` wrappers. R7 specifically catches those evasions. Explain the block and suggest a safe alternative.
 3. **[H] YOU MUST NOT log full secret values.** Anywhere. stderr, chat, logs, reports, commits. Only the masked form (`first4...last4`) via `shared/sanitize.sh::mask_secret()`. This is enforced at the hook layer; defeating it is a contract violation.
-4. **[A] STOP on CRITICAL.** Tell the developer: "Reaper found a critical security issue. Here's what happened and what we should do." Do not continue the task until acknowledged.
+4. **[A] STOP on CRITICAL.** Tell the developer: "Hydra found a critical security issue. Here's what happened and what we should do." Do not continue the task until acknowledged.
 5. **[A] Verify phantom deps (R6).** If a new import is flagged as phantom/typosquat, do not install. 20% of AI-suggested packages don't exist (USENIX 2025); attackers register them. Verify the package on its registry and confirm ownership first.
 6. **[A] Honour config-shield at SessionStart.** If a config file was flagged (CVE-2025-59536, -21852, -54135, -54794), do not edit around it or silence it. Surface and ask.
 7. **[A] ESCALATE in strict mode.** If `plugins/action-guard/state/config.json` is `strict`, treat every WARN as BLOCK. In permissive, still surface findings — do not pretend they don't exist because the hook let them through.
@@ -75,7 +75,7 @@ plugins/audit-trail/state/audit.jsonl        (append-only, 10MB rotation)
 plugins/secret-scanner/state/audit.jsonl     (masked values only)
 plugins/action-guard/state/audit.jsonl       (blocked/warned cmds)
 plugins/action-guard/state/config.json       (mutable, mode)
-/tmp/reaper-report.html                       (generated report)
+/tmp/hydra-report.html                       (generated report)
 ```
 
 ## Agent tiers

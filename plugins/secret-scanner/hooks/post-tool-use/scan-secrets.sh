@@ -27,7 +27,7 @@ source "${SHARED_DIR}/metrics.sh"
 source "${SHARED_DIR}/compat.sh"
 
 # ── Read hook input from stdin (capped at 1MB) ──
-HOOK_INPUT=$(reaper_read_stdin 1048576)
+HOOK_INPUT=$(hydra_read_stdin 1048576)
 
 if ! validate_json "$HOOK_INPUT"; then
   exit 0
@@ -48,7 +48,7 @@ DECODED=$(printf "%s" "$FILE_PATH" | sed -e 's/%2[eE]/./g' -e 's/%2[fF]/\//g' -e
 if [[ "$DECODED" == *".."* ]]; then exit 0; fi
 
 # ── Skip binary files ──
-if [[ -f "$FILE_PATH" ]] && reaper_is_binary "$FILE_PATH"; then
+if [[ -f "$FILE_PATH" ]] && hydra_is_binary "$FILE_PATH"; then
   exit 0
 fi
 
@@ -58,12 +58,12 @@ if [[ ! -f "$FILE_PATH" ]] || [[ ! -s "$FILE_PATH" ]]; then
 fi
 
 # ── Session hash for cache isolation ──
-SESSION_HASH=$(reaper_md5_file "${HOOK_TRANSCRIPT_PATH}" 2>/dev/null || echo "fallback-$$")
+SESSION_HASH=$(hydra_md5_file "${HOOK_TRANSCRIPT_PATH}" 2>/dev/null || echo "fallback-$$")
 
 # ── Build or load cached regex from secrets.json ──
-PATTERNS_FILE="${SHARED_DIR}/${REAPER_PATTERNS_SECRETS}"
-PATTERNS_HASH=$(reaper_md5_file "$PATTERNS_FILE" 2>/dev/null || echo "default")
-REGEX_CACHE="${REAPER_CACHE_PREFIX}secrets-regex-${PATTERNS_HASH}"
+PATTERNS_FILE="${SHARED_DIR}/${HYDRA_PATTERNS_SECRETS}"
+PATTERNS_HASH=$(hydra_md5_file "$PATTERNS_FILE" 2>/dev/null || echo "default")
+REGEX_CACHE="${HYDRA_CACHE_PREFIX}secrets-regex-${PATTERNS_HASH}"
 
 if [[ ! -f "$REGEX_CACHE" ]]; then
   # Split into multiple short regex lines for portability.
@@ -121,7 +121,7 @@ fi
 # ── R1: grep-based pattern matching ──
 # Use -f to read patterns from file (one per line)
 # Cap file read at 2000 lines for performance
-FINDINGS_FILE="${REAPER_CACHE_PREFIX}secrets-findings-${SESSION_HASH}-$$.tmp"
+FINDINGS_FILE="${HYDRA_CACHE_PREFIX}secrets-findings-${SESSION_HASH}-$$.tmp"
 head -2000 "$FILE_PATH" 2>/dev/null \
   | grep -nEof "$REGEX_CACHE" 2>/dev/null \
   > "$FINDINGS_FILE" || true
@@ -151,38 +151,38 @@ while IFS=: read -r LINE_NUM MATCHED_TEXT; do
   MASKED=$(mask_secret "$MATCHED_TEXT")
 
   # Determine severity based on pattern matching
-  SEVERITY="$REAPER_SEVERITY_HIGH"
+  SEVERITY="$HYDRA_SEVERITY_HIGH"
   PATTERN_ID="unknown"
 
   # Check against known critical patterns
   case "$MATCHED_TEXT" in
-    AKIA*) PATTERN_ID="aws-access-key-id"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    sk-ant-*) PATTERN_ID="anthropic-api-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    ghp_*) PATTERN_ID="github-pat"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    gho_*) PATTERN_ID="github-oauth"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    ghs_*) PATTERN_ID="github-app-token"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    glpat-*) PATTERN_ID="gitlab-pat"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    sk_live_*) PATTERN_ID="stripe-secret-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    sk_test_*) PATTERN_ID="stripe-test-key"; SEVERITY="$REAPER_SEVERITY_MEDIUM" ;;
-    xox[bpsar]-*) PATTERN_ID="slack-token"; SEVERITY="$REAPER_SEVERITY_HIGH" ;;
-    eyJ*) PATTERN_ID="jwt-token"; SEVERITY="$REAPER_SEVERITY_HIGH" ;;
-    hf_*) PATTERN_ID="huggingface-token"; SEVERITY="$REAPER_SEVERITY_HIGH" ;;
-    npm_*) PATTERN_ID="npm-token"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *"BEGIN RSA PRIVATE KEY"*) PATTERN_ID="rsa-private-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *"BEGIN OPENSSH PRIVATE KEY"*) PATTERN_ID="openssh-private-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *"BEGIN PRIVATE KEY"*) PATTERN_ID="pkcs8-private-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *"BEGIN PGP PRIVATE KEY"*) PATTERN_ID="pgp-private-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *postgres://*) PATTERN_ID="postgres-connection-string"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *mysql://*) PATTERN_ID="mysql-connection-string"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *mongodb*://*) PATTERN_ID="mongodb-connection-string"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    AIza*) PATTERN_ID="gcp-api-key"; SEVERITY="$REAPER_SEVERITY_HIGH" ;;
-    *DefaultEndpoints*) PATTERN_ID="azure-storage-key"; SEVERITY="$REAPER_SEVERITY_CRITICAL" ;;
-    *) PATTERN_ID="generic-secret"; SEVERITY="$REAPER_SEVERITY_MEDIUM" ;;
+    AKIA*) PATTERN_ID="aws-access-key-id"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    sk-ant-*) PATTERN_ID="anthropic-api-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    ghp_*) PATTERN_ID="github-pat"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    gho_*) PATTERN_ID="github-oauth"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    ghs_*) PATTERN_ID="github-app-token"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    glpat-*) PATTERN_ID="gitlab-pat"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    sk_live_*) PATTERN_ID="stripe-secret-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    sk_test_*) PATTERN_ID="stripe-test-key"; SEVERITY="$HYDRA_SEVERITY_MEDIUM" ;;
+    xox[bpsar]-*) PATTERN_ID="slack-token"; SEVERITY="$HYDRA_SEVERITY_HIGH" ;;
+    eyJ*) PATTERN_ID="jwt-token"; SEVERITY="$HYDRA_SEVERITY_HIGH" ;;
+    hf_*) PATTERN_ID="huggingface-token"; SEVERITY="$HYDRA_SEVERITY_HIGH" ;;
+    npm_*) PATTERN_ID="npm-token"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *"BEGIN RSA PRIVATE KEY"*) PATTERN_ID="rsa-private-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *"BEGIN OPENSSH PRIVATE KEY"*) PATTERN_ID="openssh-private-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *"BEGIN PRIVATE KEY"*) PATTERN_ID="pkcs8-private-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *"BEGIN PGP PRIVATE KEY"*) PATTERN_ID="pgp-private-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *postgres://*) PATTERN_ID="postgres-connection-string"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *mysql://*) PATTERN_ID="mysql-connection-string"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *mongodb*://*) PATTERN_ID="mongodb-connection-string"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    AIza*) PATTERN_ID="gcp-api-key"; SEVERITY="$HYDRA_SEVERITY_HIGH" ;;
+    *DefaultEndpoints*) PATTERN_ID="azure-storage-key"; SEVERITY="$HYDRA_SEVERITY_CRITICAL" ;;
+    *) PATTERN_ID="generic-secret"; SEVERITY="$HYDRA_SEVERITY_MEDIUM" ;;
   esac
 
   # Downgrade severity for test files
   if [[ "$IS_TEST" == "true" ]]; then
-    SEVERITY="$REAPER_SEVERITY_INFO"
+    SEVERITY="$HYDRA_SEVERITY_INFO"
   fi
 
   # ── Log to audit trail ──
@@ -201,15 +201,15 @@ while IFS=: read -r LINE_NUM MATCHED_TEXT; do
   log_metric "${STATE_DIR}/audit.jsonl" "$AUDIT_ENTRY"
 
   # ── stderr output for Claude ──
-  if [[ "$SEVERITY" == "$REAPER_SEVERITY_CRITICAL" ]]; then
-    printf "[Reaper] CRITICAL SECRET: %s in %s:%s (masked: %s)\n" "$PATTERN_ID" "$SHORT_FILE" "$LINE_NUM" "$MASKED" >&2
-  elif [[ "$SEVERITY" != "$REAPER_SEVERITY_INFO" ]]; then
-    printf "[Reaper] SECRET: %s in %s:%s (severity: %s)\n" "$PATTERN_ID" "$SHORT_FILE" "$LINE_NUM" "$SEVERITY" >&2
+  if [[ "$SEVERITY" == "$HYDRA_SEVERITY_CRITICAL" ]]; then
+    printf "[Hydra] CRITICAL SECRET: %s in %s:%s (masked: %s)\n" "$PATTERN_ID" "$SHORT_FILE" "$LINE_NUM" "$MASKED" >&2
+  elif [[ "$SEVERITY" != "$HYDRA_SEVERITY_INFO" ]]; then
+    printf "[Hydra] SECRET: %s in %s:%s (severity: %s)\n" "$PATTERN_ID" "$SHORT_FILE" "$LINE_NUM" "$SEVERITY" >&2
   fi
 
   # Cap at 20 findings per file to avoid noise
   if [[ $FINDING_COUNT -ge 20 ]]; then
-    printf "[Reaper] ...and more. Run /reaper:secrets for full scan.\n" >&2
+    printf "[Hydra] ...and more. Run /hydra:secrets for full scan.\n" >&2
     break
   fi
 done < "$FINDINGS_FILE"

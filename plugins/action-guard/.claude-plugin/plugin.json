@@ -1,5 +1,5 @@
 {
-  "name": "reaper-action-guard",
+  "name": "hydra-action-guard",
   "description": "Pre-execution classification and blocking of dangerous Bash commands.",
   "version": "1.0.0",
   "author": {

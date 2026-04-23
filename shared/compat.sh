@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Reaper cross-platform compatibility layer
+# Hydra cross-platform compatibility layer
 # Provides portable wrappers for GNU vs BSD tool differences.
 # Must be sourced, not executed.
 
 # ── Hash functions ──
 
-reaper_md5() {
+hydra_md5() {
   # Returns first 8 chars of MD5 hash of input string
   local input="$1"
   if command -v md5sum >/dev/null 2>&1; then
@@ -18,7 +18,7 @@ reaper_md5() {
   fi
 }
 
-reaper_md5_file() {
+hydra_md5_file() {
   # Returns first 8 chars of MD5 hash of a file
   local filepath="$1"
   if command -v md5sum >/dev/null 2>&1; then
@@ -30,7 +30,7 @@ reaper_md5_file() {
   fi
 }
 
-reaper_sha256_file() {
+hydra_sha256_file() {
   # Returns first 16 chars of SHA256 hash of a file
   local filepath="$1"
   if command -v sha256sum >/dev/null 2>&1; then
@@ -45,7 +45,7 @@ reaper_sha256_file() {
 
 # ── Binary file detection ──
 
-reaper_is_binary() {
+hydra_is_binary() {
   # Returns 0 (true) if file appears to be binary
   local filepath="$1"
   if command -v file >/dev/null 2>&1; then
@@ -70,7 +70,7 @@ reaper_is_binary() {
 
 # ── File size (portable) ──
 
-reaper_file_size() {
+hydra_file_size() {
   # Returns file size in bytes
   local filepath="$1"
   if stat --version >/dev/null 2>&1; then
@@ -84,7 +84,7 @@ reaper_file_size() {
 
 # ── Stdin reading with size cap ──
 
-reaper_read_stdin() {
+hydra_read_stdin() {
   # Read stdin with a size limit (default 1MB)
   local max_bytes="${1:-1048576}"
   head -c "$max_bytes" 2>/dev/null
@@ -92,7 +92,7 @@ reaper_read_stdin() {
 
 # ── Stale lock cleanup ──
 
-reaper_acquire_lock() {
+hydra_acquire_lock() {
   # Same as acquire_lock but cleans stale locks older than 60s
   local lock_dir="$1"
   local retries=50

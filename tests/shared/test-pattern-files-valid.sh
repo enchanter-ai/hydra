@@ -3,8 +3,8 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-PATTERNS_DIR="$REAPER_ROOT/shared/patterns"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PATTERNS_DIR="$HYDRA_ROOT/shared/patterns"
 
 EXPECTED_FILES=(
   secrets.json vulns.json dangerous-ops.json config-attacks.json slopsquatting.json

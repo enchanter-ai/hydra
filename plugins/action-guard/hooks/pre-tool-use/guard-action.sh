@@ -26,7 +26,7 @@ source "${SHARED_DIR}/metrics.sh"
 source "${SHARED_DIR}/compat.sh"
 
 # ── Read hook input from stdin (capped at 1MB) ──
-HOOK_INPUT=$(reaper_read_stdin 1048576)
+HOOK_INPUT=$(hydra_read_stdin 1048576)
 
 if ! validate_json "$HOOK_INPUT"; then
   exit 0
@@ -41,7 +41,7 @@ fi
 
 # ── Read strictness mode ──
 STATE_DIR="${PLUGIN_ROOT}/state"
-MODE="$REAPER_DEFAULT_MODE"
+MODE="$HYDRA_DEFAULT_MODE"
 CONFIG_FILE="${STATE_DIR}/config.json"
 if [[ -f "$CONFIG_FILE" ]] && jq empty "$CONFIG_FILE" >/dev/null 2>&1; then
   CONFIGURED_MODE=$(jq -r '.mode // ""' "$CONFIG_FILE" 2>/dev/null)
@@ -74,20 +74,20 @@ fi
 
 TOTAL_PARTS=$(( SUBCOMMAND_COUNT + PIPE_COUNT + AND_COUNT ))
 
-if [[ "$TOTAL_PARTS" -gt "$REAPER_SUBCOMMAND_LIMIT" ]]; then
+if [[ "$TOTAL_PARTS" -gt "$HYDRA_SUBCOMMAND_LIMIT" ]]; then
   # Block: subcommand overflow
   AUDIT_ENTRY=$(jq -cn \
     --arg event "action_blocked" \
     --arg ts "$TIMESTAMP" \
     --arg reason "subcommand_overflow" \
     --argjson count "$TOTAL_PARTS" \
-    --argjson limit "$REAPER_SUBCOMMAND_LIMIT" \
+    --argjson limit "$HYDRA_SUBCOMMAND_LIMIT" \
     --arg mode "$MODE" \
     '{event:$event, ts:$ts, reason:$reason, subcommand_count:$count, limit:$limit, mode:$mode}')
 
   log_metric "${STATE_DIR}/audit.jsonl" "$AUDIT_ENTRY"
 
-  printf "[Reaper] BLOCKED: Command has %d subcommands (limit: %d). This matches the Adversa AI deny-rule bypass pattern.\n" "$TOTAL_PARTS" "$REAPER_SUBCOMMAND_LIMIT" >&2
+  printf "[Hydra] BLOCKED: Command has %d subcommands (limit: %d). This matches the Adversa AI deny-rule bypass pattern.\n" "$TOTAL_PARTS" "$HYDRA_SUBCOMMAND_LIMIT" >&2
 
   # Intentional exit 2 — blocks the Bash command
   trap - ERR INT TERM
@@ -96,7 +96,7 @@ fi
 
 # ── R4: Markov Action Classification ──
 # Match against dangerous-ops.json patterns
-PATTERNS_FILE="${SHARED_DIR}/${REAPER_PATTERNS_DANGEROUS}"
+PATTERNS_FILE="${SHARED_DIR}/${HYDRA_PATTERNS_DANGEROUS}"
 if [[ ! -f "$PATTERNS_FILE" ]]; then exit 0; fi
 
 # Check each pattern
@@ -161,7 +161,7 @@ done < <(jq -r '.[] | [.pattern, .id, .severity, .category, .action, .descriptio
 
 # ── Handle block decision ──
 if [[ "$BLOCKED" == "true" ]]; then
-  printf "[Reaper] BLOCKED: %s (mode: %s)\n" "$BLOCK_REASON" "$MODE" >&2
+  printf "[Hydra] BLOCKED: %s (mode: %s)\n" "$BLOCK_REASON" "$MODE" >&2
 
   # Intentional exit 2 — blocks the Bash command
   trap - ERR INT TERM
@@ -180,7 +180,7 @@ if [[ "$WARNED" == "true" ]]; then
   log_metric "${STATE_DIR}/audit.jsonl" "$AUDIT_ENTRY"
   log_metric "${STATE_DIR}/metrics.jsonl" "$AUDIT_ENTRY"
 
-  printf "[Reaper] WARNING: %s(mode: %s)\n" "$WARN_REASONS" "$MODE" >&2
+  printf "[Hydra] WARNING: %s(mode: %s)\n" "$WARN_REASONS" "$MODE" >&2
 fi
 
 exit 0

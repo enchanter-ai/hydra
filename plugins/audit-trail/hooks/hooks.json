@@ -1,5 +1,5 @@
 {
-  "description": "Reaper audit-trail: logs all security events from all tools",
+  "description": "Hydra audit-trail: logs all security events from all tools",
   "hooks": {
     "PostToolUse": [
       {

@@ -1,11 +1,11 @@
 ---
-name: reaper:audit
+name: hydra:audit
 description: >
   Show the security audit trail filtered by severity, category, or time.
   Generate HTML report for detailed analysis.
 ---
 
-When the user runs `/reaper:audit`, show the security event timeline.
+When the user runs `/hydra:audit`, show the security event timeline.
 
 ## Data Source
 
@@ -19,7 +19,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/state/audit.jsonl`. Each line is a JSON object with:
 ## Output Format
 
 ```
-## Reaper Audit Trail
+## Hydra Audit Trail
 
 ### Session Summary
 | Category | Count |
@@ -38,7 +38,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/state/audit.jsonl`. Each line is a JSON object with:
 | 14:28 | BLOCK | critical | rm -rf / |
 
 ### Generate Full Report
-Run: python3 shared/scripts/report-gen.py state/audit.jsonl /tmp/reaper-report.html
+Run: python3 shared/scripts/report-gen.py state/audit.jsonl /tmp/hydra-report.html
 ```
 
 ## Rules

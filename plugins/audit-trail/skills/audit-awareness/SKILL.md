@@ -35,8 +35,8 @@ IF user asks to filter by severity:
   → Show filtered results
 
 IF user asks for full report:
-  → Run: python3 ${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/report-gen.py ${CLAUDE_PLUGIN_ROOT}/state/audit.jsonl /tmp/reaper-report.html
-  → Tell user: "Report generated at /tmp/reaper-report.html"
+  → Run: python3 ${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/report-gen.py ${CLAUDE_PLUGIN_ROOT}/state/audit.jsonl /tmp/hydra-report.html
+  → Tell user: "Report generated at /tmp/hydra-report.html"
 
 IF user asks about threat posture:
   → Run: python3 ${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/learnings.py ${CLAUDE_PLUGIN_ROOT}/state/ --report

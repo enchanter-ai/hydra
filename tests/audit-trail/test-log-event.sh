@@ -3,10 +3,10 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-HOOK="$REAPER_ROOT/plugins/audit-trail/hooks/post-tool-use/log-event.sh"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+HOOK="$HYDRA_ROOT/plugins/audit-trail/hooks/post-tool-use/log-event.sh"
 
-TRANSCRIPT=$(mktemp /tmp/reaper-transcript-XXXXXX)
+TRANSCRIPT=$(mktemp /tmp/hydra-transcript-XXXXXX)
 echo "test" > "$TRANSCRIPT"
 
 INPUT=$(jq -cn \
@@ -16,16 +16,16 @@ INPUT=$(jq -cn \
   '{tool_name:$tool, tool_input:{file_path:$file}, transcript_path:$transcript}')
 
 # Use the real plugin root so shared/ resolves correctly
-export CLAUDE_PLUGIN_ROOT="$REAPER_ROOT/plugins/audit-trail"
+export CLAUDE_PLUGIN_ROOT="$HYDRA_ROOT/plugins/audit-trail"
 
 # Clean state before test
-rm -f "$REAPER_ROOT/plugins/audit-trail/state/audit.jsonl" 2>/dev/null
+rm -f "$HYDRA_ROOT/plugins/audit-trail/state/audit.jsonl" 2>/dev/null
 
 printf "%s" "$INPUT" | bash "$HOOK" 2>/dev/null
 EXIT_CODE=$?
 
 # Check that audit.jsonl was created
-AUDIT_FILE="$REAPER_ROOT/plugins/audit-trail/state/audit.jsonl"
+AUDIT_FILE="$HYDRA_ROOT/plugins/audit-trail/state/audit.jsonl"
 HAS_ENTRY=false
 if [[ -f "$AUDIT_FILE" ]] && grep -q '"event":"tool_use"' "$AUDIT_FILE" 2>/dev/null; then
   HAS_ENTRY=true

@@ -43,7 +43,7 @@ IF user asks about supply chain:
   → Suggest package verification steps
 
 IF no findings:
-  → "No vulnerabilities detected. Reaper monitors Write/Edit for OWASP Top 10 patterns."
+  → "No vulnerabilities detected. Hydra monitors Write/Edit for OWASP Top 10 patterns."
 </decision_tree>
 
 <output_format>

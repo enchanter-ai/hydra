@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Reaper — Architecture Explorer</title>
+<title>Hydra — Architecture Explorer</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,7 +37,7 @@
 <body>
 <div class="brand-bar"></div>
 <div class="container">
-  <h1>Reaper <span>Architecture Explorer</span></h1>
+  <h1>Hydra <span>Architecture Explorer</span></h1>
   <div class="subtitle">Security guardrails for Claude Code — @enchanted-plugins</div>
 
   <h2>System Diagrams</h2>
@@ -99,7 +99,7 @@
     ss --> audit["audit.jsonl"]
     vd --> audit
     ag --> audit
-    audit --> report["📊 /reaper:audit"]</pre>
+    audit --> report["📊 /hydra:audit"]</pre>
   </div>
   <div id="panel-lifecycle" class="diagram-panel">
     <pre class="mermaid">graph TD
@@ -125,7 +125,7 @@
       <div class="section-label">Agents</div>
       <div class="item"><strong>scanner</strong> <span class="dim">(haiku, fork)</span></div>
       <div class="section-label">Commands</div>
-      <div class="item"><code>/reaper:secrets</code></div>
+      <div class="item"><code>/hydra:secrets</code></div>
     </div>
     <div class="plugin-card">
       <h3>vuln-detector</h3>
@@ -137,7 +137,7 @@
       <div class="section-label">Agents</div>
       <div class="item"><strong>analyzer</strong> <span class="dim">(sonnet, fork)</span></div>
       <div class="section-label">Commands</div>
-      <div class="item"><code>/reaper:vulns</code></div>
+      <div class="item"><code>/hydra:vulns</code></div>
     </div>
     <div class="plugin-card">
       <h3>action-guard</h3>
@@ -149,7 +149,7 @@
       <div class="section-label">Agents</div>
       <div class="item"><strong>guardian</strong> <span class="dim">(sonnet, fork)</span></div>
       <div class="section-label">Commands</div>
-      <div class="item"><code>/reaper:safety</code></div>
+      <div class="item"><code>/hydra:safety</code></div>
     </div>
     <div class="plugin-card">
       <h3>config-shield</h3>
@@ -161,7 +161,7 @@
       <div class="section-label">Agents</div>
       <div class="item"><strong>inspector</strong> <span class="dim">(sonnet, fork)</span></div>
       <div class="section-label">Commands</div>
-      <div class="item"><code>/reaper:config-check</code></div>
+      <div class="item"><code>/hydra:config-check</code></div>
     </div>
     <div class="plugin-card">
       <h3>audit-trail</h3>
@@ -173,13 +173,13 @@
       <div class="section-label">Agents</div>
       <div class="item"><strong>chronicler</strong> <span class="dim">(haiku, fork)</span></div>
       <div class="section-label">Commands</div>
-      <div class="item"><code>/reaper:audit</code></div>
+      <div class="item"><code>/hydra:audit</code></div>
     </div>
   </div>
 
   <div class="footer">
     <span>Generated from plugin metadata — @enchanted-plugins</span>
-    <span>Reaper v1.0.0</span>
+    <span>Hydra v1.0.0</span>
   </div>
 </div>
 

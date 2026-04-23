@@ -44,7 +44,7 @@ IF user asks about entropy findings:
   → Explain: "These strings have high randomness (>4.5 bits/char) and may be secrets"
 
 IF no findings:
-  → "No secrets detected. Reaper monitors every Write/Edit for 200+ patterns."
+  → "No secrets detected. Hydra monitors every Write/Edit for 200+ patterns."
 </decision_tree>
 
 <output_format>

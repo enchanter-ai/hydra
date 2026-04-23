@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reaper test runner — runs all test scripts, reports pass/fail.
+# Hydra test runner — runs all test scripts, reports pass/fail.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -31,7 +31,7 @@ run_test() {
 }
 
 echo "══════════════════════════════════════"
-echo " REAPER TEST SUITE"
+echo " HYDRA TEST SUITE"
 echo "══════════════════════════════════════"
 echo ""
 

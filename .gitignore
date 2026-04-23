@@ -12,7 +12,7 @@ Thumbs.db
 __pycache__/
 *.pyc
 *.pyo
-/tmp/reaper-*
+/tmp/hydra-*
 
 # Asset toolchain (mermaid-cli + mathjax-full are dev-only; SVGs are committed)
 docs/assets/node_modules/

@@ -1,11 +1,11 @@
-# Reaper — Claude Code Configuration
+# Hydra — Claude Code Configuration
 
 ## Installation
 
 ### Marketplace (recommended)
 
 ```
-/plugin marketplace add <path-to-reaper>
+/plugin marketplace add <path-to-hydra>
 ```
 
 ### Individual plugins (choose what you need)
@@ -31,7 +31,7 @@ Install in this order for best results:
 
 ## Permissions
 
-Reaper hooks require these tool permissions:
+Hydra hooks require these tool permissions:
 
 | Plugin | Hook Type | Tools | Permission |
 |--------|-----------|-------|------------|

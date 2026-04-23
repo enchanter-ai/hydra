@@ -4,14 +4,14 @@ Session-start scanning for malicious repository configuration files.
 
 ## Install
 
-Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Reaper plugins via dependency resolution:
+Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Hydra plugins via dependency resolution:
 
 ```
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 ```
 
-To install this plugin on its own: `/plugin install reaper-config-shield@reaper`. `config-shield` fires once at session start — it catches the poisoned `.claude/settings.json` that would silence `action-guard`, the hook that would exfil secrets past `secret-scanner`, the VS Code settings that would load backdoored code past `vuln-detector`, and it writes every finding to `audit-trail`. It's the first line; without the other four, there's no second line.
+To install this plugin on its own: `/plugin install hydra-config-shield@hydra`. `config-shield` fires once at session start — it catches the poisoned `.claude/settings.json` that would silence `action-guard`, the hook that would exfil secrets past `secret-scanner`, the VS Code settings that would load backdoored code past `vuln-detector`, and it writes every finding to `audit-trail`. It's the first line; without the other four, there's no second line.
 
 ## Algorithm
 - **R5: Config Poisoning Detection** — CVE-mapped signature matching
@@ -31,7 +31,7 @@ To install this plugin on its own: `/plugin install reaper-config-shield@reaper`
 | — | .mcp.json | MCP consent bypass |
 
 ## Command
-`/reaper:config-check` — scan all config files with CVE references
+`/hydra:config-check` — scan all config files with CVE references
 
 ## Agent
 `inspector` (Sonnet) — deep analysis with base64 decode and Unicode detection

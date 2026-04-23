@@ -1,5 +1,5 @@
 {
-  "description": "Reaper vuln-detector: scans Write/Edit output for OWASP Top 10 vulnerabilities",
+  "description": "Hydra vuln-detector: scans Write/Edit output for OWASP Top 10 vulnerabilities",
   "hooks": {
     "PostToolUse": [
       {

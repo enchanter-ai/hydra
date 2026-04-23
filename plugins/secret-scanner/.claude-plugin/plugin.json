@@ -1,5 +1,5 @@
 {
-  "name": "reaper-secret-scanner",
+  "name": "hydra-secret-scanner",
   "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
   "version": "1.0.0",
   "author": {

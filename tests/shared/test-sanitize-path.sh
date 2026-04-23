@@ -3,8 +3,8 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REAPER_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-source "$REAPER_ROOT/shared/sanitize.sh"
+HYDRA_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+source "$HYDRA_ROOT/shared/sanitize.sh"
 
 # Test 1: block simple path traversal
 if sanitize_path "../../../etc/passwd" 2>/dev/null; then

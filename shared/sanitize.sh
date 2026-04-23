@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reaper shared sanitization utilities
+# Hydra shared sanitization utilities
 
 sanitize_path() {
   local path="$1"
@@ -45,8 +45,8 @@ mask_secret() {
   # Mask a string: show first N and last N chars only
   # NEVER log full secret values
   local value="$1"
-  local prefix_len="${REAPER_MASK_PREFIX_LEN:-4}"
-  local suffix_len="${REAPER_MASK_SUFFIX_LEN:-4}"
+  local prefix_len="${HYDRA_MASK_PREFIX_LEN:-4}"
+  local suffix_len="${HYDRA_MASK_SUFFIX_LEN:-4}"
   local min_len=$(( prefix_len + suffix_len + 3 ))
 
   if [[ ${#value} -lt $min_len ]]; then

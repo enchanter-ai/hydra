@@ -1,5 +1,5 @@
 {
-  "name": "reaper-config-shield",
+  "name": "hydra-config-shield",
   "description": "Session-start scanning for malicious repository configuration files.",
   "version": "1.0.0",
   "author": {

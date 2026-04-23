@@ -21,7 +21,7 @@ gitignored; only the rendered SVGs and their sources are committed.
 The `apply-blueprint.js` step overlays an engineering-blueprint grid
 (navy `#0a1628` paper, `#1e3a5f` major lines / `#16304f` minor lines)
 onto the rendered diagram so it reads as a CAD drawing. Matches the
-look of the `flux` repo.
+look of the `wixie` repo.
 
 `docs/science/README.md` references these same SVGs via the relative
 path `../assets/math/<name>.svg` — single source of truth, both files

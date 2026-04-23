@@ -41,7 +41,7 @@ if [[ -z "$PROJECT_ROOT" ]] || [[ ! -d "$PROJECT_ROOT" ]]; then
 fi
 
 # ── Load attack patterns ──
-PATTERNS_FILE="${SHARED_DIR}/${REAPER_PATTERNS_CONFIG}"
+PATTERNS_FILE="${SHARED_DIR}/${HYDRA_PATTERNS_CONFIG}"
 if [[ ! -f "$PATTERNS_FILE" ]]; then exit 0; fi
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -90,11 +90,11 @@ while IFS=$'\t' read -r FILE_PATTERN CHECK_TYPE PATTERN CVE SEVERITY DESCRIPTION
 
       # ── stderr output for Claude ──
       if [[ "$SEVERITY" == "critical" ]]; then
-        printf "[Reaper] CRITICAL CONFIG: %s\n  File: %s\n  Attack: %s\n" "$DESCRIPTION" "$REL_PATH" "$CVE_REF" >&2
+        printf "[Hydra] CRITICAL CONFIG: %s\n  File: %s\n  Attack: %s\n" "$DESCRIPTION" "$REL_PATH" "$CVE_REF" >&2
       elif [[ "$SEVERITY" == "high" ]]; then
-        printf "[Reaper] CONFIG WARNING: %s\n  File: %s\n" "$DESCRIPTION" "$REL_PATH" >&2
+        printf "[Hydra] CONFIG WARNING: %s\n  File: %s\n" "$DESCRIPTION" "$REL_PATH" >&2
       else
-        printf "[Reaper] CONFIG NOTE: %s in %s\n" "$DESCRIPTION" "$REL_PATH" >&2
+        printf "[Hydra] CONFIG NOTE: %s in %s\n" "$DESCRIPTION" "$REL_PATH" >&2
       fi
     fi
   done <<< "$MATCHING_FILES"
@@ -102,7 +102,7 @@ done < <(jq -r '.[] | [.file_pattern, .check, .pattern, (.cve // ""), .severity,
 
 # ── Summary ──
 if [[ $FINDING_COUNT -gt 0 ]]; then
-  printf "[Reaper] Config shield found %d suspicious config(s). Run /reaper:config-check for details.\n" "$FINDING_COUNT" >&2
+  printf "[Hydra] Config shield found %d suspicious config(s). Run /hydra:config-check for details.\n" "$FINDING_COUNT" >&2
 
   SUMMARY=$(jq -cn \
     --arg event "config_scan_complete" \

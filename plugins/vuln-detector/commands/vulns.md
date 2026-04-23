@@ -1,11 +1,11 @@
 ---
-name: reaper:vulns
+name: hydra:vulns
 description: >
   Full OWASP vulnerability scan with CWE mapping, severity ranking,
   and specific fix suggestions.
 ---
 
-When the user runs `/reaper:vulns`, perform a comprehensive vulnerability scan.
+When the user runs `/hydra:vulns`, perform a comprehensive vulnerability scan.
 
 ## Data Source
 
@@ -20,7 +20,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/../../shared/scripts/supply-chain.py" .
 ## Output Format
 
 ```
-## Reaper Vulnerability Scan
+## Hydra Vulnerability Scan
 
 ### A03:2021 — Injection
 | File | Line | CWE | Description | Severity |

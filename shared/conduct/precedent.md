@@ -39,13 +39,13 @@ Append to `state/precedent-log.md`. Each entry is a self-contained block:
 ## 2026-04-17 — Windows path quoting in Bash tool
 
 **Command that failed:**
-`python c:/git/flux/shared/scripts/score.py`
+`python c:/git/wixie/shared/scripts/score.py`
 
 **Why it failed:**
 Windows path with no quotes; shell split on the colon in `c:/`.
 
 **What worked:**
-`python "c:/git/flux/shared/scripts/score.py"` — always quote Windows paths.
+`python "c:/git/wixie/shared/scripts/score.py"` — always quote Windows paths.
 
 **Signal:** next time you see `c:/` or a space in a path, reach for quotes.
 

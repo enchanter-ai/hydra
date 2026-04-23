@@ -36,16 +36,16 @@ Most "it doesn't work" reports resolve on this list alone.
 
 ### "Plugin not found" after marketplace install
 
-**Symptom:** `/plugin install full@reaper` succeeds but `/plugin list` doesn't show the sub-plugins.
+**Symptom:** `/plugin install full@hydra` succeeds but `/plugin list` doesn't show the sub-plugins.
 
 **Cause:** Stale marketplace cache or a partial clone.
 
 **Fix:**
 
 ```
-/plugin marketplace remove enchanted-plugins/reaper
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace remove enchanted-plugins/hydra
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 ```
 
 ### Renderer toolchain fails
@@ -93,8 +93,8 @@ Most "it doesn't work" reports resolve on this list alone.
 
 ## When to file a bug vs. ask in Discussions
 
-- **Bug:** reproducible, unexpected behavior. File in [Issues](https://github.com/enchanted-plugins/reaper/issues) with the bug template.
-- **Question or "is this expected?":** open a thread in [Discussions](https://github.com/enchanted-plugins/reaper/discussions).
+- **Bug:** reproducible, unexpected behavior. File in [Issues](https://github.com/enchanted-plugins/hydra/issues) with the bug template.
+- **Question or "is this expected?":** open a thread in [Discussions](https://github.com/enchanted-plugins/hydra/discussions).
 - **Security issue:** never file publicly. See [SECURITY.md](../SECURITY.md).
 
 ## Still stuck?
@@ -106,4 +106,4 @@ Gather these before asking:
 - `claude --version`, `/plugin list`, OS, and shell.
 - Any non-default `settings.json` hook or permission entries relevant to the failure.
 
-Then: [Discussions Q&A](https://github.com/enchanted-plugins/reaper/discussions/categories/q-a).
+Then: [Discussions Q&A](https://github.com/enchanted-plugins/hydra/discussions/categories/q-a).

@@ -1,5 +1,5 @@
 {
-  "description": "Reaper secret-scanner: scans Write/Edit output for 200+ secret patterns",
+  "description": "Hydra secret-scanner: scans Write/Edit output for 200+ secret patterns",
   "hooks": {
     "PostToolUse": [
       {

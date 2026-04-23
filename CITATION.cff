@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-title: "Reaper"
+title: "Hydra"
 message: "If you use this software, please cite it as below."
 type: software
 authors:
   - alias: klaiderman
     affiliation: "enchanted-plugins"
-repository-code: "https://github.com/enchanted-plugins/reaper"
-url: "https://github.com/enchanted-plugins/reaper"
+repository-code: "https://github.com/enchanted-plugins/hydra"
+url: "https://github.com/enchanted-plugins/hydra"
 license: MIT
 version: "1.0.0"
 date-released: "2026-04-20"

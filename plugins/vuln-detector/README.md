@@ -4,14 +4,14 @@ OWASP Top 10 and CWE-mapped vulnerability detection in code changes.
 
 ## Install
 
-Part of the [Reaper](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Reaper plugins via dependency resolution:
+Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Hydra plugins via dependency resolution:
 
 ```
-/plugin marketplace add enchanted-plugins/reaper
-/plugin install full@reaper
+/plugin marketplace add enchanted-plugins/hydra
+/plugin install full@hydra
 ```
 
-To install this plugin on its own: `/plugin install reaper-vuln-detector@reaper`. `vuln-detector` flags injection/XSS/SSRF at the code layer — but the same bug pattern often stores credentials (`secret-scanner`), runs them via Bash (`action-guard`), lives in a config file (`config-shield`), and needs to be logged for review (`audit-trail`). On its own, you get one layer of defense-in-depth instead of five.
+To install this plugin on its own: `/plugin install hydra-vuln-detector@hydra`. `vuln-detector` flags injection/XSS/SSRF at the code layer — but the same bug pattern often stores credentials (`secret-scanner`), runs them via Bash (`action-guard`), lives in a config file (`config-shield`), and needs to be logged for review (`audit-trail`). On its own, you get one layer of defense-in-depth instead of five.
 
 ## Algorithm
 - **R3: CWE-Mapped Pattern Detector** — 156 language-aware vulnerability patterns mapped to OWASP Top 10 and CWE categories
@@ -31,7 +31,7 @@ To install this plugin on its own: `/plugin install reaper-vuln-detector@reaper`
 | A10 | CWE-918 | SSRF |
 
 ## Command
-`/reaper:vulns` — full OWASP scan with fix suggestions
+`/hydra:vulns` — full OWASP scan with fix suggestions
 
 ## Agent
 `analyzer` (Sonnet) — deep analysis with false positive detection

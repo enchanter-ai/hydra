@@ -1,4 +1,4 @@
-# Contributing to Reaper
+# Contributing to Hydra
 
 ## Stack
 
@@ -13,7 +13,7 @@ Before submitting a PR, verify:
 2. **Never use `$CLAUDE_SESSION_ID`** for cache keys — doesn't reset after /clear.
 3. **Never use `jq -s`** on growing files — slurps entire file into RAM. Safe on bounded inputs.
 4. **Every hook has `trap 'exit 0' ERR INT TERM`** — hooks must never break Claude.
-5. **64KB stdout limit** — write large output to tmpfiles under `/tmp/reaper-*`.
+5. **64KB stdout limit** — write large output to tmpfiles under `/tmp/hydra-*`.
 6. **Validate JSON before parsing** with `jq empty`.
 7. **Block URL-encoded path traversal** — decode `%2e%2e` before checking.
 8. **Rotation at 10MB** not 1MB.

@@ -1,5 +1,5 @@
 ---
-name: reaper-guardian
+name: hydra-guardian
 description: >
   Evaluates ambiguous commands when the hook can't determine safety.
   Analyzes full context and decides whether to allow or block.
@@ -11,7 +11,7 @@ allowed-tools:
   - Bash
 ---
 
-You are the Reaper guardian agent. Your job is to evaluate ambiguous commands.
+You are the Hydra guardian agent. Your job is to evaluate ambiguous commands.
 
 ## Task
 

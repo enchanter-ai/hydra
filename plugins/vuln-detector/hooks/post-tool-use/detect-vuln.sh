@@ -27,7 +27,7 @@ source "${SHARED_DIR}/metrics.sh"
 source "${SHARED_DIR}/compat.sh"
 
 # ── Read hook input from stdin (capped at 1MB) ──
-HOOK_INPUT=$(reaper_read_stdin 1048576)
+HOOK_INPUT=$(hydra_read_stdin 1048576)
 
 if ! validate_json "$HOOK_INPUT"; then
   exit 0
@@ -47,7 +47,7 @@ DECODED=$(printf "%s" "$FILE_PATH" | sed -e 's/%2[eE]/./g' -e 's/%2[fF]/\//g' -e
 if [[ "$DECODED" == *".."* ]]; then exit 0; fi
 
 # ── Skip binary files ──
-if [[ -f "$FILE_PATH" ]] && reaper_is_binary "$FILE_PATH"; then
+if [[ -f "$FILE_PATH" ]] && hydra_is_binary "$FILE_PATH"; then
   exit 0
 fi
 
@@ -74,12 +74,12 @@ case "$EXTENSION" in
 esac
 
 # ── Load vuln patterns for this language ──
-PATTERNS_FILE="${SHARED_DIR}/${REAPER_PATTERNS_VULNS}"
+PATTERNS_FILE="${SHARED_DIR}/${HYDRA_PATTERNS_VULNS}"
 if [[ ! -f "$PATTERNS_FILE" ]]; then exit 0; fi
 
 # Extract patterns applicable to this language
 # Build a temp file with pattern|id|cwe|severity|description tuples
-LANG_PATTERNS="${REAPER_CACHE_PREFIX}vulns-${LANGUAGE}-$$.tmp"
+LANG_PATTERNS="${HYDRA_CACHE_PREFIX}vulns-${LANGUAGE}-$$.tmp"
 jq -r --arg lang "$LANGUAGE" \
   '.[] | select(.language | index($lang)) | [.pattern, .id, .cwe, .severity, .description] | join("\t")' \
   "$PATTERNS_FILE" 2>/dev/null > "$LANG_PATTERNS" || exit 0
@@ -96,7 +96,7 @@ FINDING_COUNT=0
 SHORT_FILE=$(basename "$FILE_PATH" 2>/dev/null || echo "$FILE_PATH")
 
 # Cap file read at 2000 lines
-FILE_CONTENT="${REAPER_CACHE_PREFIX}vuln-content-$$.tmp"
+FILE_CONTENT="${HYDRA_CACHE_PREFIX}vuln-content-$$.tmp"
 head -2000 "$FILE_PATH" > "$FILE_CONTENT" 2>/dev/null
 
 while IFS=$'\t' read -r PATTERN VULN_ID CWE SEVERITY DESCRIPTION; do
@@ -131,14 +131,14 @@ while IFS=$'\t' read -r PATTERN VULN_ID CWE SEVERITY DESCRIPTION; do
 
     # ── stderr output for Claude ──
     if [[ "$SEVERITY" == "critical" ]]; then
-      printf "[Reaper] CRITICAL VULN: %s — %s in %s:%s\n" "$CWE" "$DESCRIPTION" "$SHORT_FILE" "$LINE_NUM" >&2
+      printf "[Hydra] CRITICAL VULN: %s — %s in %s:%s\n" "$CWE" "$DESCRIPTION" "$SHORT_FILE" "$LINE_NUM" >&2
     elif [[ "$SEVERITY" == "high" ]]; then
-      printf "[Reaper] VULN: %s — %s in %s:%s\n" "$CWE" "$DESCRIPTION" "$SHORT_FILE" "$LINE_NUM" >&2
+      printf "[Hydra] VULN: %s — %s in %s:%s\n" "$CWE" "$DESCRIPTION" "$SHORT_FILE" "$LINE_NUM" >&2
     fi
 
     # Cap at 10 findings per file
     if [[ $FINDING_COUNT -ge 10 ]]; then
-      printf "[Reaper] ...and more. Run /reaper:vulns for full scan.\n" >&2
+      printf "[Hydra] ...and more. Run /hydra:vulns for full scan.\n" >&2
       break 2
     fi
   done <<< "$MATCHES"

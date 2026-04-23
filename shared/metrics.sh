@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Reaper shared metrics — JSONL append with atomic mkdir locks + 10MB rotation
+# Hydra shared metrics — JSONL append with atomic mkdir locks + 10MB rotation
 
 # Source constants if not already loaded
-if [[ -z "${REAPER_LOCK_SUFFIX:-}" ]]; then
+if [[ -z "${HYDRA_LOCK_SUFFIX:-}" ]]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   # shellcheck source=constants.sh
   source "${SCRIPT_DIR}/constants.sh"
@@ -26,8 +26,8 @@ release_lock() {
 log_metric() {
   local file="${1:-state/metrics.jsonl}"
   local payload="$2"
-  local lock_dir="${file}${REAPER_LOCK_SUFFIX}"
-  local max_size="${REAPER_MAX_METRICS_BYTES:-10485760}"
+  local lock_dir="${file}${HYDRA_LOCK_SUFFIX}"
+  local max_size="${HYDRA_MAX_METRICS_BYTES:-10485760}"
 
   # Validate JSON before writing
   if ! printf "%s" "$payload" | jq empty >/dev/null 2>&1; then
