@@ -171,13 +171,13 @@ Every plugin is named after a game entity that metaphorically describes its func
 |--------|--------|------|-----|
 | **Wixie** | Enchantment Orbs | Minecraft | XP orbs that power the enchantment table — enchanting prompts |
 | **Emu** | Emu Mob | Minecraft | Flying creature that collects items and brings them to you — collecting tokens |
-| **Crow** | Crow | Hollow Knight | Ravenant protector who watches, tests, and judges from the shadows — watching changes |
-| **Hydra** | Hydra Leviathan | Subnautica | You hear it before you see it. Hunts in the dark. Relentless. Nothing gets past it — security scanning |
-| **Pech** | Tom Pech | Animal Crossing | Merchant-banker who tracks every bell you owe — cost accounting |
+| **Crow** | Crow | Alex's Mobs | Silent watcher that observes every change, scores trust with a Bayesian eye, and flags what looks wrong — watching changes |
+| **Hydra** | Hydra | Twilight Forest | Many-headed boss that regenerates and never truly dies — every secret scanning, vuln, and supply-chain check it survives makes it stronger |
+| **Pech** | Pech | Thaumcraft | Small scholarly creature obsessed with counting and cataloguing every resource it touches — cost accounting |
 | **Athena** | Athena | Hades | Goddess of wisdom who judges your combat quality and grants boons for excellence — code review |
 | **Crucible** | Crucible | Terraria | Endgame crafting station forged in hellfire — tests things to destruction — mutation testing |
 | **Assembler** | Assembling Machine | Factorio | Takes parts in, produces artifacts out, chains into automated pipelines — CI/CD building |
-| **Sylph** | Sylphs | Hollow Knight | Silk-spinners and Crow's ancestral kin who weave threads into coherent patterns — weaving branches, commits, and PRs into one history |
+| **Sylph** | Sylph | Ars Nouveau | Airy nature spirit that weaves arcane threads into coherent flows — weaving branches, commits, and PRs into one history |
 
 ## Brand Standard (All Plugins)
 
