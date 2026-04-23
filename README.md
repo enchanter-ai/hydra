@@ -495,6 +495,6 @@ MIT
 
 Hydra is the **security layer** — and it runs first. At SessionStart, `config-shield` scans the repo for poisoned hooks, suspicious MCP servers, and obfuscated backdoors **before any agent has acted**, so downstream sibling plugins operate on a trusted surface. During the session, `action-guard`, `secret-scanner`, and `vuln-detector` fan out across tool events; `audit-trail` records every finding with severity + CVE/CWE reference.
 
-Hydra does not engineer prompts (Wixie's lane), track tokens (Fae's lane), score change trust (Raven's lane), review code correctness (Lich's lane), or orchestrate git workflow (Sylph's lane). It decides whether the *environment* is hostile.
+Hydra does not engineer prompts (Wixie's lane), track tokens (Emu's lane), score change trust (Crow's lane), review code correctness (Lich's lane), or orchestrate git workflow (Sylph's lane). It decides whether the *environment* is hostile.
 
 See [docs/ecosystem.md § Data Flow Between Plugins](docs/ecosystem.md#data-flow-between-plugins) for the full map.

@@ -4,7 +4,7 @@ Quick answers to questions that don't yet have their own doc. For anything deepe
 
 ## What's the difference between Hydra and the other siblings?
 
-Hydra answers *"is it safe?"* — it scans configs at session start, gates dangerous actions before they run, detects secrets and vulnerabilities on every Write / Edit, and keeps an audit trail. Sibling plugins answer different questions: Wixie engineers prompts, Fae tracks token spend, Raven watches change trust, Sylph coordinates git workflow. All are independent installs. See [docs/ecosystem.md](ecosystem.md) for the full map.
+Hydra answers *"is it safe?"* — it scans configs at session start, gates dangerous actions before they run, detects secrets and vulnerabilities on every Write / Edit, and keeps an audit trail. Sibling plugins answer different questions: Wixie engineers prompts, Emu tracks token spend, Crow watches change trust, Sylph coordinates git workflow. All are independent installs. See [docs/ecosystem.md](ecosystem.md) for the full map.
 
 ## Do I need the other siblings to use Hydra?
 
