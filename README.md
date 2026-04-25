@@ -267,7 +267,7 @@ Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration
 
 ## Roadmap
 
-Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](https://github.com/enchanted-plugins/wixie/blob/main/docs/ecosystem.md). For upcoming work specific to Hydra, see issues tagged [roadmap](https://github.com/enchanted-plugins/hydra/labels/roadmap). Pattern-database additions (new CVEs, OWASP LLM Top 10 revisions, new CWE coverage) ship in minor / patch releases; the ROADMAP captures engine-level changes.
+Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](docs/ecosystem.md). For upcoming work specific to Hydra, see issues tagged [roadmap](https://github.com/enchanted-plugins/hydra/labels/roadmap). Pattern-database additions (new CVEs, OWASP LLM Top 10 revisions, new CWE coverage) ship in minor / patch releases; the ROADMAP captures engine-level changes.
 
 ```
 plugins/audit-trail/state/

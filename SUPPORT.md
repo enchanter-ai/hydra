@@ -24,7 +24,7 @@ Short version: **pick the right channel, and you'll get an answer faster.**
    - [docs/architecture/](docs/architecture/) — diagrams of what runs when
    - [docs/science/README.md](docs/science/README.md) — the algorithms, derived
 3. **Narrow the bug.** "It sometimes fails" is not reproducible. Minimize the failing case.
-4. **Check the ecosystem.** This plugin is one of several in [`enchanted-plugins`](https://github.com/enchanted-plugins/wixie/blob/main/docs/ecosystem.md). Your question may belong in a sibling repo.
+4. **Check the ecosystem.** This plugin is one of several in [`enchanted-plugins`](docs/ecosystem.md). Your question may belong in a sibling repo.
 
 ## Response expectations
 
