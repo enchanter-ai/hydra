@@ -65,7 +65,7 @@ Not for:
 - [The Science Behind Hydra](#the-science-behind-hydra)
 - [The 20 Pattern Databases](#the-20-pattern-databases)
 - [vs Everything Else](#vs-everything-else)
-- [Agent Conduct (9 Modules)](#agent-conduct-9-modules)
+- [Agent Conduct (11 Modules)](#agent-conduct-11-modules)
 - [Architecture](#architecture)
 - [Testing](#testing)
 - [Acknowledgments](#acknowledgments)
@@ -409,7 +409,7 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 | Dependencies | **bash + jq (stdlib)** | GitHub | Node.js | Python | SaaS |
 | Price | **Free (MIT)** | Free (public) / $$ | $$$ | Free / $$$ | $$$ |
 
-## Agent Conduct (9 Modules)
+## Agent Conduct (11 Modules)
 
 Every skill inherits a reusable behavioral contract from [shared/](shared/) — loaded once into [CLAUDE.md](CLAUDE.md), applied across all plugins. This is how Claude *acts* inside Hydra: deterministic, surgical, verifiable. Not a suggestion; a contract.
 
@@ -424,6 +424,8 @@ Every skill inherits a reusable behavioral contract from [shared/](shared/) — 
 | [skill-authoring.md](shared/conduct/skill-authoring.md) | SKILL.md frontmatter discipline, discovery test |
 | [hooks.md](shared/conduct/hooks.md) | Advisory-only hooks, injection over denial, fail-open |
 | [precedent.md](shared/conduct/precedent.md) | Log self-observed failures to `state/precedent-log.md`; consult before risky steps |
+| [tier-sizing.md](shared/conduct/tier-sizing.md) | Prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent |
+| [web-fetch.md](shared/conduct/web-fetch.md) | External URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only |
 
 ## Architecture
 

@@ -15,6 +15,8 @@ These apply to every skill in every plugin. Load once; do not re-derive.
 - @shared/conduct/skill-authoring.md — SKILL.md frontmatter discipline, discovery test
 - @shared/conduct/hooks.md — advisory-only hooks, injection over denial, fail-open
 - @shared/conduct/precedent.md — log self-observed failures to `state/precedent-log.md`; consult before risky steps
+- @shared/conduct/tier-sizing.md — prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent
+- @shared/conduct/web-fetch.md — external URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only
 
 When a module conflicts with a plugin-local instruction, the plugin wins — but log the override.
 
