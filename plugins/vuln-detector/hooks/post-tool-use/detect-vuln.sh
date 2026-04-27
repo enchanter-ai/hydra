@@ -5,6 +5,10 @@
 # Fires on Write/Edit/MultiEdit.
 # MUST exit 0 always.
 
+
+# Subagent recursion guard — see shared/conduct/hooks.md
+if [[ -n "${CLAUDE_SUBAGENT:-}" ]]; then exit 0; fi
+
 trap 'exit 0' ERR INT TERM
 
 set -uo pipefail

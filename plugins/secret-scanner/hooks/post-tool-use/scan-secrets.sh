@@ -5,6 +5,10 @@
 # MUST be < 50ms per file. Uses grep, NOT Python.
 # MUST exit 0 always. NEVER log actual secret values.
 
+
+# Subagent recursion guard — see shared/conduct/hooks.md
+if [[ -n "${CLAUDE_SUBAGENT:-}" ]]; then exit 0; fi
+
 trap 'exit 0' ERR INT TERM
 
 set -uo pipefail

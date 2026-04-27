@@ -5,6 +5,10 @@
 # Detects CVE-2025-59536, CVE-2026-21852, MCP consent bypass, etc.
 # Advisory only — exit 0 always. Never blocks.
 
+
+# Subagent recursion guard — see shared/conduct/hooks.md
+if [[ -n "${CLAUDE_SUBAGENT:-}" ]]; then exit 0; fi
+
 trap 'exit 0' ERR INT TERM
 
 set -uo pipefail

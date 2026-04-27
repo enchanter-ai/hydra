@@ -5,6 +5,10 @@
 # ** THIS IS THE ONLY HOOK THAT USES exit 2 TO BLOCK TOOL EXECUTION. **
 # Fires on Bash tool calls before execution.
 
+
+# Subagent recursion guard — see shared/conduct/hooks.md
+if [[ -n "${CLAUDE_SUBAGENT:-}" ]]; then exit 0; fi
+
 trap 'exit 0' ERR INT TERM
 
 set -uo pipefail
