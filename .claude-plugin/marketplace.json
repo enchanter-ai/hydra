@@ -15,31 +15,31 @@
       "category": "meta"
     },
     {
-      "name": "hydra-secret-scanner",
+      "name": "secret-scanner",
       "source": "./plugins/secret-scanner",
       "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
       "category": "security"
     },
     {
-      "name": "hydra-vuln-detector",
+      "name": "vuln-detector",
       "source": "./plugins/vuln-detector",
       "description": "OWASP Top 10 and CWE-mapped vulnerability detection in code changes.",
       "category": "security"
     },
     {
-      "name": "hydra-action-guard",
+      "name": "action-guard",
       "source": "./plugins/action-guard",
       "description": "Pre-execution classification and blocking of dangerous Bash commands.",
       "category": "security"
     },
     {
-      "name": "hydra-config-shield",
+      "name": "config-shield",
       "source": "./plugins/config-shield",
       "description": "Session-start scanning for malicious repository configuration files.",
       "category": "security"
     },
     {
-      "name": "hydra-audit-trail",
+      "name": "audit-trail",
       "source": "./plugins/audit-trail",
       "description": "Comprehensive security event logging with rotation and reporting.",
       "category": "security"
