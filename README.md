@@ -31,6 +31,12 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 >
 > Total overhead: < 50ms per file write. You didn't notice it running.
 
+## TL;DR
+
+**In plain English:** AI coding assistants introduce security attack surfaces that traditional scanners don't cover — poisoned config files, secrets written into source, dangerous shell commands, and packages that don't actually exist.
+
+**Technically:** R1 Aho-Corasick pattern engine scans 1,844 patterns across 20 databases (310 secret patterns + 156 OWASP/CWE-mapped vulns + 105 dangerous-ops + more) on every Write/Edit; R2 Shannon entropy analysis catches high-entropy strings that evade regex; R4 Markov Action Classification classifies Bash subcommands and blocks dangerous ops at PreToolUse with exit 2. Every finding is keyed to a real CVE or CWE; no finding is fabricated from heuristics alone.
+
 ---
 
 ## Origin
