@@ -9,6 +9,7 @@ These apply to every skill in every plugin. Load once; do not re-derive.
 - @shared/conduct/discipline.md — coding conduct: think-first, simplicity, surgical edits, goal-driven loops
 - @shared/conduct/context.md — attention-budget hygiene, U-curve placement, checkpoint protocol
 - @shared/conduct/verification.md — independent checks, baseline snapshots, dry-run for destructive ops
+- @shared/conduct/doubt-engine.md — adversarial self-check before agreement; four-step pass against F01 sycophancy
 - @shared/conduct/delegation.md — subagent contracts, tool whitelisting, parallel vs. serial rules
 - @shared/conduct/failure-modes.md — 14-code taxonomy for accumulated-learning logs
 - @shared/conduct/tool-use.md — tool-choice hygiene, error payload contract, parallel-dispatch rules
