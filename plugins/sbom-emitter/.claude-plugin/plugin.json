@@ -1,0 +1,13 @@
+{
+  "name": "sbom-emitter",
+  "displayName": "SBOM Emitter",
+  "description": "Emits CycloneDX SBOM for npm and pip projects on release.",
+  "version": "0.1.0",
+  "author": "enchanter-ai",
+  "homepage": "https://github.com/enchanter-ai/hydra",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enchanter-ai/hydra.git"
+  },
+  "skills": ["./skills/sbom-awareness/"]
+}

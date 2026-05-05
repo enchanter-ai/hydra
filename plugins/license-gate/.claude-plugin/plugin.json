@@ -1,0 +1,19 @@
+{
+  "name": "license-gate",
+  "description": "License compliance scanner for npm and pip dependency trees. Classifies every transitive dep against an allow/deny/warn policy (state/policy.json) using `npx license-checker` (Node) and `pip-licenses` (Python). Advisory by default; opt-in `--fail-on-deny` for release gating.",
+  "version": "0.1.0",
+  "author": {
+    "name": "enchanter-ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "license",
+    "compliance",
+    "supply-chain",
+    "sbom",
+    "policy"
+  ],
+  "skills": [
+    "./skills/license-awareness/"
+  ]
+}

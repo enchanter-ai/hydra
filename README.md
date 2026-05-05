@@ -247,9 +247,9 @@ Install, scan the repo, read the findings. Sixty seconds:
 
 Expected: `/hydra:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 122 signatures. `/hydra:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/hydra:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
 
-## 9 Plugins, 9 Agents, 1,844 Patterns
+## 11 Plugins, 11 Agents, 1,844 Patterns
 
-Five **scanner plugins** (the original lineup) plus four **advisory plugins** (added 2026-05-05) that close the supply-chain, exfil, prompt-injection, and capability-fence gaps surfaced in the cross-ecosystem audit.
+Five **scanner plugins** (the original lineup), four **advisory hook plugins** (added 2026-05-05) that close supply-chain, exfil, prompt-injection, and capability-fence gaps, plus two **compliance plugins** (license-gate, sbom-emitter — added 2026-05-05, originally drafted in pech then re-homed here as supply-chain belongs under security).
 
 | Plugin | Command | What | Agent |
 |--------|---------|------|-------|
@@ -262,6 +262,8 @@ Five **scanner plugins** (the original lineup) plus four **advisory plugins** (a
 | **egress-monitor** | (advisory) | NDJSON log of every WebFetch/Bash-network destination | (advisory hook) |
 | **canary** | (advisory) | Per-session injection canary tokens; PostToolUse leak scan | (advisory hook) |
 | **capability-fence** | (advisory) | Subagent-escape detection vs declared `allowed-tools` | (advisory hook) |
+| **license-gate** | (skill / CI) | SPDX allow/deny scan over npm + pip dep trees | (skill-invoked) |
+| **sbom-emitter** | (skill / CI) | CycloneDX SBOM generation, wired into release.yml | (skill-invoked) |
 
 ## What You Get Per Session
 

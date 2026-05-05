@@ -4,14 +4,14 @@
     "name": "enchanter-ai"
   },
   "metadata": {
-    "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, audit logging, package supply-chain gating, egress monitoring, prompt-injection canaries, and capability fencing.",
-    "version": "2.1.0"
+    "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, audit logging, package supply-chain gating, egress monitoring, prompt-injection canaries, capability fencing, license compliance, and SBOM emission.",
+    "version": "2.2.0"
   },
   "plugins": [
     {
       "name": "full",
       "source": "./plugins/full",
-      "description": "Meta-plugin. One install pulls in all 9 Hydra plugins via dependency resolution.",
+      "description": "Meta-plugin. One install pulls in all 11 Hydra plugins via dependency resolution.",
       "category": "meta"
     },
     {
@@ -67,6 +67,18 @@
       "source": "./plugins/capability-fence",
       "description": "Best-effort subagent-escape detection. PreToolUse hook compares the invoked tool against the active skill's allowed-tools frontmatter; logs out-of-lane invocations. Observability only — runtime sandboxing requires harness/SDK work.",
       "category": "security"
+    },
+    {
+      "name": "license-gate",
+      "source": "./plugins/license-gate",
+      "description": "License compliance scanner over npm + pip dep trees against an allow/deny SPDX policy. Flags GPL/AGPL/SSPL as denied, MPL/EPL/CDDL as warned, MIT/Apache/BSD/ISC as allowed. CI-mode supports --fail-on-deny. Skill-invoked + release-workflow gate.",
+      "category": "compliance"
+    },
+    {
+      "name": "sbom-emitter",
+      "source": "./plugins/sbom-emitter",
+      "description": "Generates CycloneDX SBOM (bom-npm.cdx.json / bom-pip.cdx.json) by detecting npm or pip ecosystem and shelling out to the matching tool. Wired into release.yml. Closes CISA SBOM / EU CRA 2027 procurement gap. Skill-invoked + release-workflow.",
+      "category": "compliance"
     }
   ]
 }
