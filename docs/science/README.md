@@ -126,4 +126,4 @@ Accumulates per-finding-type rates across sessions. Patterns frequently dismisse
 
 ---
 
-*Every formula maps to executable code in the enchanted-plugins ecosystem. The math runs.*
+*Every formula maps to executable code in the enchanter-ai ecosystem. The math runs.*

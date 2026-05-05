@@ -4,16 +4,16 @@ message: "If you use this software, please cite it as below."
 type: software
 authors:
   - alias: klaiderman
-    affiliation: "enchanted-plugins"
-repository-code: "https://github.com/enchanted-plugins/hydra"
-url: "https://github.com/enchanted-plugins/hydra"
+    affiliation: "enchanter-ai"
+repository-code: "https://github.com/enchanter-ai/hydra"
+url: "https://github.com/enchanter-ai/hydra"
 license: MIT
 version: "1.0.0"
 date-released: "2026-04-20"
 abstract: "Defense-in-depth security scanning for AI-assisted development: 2,011 patterns across 98 CWEs, OWASP LLM Top 10 coverage, action gating, secret detection, zero runtime dependencies."
 keywords:
   - claude-code
-  - enchanted-plugins
+  - enchanter-ai
   - security
   - owasp
   - cwe

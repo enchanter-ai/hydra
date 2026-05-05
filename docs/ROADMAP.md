@@ -19,7 +19,7 @@ Before the first plugin ships, the ecosystem needs one shared piece: the repo te
 
 | Repo | Role | Status |
 |------|------|--------|
-| [`enchanted-plugins/schematic`](https://github.com/enchanted-plugins/schematic) | Canonical repo template. Ships the 8-section CLAUDE.md, 10 `shared/conduct/*.md` modules, `docs/architecture/` auto-generation pipeline, `plugins/example-subplugin/` skeleton, renderer toolchain. Never installed — cloned. | Shipped |
+| [`enchanter-ai/schematic`](https://github.com/enchanter-ai/schematic) | Canonical repo template. Ships the 8-section CLAUDE.md, 10 `shared/conduct/*.md` modules, `docs/architecture/` auto-generation pipeline, `plugins/example-subplugin/` skeleton, renderer toolchain. Never installed — cloned. | Shipped |
 
 The template is the contract. When it drifts, all downstream siblings drift — so changes to `schematic` are treated as brand-standard changes, not per-plugin improvements.
 
@@ -39,9 +39,9 @@ The first 5 plugins answer the 5 fundamental questions of AI-assisted developmen
 
 ### Milestone: 5 plugins shipped
 - Each plugin is a standalone Claude Code marketplace
-- Each follows @enchanted-plugins brand standard
+- Each follows @enchanter-ai brand standard
 - Each has named algorithms, managed agents, self-learning
-- Users install individually: `/plugin marketplace add enchanted-plugins/<name>`
+- Users install individually: `/plugin marketplace add enchanter-ai/<name>`
 
 ---
 
@@ -53,7 +53,7 @@ Build `enchanted-mcp` — a Model Context Protocol client that connects all 5 pl
 
 ```
 enchanted-mcp
-├── Connects to all installed enchanted-plugins via MCP
+├── Connects to all installed enchanter-ai via MCP
 ├── Unified dashboard: prompts + tokens + changes + security + costs
 ├── Cross-plugin intelligence:
 │   ├── Wixie detects bad prompt → Emu shows token waste from it
@@ -181,7 +181,7 @@ Every plugin is named after a game entity that metaphorically describes its func
 
 ## Brand Standard (All Plugins)
 
-Every @enchanted-plugins product must:
+Every @enchanter-ai product must:
 
 1. Name every engine after a formal algorithm
 2. Delegate background work to managed agents (Opus/Sonnet/Haiku)

@@ -849,19 +849,19 @@
   },
   {
     "id": "npx-untrusted-direct",
-    "pattern": "\\bnpx\\s+(?!(?:--yes\\s+)?(?:@anthropic-ai/|@enchanted-plugins/|@modelcontextprotocol/))[a-zA-Z0-9@_/.-]+\\s",
+    "pattern": "\\bnpx\\s+(?!(?:--yes\\s+)?(?:@anthropic-ai/|@enchanter-ai/|@modelcontextprotocol/))[a-zA-Z0-9@_/.-]+\\s",
     "severity": "high",
     "category": "network",
     "action": "warn",
-    "description": "npx execution of a package outside the trusted scope (@anthropic-ai, @enchanted-plugins, @modelcontextprotocol). Verify package provenance."
+    "description": "npx execution of a package outside the trusted scope (@anthropic-ai, @enchanter-ai, @modelcontextprotocol). Verify package provenance."
   },
   {
     "id": "uvx-untrusted-direct",
-    "pattern": "\\buvx\\s+(?!--from\\s+git\\+https://github\\.com/(?:anthropics|enchanted-plugins)/)[a-zA-Z0-9@_/.-]+\\s",
+    "pattern": "\\buvx\\s+(?!--from\\s+git\\+https://github\\.com/(?:anthropics|enchanter-ai)/)[a-zA-Z0-9@_/.-]+\\s",
     "severity": "high",
     "category": "network",
     "action": "warn",
-    "description": "uvx execution of a package outside trusted GitHub orgs (anthropics, enchanted-plugins). Verify provenance."
+    "description": "uvx execution of a package outside trusted GitHub orgs (anthropics, enchanter-ai). Verify provenance."
   },
   {
     "id": "claude-mcp-add-untrusted-launcher",
@@ -873,11 +873,11 @@
   },
   {
     "id": "claude-plugin-install-untrusted",
-    "pattern": "(?:claude(?:-code)?\\s+)?/?plugin\\s+install\\s+(?!\\S*@(?:enchanted-plugins|anthropic|anthropics))\\S+@\\S+",
+    "pattern": "(?:claude(?:-code)?\\s+)?/?plugin\\s+install\\s+(?!\\S*@(?:enchanter-ai|anthropic|anthropics))\\S+@\\S+",
     "severity": "high",
     "category": "network",
     "action": "warn",
-    "description": "Claude Code plugin install from an untrusted marketplace (not enchanted-plugins or anthropic). Verify maintainer + marketplace.json integrity."
+    "description": "Claude Code plugin install from an untrusted marketplace (not enchanter-ai or anthropic). Verify maintainer + marketplace.json integrity."
   },
   {
     "id": "mcp-inspector-http-unencrypted",

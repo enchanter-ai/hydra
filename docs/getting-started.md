@@ -5,7 +5,7 @@ Hydra is defense-in-depth for AI-assisted development: config scanning at sessio
 ## 1. Install (60 seconds)
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 /plugin install full@hydra
 /plugin list
 ```

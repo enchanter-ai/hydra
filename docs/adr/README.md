@@ -72,4 +72,4 @@ The ADR log is the institutional memory of this repo. When onboarding, skim ever
 
 ## Cross-ecosystem
 
-The @enchanted-plugins ecosystem shares a single behavioral contract in `shared/conduct/*.md`. Decisions that affect that contract are **not** local to this repo — raise them in the `schematic` repo where the canonical modules live, and cross-link from here.
+The @enchanter-ai ecosystem shares a single behavioral contract in `shared/conduct/*.md`. Decisions that affect that contract are **not** local to this repo — raise them in the `schematic` repo where the canonical modules live, and cross-link from here.

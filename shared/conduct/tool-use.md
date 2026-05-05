@@ -63,7 +63,7 @@ The line-number prefix from Read (`   42\tfoo`) is not part of the file. Don't i
 Documentation, conduct modules, learning entries, and any other tracked file that references a path inside the ecosystem MUST use one of two forms:
 
 - **Repo-relative** when the reference points inside a specific repo: `wixie/docs/ROADMAP.md`, `shared/conduct/precedent.md`. Always preferred — works for every developer regardless of where they cloned the repo.
-- **`<repo-root>/<plugin>/...`** when the reference must include the parent directory containing all sibling enchanted-plugins repos: `<repo-root>/wixie/plugins/inference-engine/state/artifacts.jsonl`. The placeholder `<repo-root>` is the developer's local parent — `~/git/enchanted-plugins`, `/Users/alice/code`, `D:/dev`, whatever fits their setup.
+- **`<repo-root>/<plugin>/...`** when the reference must include the parent directory containing all sibling enchanter-ai repos: `<repo-root>/wixie/plugins/inference-engine/state/artifacts.jsonl`. The placeholder `<repo-root>` is the developer's local parent — `~/git/enchanter-ai`, `/Users/alice/code`, `D:/dev`, whatever fits their setup.
 
 **Never write absolute machine-specific paths** (`c:/git/enchanted-skills/...`, `/home/dan/repos/...`) in a tracked file. They leak the author's filesystem layout, break for every other developer, and trigger F02 Fabrication when an agent later tries to follow them. Caught violations: count as a F02 instance and fix in place.
 

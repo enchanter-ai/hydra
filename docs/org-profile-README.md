@@ -41,62 +41,62 @@ The math isn't documentation. It runs as code.
 7 agents. 64 models. Create, optimize, test, harden, and translate prompts.
 
 ```
-/plugin marketplace add enchanted-plugins/wixie
+/plugin marketplace add enchanter-ai/wixie
 ```
 
-[Repository](https://github.com/enchanted-plugins/wixie) · v3.0.0 · 7 plugins · [Science](https://github.com/enchanted-plugins/wixie/blob/main/docs/science/README.md)
+[Repository](https://github.com/enchanter-ai/wixie) · v3.0.0 · 7 plugins · [Science](https://github.com/enchanter-ai/wixie/blob/main/docs/science/README.md)
 
 ### Emu — Context Health Toolkit
 
 Token management, drift detection, compaction survival.
 
 ```
-/plugin marketplace add enchanted-plugins/emu
+/plugin marketplace add enchanter-ai/emu
 ```
 
-[Repository](https://github.com/enchanted-plugins/emu) · v2.0.0 · 4 plugins
+[Repository](https://github.com/enchanter-ai/emu) · v2.0.0 · 4 plugins
 
 ### Crow — Change Comprehension
 
 Bayesian trust scoring, semantic-diff clustering, and information-gain decision support for Claude Code.
 
 ```
-/plugin marketplace add enchanted-plugins/crow
+/plugin marketplace add enchanter-ai/crow
 ```
 
-[Repository](https://github.com/enchanted-plugins/crow) · v1.0.0 · 5 plugins
+[Repository](https://github.com/enchanter-ai/crow) · v1.0.0 · 5 plugins
 
 ### Hydra — Security Guardrails
 
 Secret scanning, vulnerability detection, action guarding, config shielding, and audit logging.
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 ```
 
-[Repository](https://github.com/enchanted-plugins/hydra) · v1.0.0 · 6 plugins
+[Repository](https://github.com/enchanter-ai/hydra) · v1.0.0 · 6 plugins
 
 ### Sylph — Git Workflow Layer
 
 Auto-orchestrates branch / commit / PR per task boundary; reads CI status across 9 hosts and 8 CI systems.
 
 ```
-/plugin marketplace add enchanted-plugins/sylph
+/plugin marketplace add enchanter-ai/sylph
 ```
 
-[Repository](https://github.com/enchanted-plugins/sylph) · v0.0.1 · 9 plugins
+[Repository](https://github.com/enchanter-ai/sylph) · v0.0.1 · 9 plugins
 
 ## Infrastructure
 
 ### Schematic — Repo Template
 
-The canonical template from which every @enchanted-plugins sibling is cloned. Ships the invariant tree: 8-section CLAUDE.md, 10 universal `shared/conduct/*.md` behavioral modules, `docs/architecture/` auto-generation pipeline, example sub-plugin skeleton, and renderer toolchain. Never installed — cloned.
+The canonical template from which every @enchanter-ai sibling is cloned. Ships the invariant tree: 8-section CLAUDE.md, 10 universal `shared/conduct/*.md` behavioral modules, `docs/architecture/` auto-generation pipeline, example sub-plugin skeleton, and renderer toolchain. Never installed — cloned.
 
 ```
-git clone https://github.com/enchanted-plugins/schematic.git <your-plugin-name>
+git clone https://github.com/enchanter-ai/schematic.git <your-plugin-name>
 ```
 
-[Repository](https://github.com/enchanted-plugins/schematic)
+[Repository](https://github.com/enchanter-ai/schematic)
 
 ## The Standard
 

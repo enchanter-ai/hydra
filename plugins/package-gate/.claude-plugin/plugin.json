@@ -3,7 +3,7 @@
   "description": "Advisory PreToolUse gate on package install commands. Surfaces 5 supply-chain risk signals (existence, age, maintainer, typosquat, download-cliff) before npm/pip/etc. install runs. Always exit 0; never blocks.",
   "version": "0.1.0",
   "author": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "license": "MIT",
   "keywords": [

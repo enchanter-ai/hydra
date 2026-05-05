@@ -1,0 +1,56 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+
+permissions: read-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+    outputs:
+      digest: ${{ steps.hash.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build artifact
+        run: |
+          tar --exclude='.git' --exclude='node_modules' --exclude='__pycache__' \
+              --exclude='dist' --exclude='target' \
+              -czf release.tar.gz .
+      - name: Generate hash
+        id: hash
+        run: |
+          DIGEST=$(sha256sum release.tar.gz | base64 -w0)
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+      - uses: sigstore/cosign-installer@v3
+      - name: Sign artifact
+        run: |
+          cosign sign-blob --yes release.tar.gz \
+            --output-signature release.tar.gz.sig \
+            --output-certificate release.tar.gz.crt
+      - name: Generate build provenance attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: release.tar.gz
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release.tar.gz
+            release.tar.gz.sig
+            release.tar.gz.crt
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.digest }}"
+      upload-assets: true

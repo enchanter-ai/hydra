@@ -1,7 +1,7 @@
 # CODEOWNERS — default reviewer for every path in this repo.
 # GitHub uses the last matching line, so put stricter rules later.
 #
-# Each sibling in the @enchanted-plugins ecosystem inherits this file from
+# Each sibling in the @enchanter-ai ecosystem inherits this file from
 # `schematic/`. Per-repo overrides add rules below the default line.
 
 * @klaiderman

@@ -1,5 +1,5 @@
 <!--
-Thanks for contributing to an @enchanted-plugins product.
+Thanks for contributing to an @enchanter-ai product.
 
 Before opening this PR, please confirm you've read CONTRIBUTING.md and CLAUDE.md.
 Delete any sections below that don't apply.

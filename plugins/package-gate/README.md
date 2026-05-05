@@ -11,7 +11,7 @@ Modern supply-chain attacks (xz-utils 2024, polyfill.io 2024, ua-parser-js 2021,
 Part of the [Hydra](../..) bundle.
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 /plugin install hydra-package-gate@hydra
 ```
 

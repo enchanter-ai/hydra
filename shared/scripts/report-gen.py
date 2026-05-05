@@ -2,7 +2,7 @@
 """
 Security Report Generator
 Generates dark-themed HTML report from audit.jsonl data.
-Background: #0A0A0A, Surface: #141414, following @enchanted-plugins report standard.
+Background: #0A0A0A, Surface: #141414, following @enchanter-ai report standard.
 
 Usage:
     python3 report-gen.py <audit_jsonl_path> [output_html_path]
@@ -188,7 +188,7 @@ def generate_html(audit_path, stats):
   </div>
 
   <div class="footer">
-    <span>Hydra v1.0.0 — @enchanted-plugins</span>
+    <span>Hydra v1.0.0 — @enchanter-ai</span>
     <span>{now}</span>
   </div>
 </div>

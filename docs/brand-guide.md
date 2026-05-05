@@ -19,9 +19,9 @@
 
 ## Plugin Structure Standard
 
-Every @enchanted-plugins product is cloned from [`enchanted-plugins/schematic`](https://github.com/enchanted-plugins/schematic) — the canonical repo template. The tree below is the shape `schematic` ships. New siblings clone it, fill placeholders, and rename `plugins/example-subplugin/` before first commit.
+Every @enchanter-ai product is cloned from [`enchanter-ai/schematic`](https://github.com/enchanter-ai/schematic) — the canonical repo template. The tree below is the shape `schematic` ships. New siblings clone it, fill placeholders, and rename `plugins/example-subplugin/` before first commit.
 
-Every @enchanted-plugins product follows this exact structure:
+Every @enchanter-ai product follows this exact structure:
 
 ```
 <product>/
@@ -71,14 +71,14 @@ Every @enchanted-plugins product follows this exact structure:
 ├── install.sh                             # pre-flight + clone to ~/.claude/plugins/
 ├── README.md                              # product selling page (10 required sections)
 ├── CONTRIBUTING.md
-└── LICENSE                                # MIT, enchanted-plugins copyright
+└── LICENSE                                # MIT, enchanter-ai copyright
 ```
 
 ## README Standard
 
 Every product README must include:
 
-1. **Header:** "An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning."
+1. **Header:** "An @enchanter-ai product — algorithm-driven, agent-managed, self-learning."
 2. **Game reference:** explain the name's origin in the first paragraph
 3. **Problem statement:** what pain point does this solve, with evidence
 4. **Architecture diagram:** ASCII showing the plugin/agent/hook flow
