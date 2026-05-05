@@ -14,13 +14,14 @@ config:
       bottom: 18
 ---
 flowchart TB
-    TitleBlock["<div style='font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-align:center;min-width:940px;padding:6px 10px;line-height:1.8'><div style='color:#58a6ff;font-size:15px;letter-spacing:6px;border-bottom:1px solid #1e3a5f;padding-bottom:10px;margin-bottom:10px'>HYDRA &nbsp;·&nbsp; STATE&nbsp;FLOW &nbsp;·&nbsp; SECURITY&nbsp;JOURNALS</div><div style='display:flex;gap:40px;justify-content:center;font-size:11px;color:#8b949e;letter-spacing:2px'><span>DWG&nbsp;&nbsp;<b style='color:#e6edf3'>HYD-003</b></span><span>REV&nbsp;&nbsp;<b style='color:#e6edf3'>A.1</b></span><span>SCALE&nbsp;&nbsp;<b style='color:#e6edf3'>1:1</b></span><span>JOURNALS&nbsp;&nbsp;<b style='color:#e6edf3'>n&nbsp;=&nbsp;3</b></span><span>SHEET&nbsp;&nbsp;<b style='color:#e6edf3'>01&nbsp;/&nbsp;01</b></span></div></div>"]
+    TitleBlock["<div style='font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-align:center;min-width:940px;padding:6px 10px;line-height:1.8'><div style='color:#58a6ff;font-size:15px;letter-spacing:6px;border-bottom:1px solid #1e3a5f;padding-bottom:10px;margin-bottom:10px'>HYDRA &nbsp;·&nbsp; STATE&nbsp;FLOW &nbsp;·&nbsp; SECURITY&nbsp;JOURNALS</div><div style='display:flex;gap:40px;justify-content:center;font-size:11px;color:#8b949e;letter-spacing:2px'><span>DWG&nbsp;&nbsp;<b style='color:#e6edf3'>HYD-003</b></span><span>REV&nbsp;&nbsp;<b style='color:#e6edf3'>B.1</b></span><span>SCALE&nbsp;&nbsp;<b style='color:#e6edf3'>1:1</b></span><span>JOURNALS&nbsp;&nbsp;<b style='color:#e6edf3'>n&nbsp;=&nbsp;7</b></span><span>SHEET&nbsp;&nbsp;<b style='color:#e6edf3'>01&nbsp;/&nbsp;01</b></span></div></div>"]
 
     subgraph sources["<div style='text-align:center;min-width:940px;font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>EVENT&nbsp;SOURCES&nbsp;&nbsp;·&nbsp;&nbsp;HOOK&nbsp;FIRES</div>"]
         direction LR
         Start["<b>SessionStart</b><br/><small style='color:#6e7681'>config-shield</small>"]
-        Pre["<b>PreToolUse</b><br/><small style='color:#6e7681'>Bash (action-guard)</small>"]
-        Post["<b>PostToolUse</b><br/><small style='color:#6e7681'>Write · Edit (secret-scanner · vuln-detector)</small>"]
+        Pre["<b>PreToolUse</b><br/><small style='color:#6e7681'>action-guard · package-gate · canary · capability-fence</small>"]
+        Post["<b>PostToolUse</b><br/><small style='color:#6e7681'>secret-scanner · vuln-detector · egress-monitor · canary scan</small>"]
+        Skill["<b>SkillInvoke / CI</b><br/><small style='color:#6e7681'>license-gate · sbom-emitter · audit-verify</small>"]
     end
 
     subgraph ss["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;01</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>secret-scanner / state /</b></div>"]
@@ -31,33 +32,69 @@ flowchart TB
 
     subgraph ag["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;02</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>action-guard / state /</b></div>"]
         direction LR
-        ag_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>R4 + R7 blocked/warned commands with reasons</small></div>"]
+        ag_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>R4 + R7 advisory-flagged commands with reasons</small></div>"]
         ag_cfg["<div style='text-align:center;line-height:1.7'><code>config.json</code><br/><small style='color:#6e7681'>strictness mode · strict · balanced · permissive</small></div>"]
     end
 
     subgraph at["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;03</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>audit-trail / state /</b></div>"]
         direction LR
-        at_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl</code><br/><small style='color:#6e7681'>Every security event · JSONL · 10MB rotation</small></div>"]
-        at_met["<div style='text-align:center;line-height:1.7'><code>metrics.jsonl</code><br/><small style='color:#6e7681'>R8 EMA aggregate scan metrics · security posture</small></div>"]
+        at_aud["<div style='text-align:center;line-height:1.7'><code>audit.jsonl + chain</code><br/><small style='color:#6e7681'>HMAC hash-chain · prev_sha256 per row · tamper-evident</small></div>"]
+        at_met["<div style='text-align:center;line-height:1.7'><code>metrics.jsonl</code><br/><small style='color:#6e7681'>R8 EMA aggregate · security posture</small></div>"]
     end
 
-    Report["<div style='text-align:center;line-height:1.8;padding:4px 12px'><b style='letter-spacing:1.5px;color:#3fb950'>/tmp/hydra-report.html</b><br/><em style='color:#8b949e;font-size:12px'>severity bars · CWE pills · finding breakdown · CLEAN / CAUTION / WARNING / CRITICAL</em></div>"]
-    Query(["<b>/hydra:*</b><br/><small style='color:#8b949e'>8 skill-invoked commands</small>"])
+    subgraph pg["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;04</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>package-gate / state /</b></div>"]
+        direction LR
+        pg_cache["<div style='text-align:center;line-height:1.7'><code>cache/*.json</code><br/><small style='color:#6e7681'>24h URL-hash registry-metadata cache · npm + pip</small></div>"]
+    end
+
+    subgraph em["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;05</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>egress-monitor / state /</b></div>"]
+        direction LR
+        em_log["<div style='text-align:center;line-height:1.7'><code>log.ndjson</code><br/><small style='color:#6e7681'>WebFetch · WebSearch · Bash-net destinations · locked append</small></div>"]
+        em_seen["<div style='text-align:center;line-height:1.7'><code>seen-domains.json</code><br/><small style='color:#6e7681'>dedup set · first-seen advisory trigger</small></div>"]
+    end
+
+    subgraph cy["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;06</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>canary / state /</b></div>"]
+        direction LR
+        cy_active["<div style='text-align:center;line-height:1.7'><code>active-canaries.json</code><br/><small style='color:#6e7681'>per-session high-entropy tokens · seeded on WebFetch</small></div>"]
+        cy_hits["<div style='text-align:center;line-height:1.7'><code>hits.ndjson</code><br/><small style='color:#6e7681'>canary leak detections · indirect-injection evidence</small></div>"]
+    end
+
+    subgraph cf["<div style='text-align:center;min-width:940px;line-height:2'><span style='font-family:ui-monospace,monospace;color:#8b949e;font-size:11px;letter-spacing:3px'>JOURNAL&nbsp;07</span>&nbsp;&nbsp;·&nbsp;&nbsp;<b style='letter-spacing:2px'>capability-fence / state /</b></div>"]
+        direction LR
+        cf_log["<div style='text-align:center;line-height:1.7'><code>fence-log.ndjson</code><br/><small style='color:#6e7681'>tool ∉ allowed-tools events · subagent-escape evidence</small></div>"]
+    end
+
+    Report["<div style='text-align:center;line-height:1.8;padding:4px 12px'><b style='letter-spacing:1.5px;color:#3fb950'>/tmp/hydra-report.html&nbsp;·&nbsp;bom-*.cdx.json</b><br/><em style='color:#8b949e;font-size:12px'>severity bars · CWE pills · CycloneDX SBOM · CLEAN / CAUTION / WARNING / CRITICAL</em></div>"]
+    Query(["<b>/hydra:* + audit-verify</b><br/><small style='color:#8b949e'>skill-invoked + chain integrity</small>"])
 
     TitleBlock ~~~ sources
     Post --> ss_aud
     ss_aud --> ss_met
     Pre --> ag_aud
     Start --> ag_cfg
+    Pre --> pg_cache
+    Post --> em_log
+    em_log --> em_seen
+    Pre --> cy_active
+    Post --> cy_hits
+    Pre --> cf_log
     Post --> at_aud
     ss_aud --> at_aud
     ag_aud --> at_aud
+    pg_cache --> at_aud
+    em_log --> at_aud
+    cy_hits --> at_aud
+    cf_log --> at_aud
     at_aud --> at_met
     at_aud --> Report
     at_met --> Report
+    Skill --> Report
     ss_aud --> Query
     ag_aud --> Query
     at_aud --> Query
+    em_log --> Query
+    cy_hits --> Query
+    cf_log --> Query
 
     classDef titleBlock fill:#06111f,stroke:#1e3a5f,stroke-width:1px,color:#e6edf3,rx:4,ry:4
     classDef sourceNode fill:#0a1628,stroke:#1e3a5f,stroke-width:1.5px,color:#e6edf3,rx:8,ry:8
@@ -66,13 +103,17 @@ flowchart TB
     classDef queryNode fill:#0f1d33,stroke:#3fb950,stroke-width:1.5px,color:#3fb950,rx:14,ry:14
 
     class TitleBlock titleBlock
-    class Start,Pre,Post sourceNode
-    class ss_aud,ss_met,ag_aud,ag_cfg,at_aud,at_met journalLine
+    class Start,Pre,Post,Skill sourceNode
+    class ss_aud,ss_met,ag_aud,ag_cfg,at_aud,at_met,pg_cache,em_log,em_seen,cy_active,cy_hits,cf_log journalLine
     class Report reportNode
     class Query queryNode
 
     style ss fill:#0f1d33,stroke:#58a6ff,stroke-width:2px,color:#e6edf3,rx:12,ry:12
     style ag fill:#0f1d33,stroke:#d75952,stroke-width:2px,color:#e6edf3,rx:12,ry:12
     style at fill:#0f1d33,stroke:#d29922,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style pg fill:#0f1d33,stroke:#a371f7,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style em fill:#0f1d33,stroke:#ff8c00,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style cy fill:#0f1d33,stroke:#ffd700,stroke-width:2px,color:#e6edf3,rx:12,ry:12
+    style cf fill:#0f1d33,stroke:#ff69b4,stroke-width:2px,color:#e6edf3,rx:12,ry:12
 
     linkStyle default stroke:#8b949e,stroke-width:1.5px
