@@ -2,6 +2,7 @@ plugins/*/state/audit.jsonl
 plugins/*/state/metrics.jsonl
 plugins/*/state/learnings.json
 plugins/*/state/config.json
+plugins/*/state/cache/*.json
 .claude/settings.local.json
 *.lock/
 *.tmp

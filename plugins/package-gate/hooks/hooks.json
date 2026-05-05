@@ -1,0 +1,17 @@
+{
+  "description": "Hydra package-gate: PreToolUse advisory check on Bash package-install commands. Always exit 0.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pretooluse.sh\"",
+            "timeout": 8
+          }
+        ]
+      }
+    ]
+  }
+}
