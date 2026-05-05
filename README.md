@@ -13,7 +13,7 @@
   <a href="https://www.repostatus.org/#active"><img alt="Project Status: Active" src="https://www.repostatus.org/badges/latest/active.svg"></a>
 </p>
 
-> **An @enchanted-plugins product — algorithm-driven, agent-managed, self-learning.**
+> **An @enchanter-ai product — algorithm-driven, agent-managed, self-learning.**
 
 **5 plugins. 5 agents. 1,844 patterns. 8 algorithms. 98 CWEs. 20 attack databases. Zero dependencies.**
 
@@ -221,7 +221,7 @@ Hydra ships as 5 plugins layering defenses across SessionStart / PreToolUse / Po
 **In Claude Code** (recommended):
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 /plugin install full@hydra
 ```
 
@@ -232,7 +232,7 @@ Claude Code resolves the dependency list and installs all 5 plugins. Verify with
 **Via shell** (also installs `shared/*.sh` and `shared/scripts/*.py` locally so hooks work offline):
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/enchanted-plugins/hydra/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/enchanter-ai/hydra/main/install.sh)
 ```
 
 ## Quickstart
@@ -277,7 +277,7 @@ Source: [docs/assets/state-flow.mmd](docs/assets/state-flow.mmd) · Regeneration
 
 ## Roadmap
 
-Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](docs/ecosystem.md). For upcoming work specific to Hydra, see issues tagged [roadmap](https://github.com/enchanted-plugins/hydra/labels/roadmap). Pattern-database additions (new CVEs, OWASP LLM Top 10 revisions, new CWE coverage) ship in minor / patch releases; the ROADMAP captures engine-level changes.
+Tracked in [docs/ROADMAP.md](docs/ROADMAP.md) and the shared [ecosystem map](docs/ecosystem.md). For upcoming work specific to Hydra, see issues tagged [roadmap](https://github.com/enchanter-ai/hydra/labels/roadmap). Pattern-database additions (new CVEs, OWASP LLM Top 10 revisions, new CWE coverage) ship in minor / patch releases; the ROADMAP captures engine-level changes.
 
 ```
 plugins/audit-trail/state/
@@ -491,7 +491,7 @@ If you use this project in research or derivative work, please cite it:
   title = {Hydra},
   author = {{Klaiderman}},
   year = {2026},
-  url = {https://github.com/enchanted-plugins/hydra}
+  url = {https://github.com/enchanter-ai/hydra}
 }
 ```
 

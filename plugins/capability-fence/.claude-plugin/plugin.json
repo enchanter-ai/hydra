@@ -1,0 +1,21 @@
+{
+  "name": "hydra-capability-fence",
+  "description": "Best-effort PreToolUse capability fence. Compares the tool being invoked against the active skill's declared allowed-tools list and emits a stderr advisory on mismatch. Observability only; cannot block. Real per-subagent runtime sandboxing requires harness/SDK changes outside plugin scope.",
+  "version": "0.1.0",
+  "author": {
+    "name": "enchanter-ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "subagent-escape",
+    "capability",
+    "delegation",
+    "advisory",
+    "pretooluse",
+    "f-010",
+    "f-050"
+  ],
+  "skills": [
+    "./skills/fence-awareness/"
+  ]
+}

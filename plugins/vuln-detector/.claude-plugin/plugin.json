@@ -3,7 +3,7 @@
   "description": "OWASP Top 10 and CWE-mapped vulnerability detection in code changes.",
   "version": "1.0.0",
   "author": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "license": "MIT",
   "keywords": [

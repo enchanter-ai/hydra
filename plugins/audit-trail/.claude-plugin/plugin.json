@@ -3,7 +3,7 @@
   "description": "Comprehensive security event logging with rotation and reporting.",
   "version": "1.0.0",
   "author": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "license": "MIT",
   "keywords": [
@@ -17,7 +17,8 @@
     "./commands/audit.md"
   ],
   "skills": [
-    "./skills/audit-awareness/"
+    "./skills/audit-awareness/",
+    "./skills/audit-verify/"
   ],
   "agents": "./agents/"
 }

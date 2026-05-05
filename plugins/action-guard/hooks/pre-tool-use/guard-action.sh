@@ -2,7 +2,8 @@
 # action-guard: PreToolUse hook
 # Implements R4 (Markov Action Classification) and R7 (Subcommand Overflow Detection).
 # Classifies Bash commands as SAFE/RISKY/DANGEROUS.
-# ** THIS IS THE ONLY HOOK THAT USES exit 2 TO BLOCK TOOL EXECUTION. **
+# Advisory contract per shared/conduct/hooks.md — never block, never exit non-zero.
+# Emits a stderr advisory ("Would have blocked: ...") and lets the tool proceed.
 # Fires on Bash tool calls before execution.
 
 
@@ -91,11 +92,15 @@ if [[ "$TOTAL_PARTS" -gt "$HYDRA_SUBCOMMAND_LIMIT" ]]; then
 
   log_metric "${STATE_DIR}/audit.jsonl" "$AUDIT_ENTRY"
 
-  printf "[Hydra] BLOCKED: Command has %d subcommands (limit: %d). This matches the Adversa AI deny-rule bypass pattern.\n" "$TOTAL_PARTS" "$HYDRA_SUBCOMMAND_LIMIT" >&2
+  {
+    echo "=== action-guard (advisory) ==="
+    printf "Would have blocked: command has %d subcommands (limit: %d). Matches the Adversa AI deny-rule bypass pattern.\n" "$TOTAL_PARTS" "$HYDRA_SUBCOMMAND_LIMIT"
+    echo "Hint: split the command into separate steps and re-run, or invoke the /hydra:safety skill to authorize the chain deliberately."
+  } >&2
 
-  # Intentional exit 2 — blocks the Bash command
+  # Advisory only — never block. See shared/conduct/hooks.md.
   trap - ERR INT TERM
-  exit 2
+  exit 0
 fi
 
 # ── R4: Markov Action Classification ──
@@ -165,11 +170,15 @@ done < <(jq -r '.[] | [.pattern, .id, .severity, .category, .action, .descriptio
 
 # ── Handle block decision ──
 if [[ "$BLOCKED" == "true" ]]; then
-  printf "[Hydra] BLOCKED: %s (mode: %s)\n" "$BLOCK_REASON" "$MODE" >&2
+  {
+    echo "=== action-guard (advisory) ==="
+    printf "Would have blocked: %s (mode: %s)\n" "$BLOCK_REASON" "$MODE"
+    echo "Hint: review the matched dangerous-ops pattern; if intentional, invoke /hydra:safety to authorize."
+  } >&2
 
-  # Intentional exit 2 — blocks the Bash command
+  # Advisory only — never block. See shared/conduct/hooks.md.
   trap - ERR INT TERM
-  exit 2
+  exit 0
 fi
 
 # ── Handle warn decision ──

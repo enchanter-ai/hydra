@@ -1,0 +1,20 @@
+{
+  "name": "hydra-canary",
+  "description": "Advisory prompt-injection canary harness. PreToolUse(WebFetch) seeds a per-session high-entropy canary token into a stderr advisory; PostToolUse(*) scans every subsequent tool input/output for canary leakage. A hit indicates a successful indirect prompt injection took control of the agent. Always exit 0; never blocks.",
+  "version": "0.1.0",
+  "author": {
+    "name": "enchanter-ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "prompt-injection",
+    "canary",
+    "webfetch",
+    "indirect-injection",
+    "advisory",
+    "telemetry"
+  ],
+  "skills": [
+    "./skills/canary-awareness/"
+  ]
+}

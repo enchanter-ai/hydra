@@ -5,7 +5,7 @@
 This plugin has no hooks, skills, or agents of its own. It exists so you can install the whole 5-plugin defense stack with one command:
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 /plugin install full@hydra
 ```
 

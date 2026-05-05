@@ -27,5 +27,5 @@ The current shipped release. See [README.md](README.md) for the complete feature
 - Audit-trail output for forensic review.
 - Zero runtime dependencies: bash + jq only.
 
-[Unreleased]: https://github.com/enchanted-plugins/hydra/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/enchanted-plugins/hydra/releases/tag/v1.0.0
+[Unreleased]: https://github.com/enchanter-ai/hydra/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/enchanter-ai/hydra/releases/tag/v1.0.0

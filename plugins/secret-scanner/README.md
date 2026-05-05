@@ -7,7 +7,7 @@ Real-time secret detection in every file write. 310+ secret patterns, Shannon en
 Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugin, which pulls in all 5 Hydra plugins via dependency resolution:
 
 ```
-/plugin marketplace add enchanted-plugins/hydra
+/plugin marketplace add enchanter-ai/hydra
 /plugin install full@hydra
 ```
 

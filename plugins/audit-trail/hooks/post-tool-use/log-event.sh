@@ -26,6 +26,8 @@ source "${SHARED_DIR}/constants.sh"
 source "${SHARED_DIR}/metrics.sh"
 # shellcheck source=../../../../shared/compat.sh
 source "${SHARED_DIR}/compat.sh"
+# shellcheck source=../../scripts/chain-helpers.sh
+source "${PLUGIN_ROOT}/scripts/chain-helpers.sh"
 
 # ── Read hook input from stdin (capped at 1MB) ──
 HOOK_INPUT=$(hydra_read_stdin 1048576)
@@ -68,12 +70,18 @@ if [[ -n "$TARGET" ]]; then
   fi
 fi
 
+# Compute prev_hash from the previous line of audit.jsonl for tamper-evidence.
+# Failure to compute (e.g., openssl missing) falls back to "GENESIS" rather
+# than blocking the audit write — the chain restarts at the next entry.
+PREV_HASH=$(compute_prev_hash "${STATE_DIR}/audit.jsonl" 2>/dev/null || printf "GENESIS")
+
 AUDIT_ENTRY=$(jq -cn \
   --arg event "tool_use" \
   --arg ts "$TIMESTAMP" \
   --arg tool "$TOOL_NAME" \
   --arg target "$SAFE_TARGET" \
-  '{event:$event, ts:$ts, tool:$tool, target:$target}')
+  --arg prev_hash "$PREV_HASH" \
+  '{event:$event, ts:$ts, tool:$tool, target:$target, prev_hash:$prev_hash}')
 
 log_metric "${STATE_DIR}/audit.jsonl" "$AUDIT_ENTRY"
 

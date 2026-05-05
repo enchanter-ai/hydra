@@ -1,0 +1,16 @@
+{
+  "description": "Hydra capability-fence: PreToolUse advisory check comparing the invoked tool against the active skill's declared allowed-tools list. Always exit 0.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pretooluse-fence.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

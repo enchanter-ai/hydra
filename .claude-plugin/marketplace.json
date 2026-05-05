@@ -1,7 +1,7 @@
 {
   "name": "hydra",
   "owner": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "metadata": {
     "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, and audit logging.",

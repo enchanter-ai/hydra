@@ -83,7 +83,7 @@ plugins/action-guard/state/config.json       (mutable, mode)
 
 ## Agent tiers
 
-All 5 agents in `./plugins/*/agents/*.md` with explicit output contracts. Tiers follow the @enchanted-plugins convention (Orchestrator/Opus, Executor/Sonnet, Validator/Haiku):
+All 5 agents in `./plugins/*/agents/*.md` with explicit output contracts. Tiers follow the @enchanter-ai convention (Orchestrator/Opus, Executor/Sonnet, Validator/Haiku):
 
 - `scanner` (Haiku) · `chronicler` (Haiku) — validators
 - `guardian`, `inspector`, `analyzer` (Sonnet) — executors (CWE disambiguation and config-attack assessment need real reasoning)

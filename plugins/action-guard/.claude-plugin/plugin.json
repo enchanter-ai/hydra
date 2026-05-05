@@ -3,7 +3,7 @@
   "description": "Pre-execution classification and blocking of dangerous Bash commands.",
   "version": "1.0.0",
   "author": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "license": "MIT",
   "keywords": [

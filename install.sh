@@ -3,7 +3,7 @@
 # `full` meta-plugin pulls them all in via one dependency-resolution pass.
 set -euo pipefail
 
-REPO="https://github.com/enchanted-plugins/hydra"
+REPO="https://github.com/enchanter-ai/hydra"
 HYDRA_DIR="${HOME}/.claude/plugins/hydra"
 
 step() { printf "\n\033[1;36m▸ %s\033[0m\n" "$*"; }
@@ -39,7 +39,7 @@ cat <<'EOF'
 
   Finish in Claude Code with TWO commands:
 
-    /plugin marketplace add enchanted-plugins/hydra
+    /plugin marketplace add enchanter-ai/hydra
     /plugin install full@hydra
 
   That installs all 5 plugins via dependency resolution. To cherry-pick

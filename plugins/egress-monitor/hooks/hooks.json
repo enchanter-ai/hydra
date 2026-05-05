@@ -1,0 +1,17 @@
+{
+  "description": "Hydra egress-monitor: PostToolUse advisory logger for network destinations. Always exit 0.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "WebFetch|WebSearch|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/posttooluse.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -3,7 +3,7 @@
   "description": "Real-time secret detection in written files. 200+ patterns, Shannon entropy, Aho-Corasick matching.",
   "version": "1.0.0",
   "author": {
-    "name": "enchanted-plugins"
+    "name": "enchanter-ai"
   },
   "license": "MIT",
   "keywords": [
