@@ -39,7 +39,7 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 
 **In plain English:** Your AI just typed an AWS key into a committed file, ran `rm -rf ~/`, and pip-installed a typosquatted package. Hydra blocks each one before it lands.
 
-**Technically:** R1 Aho-Corasick pattern engine scans 1,844 patterns across 20 databases (310 secret patterns + 156 OWASP/CWE-mapped vulns + 105 dangerous-ops + more) on every Write/Edit; R2 Shannon entropy analysis catches high-entropy strings that evade regex; R4 Markov Action Classification classifies Bash subcommands and blocks dangerous ops at PreToolUse with exit 2. Every finding is keyed to a real CVE or CWE; no finding is fabricated from heuristics alone.
+**Technically:** R1 Aho-Corasick pattern engine scans 1,844 patterns across 20 databases (310 secret patterns + 156 OWASP/CWE-mapped vulns + 105 dangerous-ops + more) on every Write/Edit; R2 Shannon entropy analysis catches high-entropy strings that evade regex; R4 Markov Action Classification classifies Bash subcommands and surfaces dangerous ops at PreToolUse via advisory injection (exit 0 + stderr per `shared/conduct/hooks.md`). Every finding is keyed to a real CVE or CWE; no finding is fabricated from heuristics alone.
 
 ---
 
@@ -126,12 +126,12 @@ Every pattern exists because something real happened to a real developer.
 
 Hydra doesn't scan after the fact. It **intercepts** — before secrets hit disk, before dangerous commands execute, before malicious configs load.
 
-At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard, which classifies the command against 113 dangerous-op patterns (R4) and blocks any command with >50 subcommand separators (R7, exit 2). **PostToolUse** on Write/Edit runs secret-scanner (R1 Aho-Corasick + R2 Shannon entropy) and vuln-detector (R3 OWASP graph) in parallel. audit-trail logs every event and drives R8 EMA posture decay across sessions. The diagram below shows the bindings.
+At **SessionStart**, config-shield scans repo configs for CVE-matched attack signatures (R5). **PreToolUse** on Bash routes through action-guard (R4 + R7 advisory) and, for install verbs, package-gate (5 supply-chain risk signals). **PreToolUse** on WebFetch seeds a per-session canary token; **PreToolUse** on every tool checks capability-fence against the active skill's declared `allowed-tools`. **PostToolUse** on Write/Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; **PostToolUse** on WebFetch/WebSearch/Bash-network logs destinations via egress-monitor and scans for canary leakage. audit-trail logs every event with an HMAC hash-chain (tamper-evident) and drives R8 EMA posture decay across sessions. **license-gate** and **sbom-emitter** run at skill-invoke / release.yml time for compliance. The diagram below shows the bindings.
 
 <p align="center">
   <a href="docs/assets/pipeline.mmd" title="View hook-binding diagram source (Mermaid)">
     <img src="docs/assets/pipeline.svg"
-         alt="Hydra hook bindings: SessionStart runs config-shield (R5), PreToolUse/Bash runs action-guard (R4 + R7), PostToolUse/Write·Edit runs secret-scanner (R1 + R2) and vuln-detector (R3) in parallel; audit-trail (R8) observes all hooks and applies EMA posture decay"
+         alt="Hydra hook bindings: SessionStart config-shield (R5); PreToolUse action-guard (R4+R7 advisory) + package-gate (supply-chain) + canary seed + capability-fence; PostToolUse secret-scanner (R1+R2) + vuln-detector (R3) + egress-monitor + canary scan; audit-trail (R8 EMA + HMAC chain) observes all; license-gate + sbom-emitter at skill/CI time"
          width="100%" style="max-width:1100px;">
   </a>
 </p>
@@ -203,7 +203,7 @@ A single session flows left to right through five stages. **Config Shield** runs
 <p align="center">
   <a href="docs/assets/lifecycle.mmd" title="View session-lifecycle diagram source (Mermaid)">
     <img src="docs/assets/lifecycle.svg"
-         alt="Hydra full lifecycle: 5 stages — Config Shield (SessionStart · R5) → Action Guard (PreToolUse · R4 + R7) → Secret Scanner (PostToolUse · R1 + R2) → Vuln Detector (PostToolUse · R3) → Audit Trail (all hooks · R8 EMA posture decay)"
+         alt="Hydra full lifecycle: 9 stages — Config Shield (SessionStart · R5) → Action Guard (PreToolUse · R4+R7 advisory) → Package Gate (PreToolUse · install verbs · 5 risk signals) → Prompt Canary (PreToolUse WebFetch + PostToolUse scan) → Capability Fence (PreToolUse all tools) → Secret Scanner (PostToolUse · R1+R2) → Vuln Detector (PostToolUse · R3) → Egress Monitor (PostToolUse network) → Audit Trail + Compliance (all hooks + skill/CI · R8 EMA + HMAC chain · license-gate · sbom-emitter)"
          width="100%" style="max-width:1100px;">
   </a>
 </p>
@@ -413,7 +413,7 @@ Cross-session EMA of threat rates. Dismissed patterns decay. Chronic patterns es
 | Patterns | **1,844** | ~200 | ~1,000 | ~2,500 (rules) | ~400 |
 | CWE coverage | **98 CWEs** | Secrets only | Varies | Varies | Secrets only |
 | Scan timing | **Per-write** (real-time) | Push-time | CI pipeline | CI pipeline | Push-time |
-| Command blocking | **PreToolUse exit 2** | — | — | — | — |
+| Command guarding | **PreToolUse advisory (exit 0 + stderr injection)** | — | — | — | — |
 | Config poisoning | **122 signatures, 8 CVEs** | — | — | — | — |
 | AI agent attacks | **116 patterns** | — | — | — | — |
 | CI/CD injection | **130 patterns** | — | — | Partial | — |
