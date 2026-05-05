@@ -4,14 +4,14 @@
     "name": "enchanter-ai"
   },
   "metadata": {
-    "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, and audit logging.",
-    "version": "2.0.0"
+    "description": "Security guardrails for Claude Code. Secret scanning, vulnerability detection, action guarding, config shielding, audit logging, package supply-chain gating, egress monitoring, prompt-injection canaries, and capability fencing.",
+    "version": "2.1.0"
   },
   "plugins": [
     {
       "name": "full",
       "source": "./plugins/full",
-      "description": "Meta-plugin. One install pulls in all 5 Hydra plugins via dependency resolution.",
+      "description": "Meta-plugin. One install pulls in all 9 Hydra plugins via dependency resolution.",
       "category": "meta"
     },
     {
@@ -41,7 +41,31 @@
     {
       "name": "audit-trail",
       "source": "./plugins/audit-trail",
-      "description": "Comprehensive security event logging with rotation and reporting.",
+      "description": "Comprehensive security event logging with rotation and reporting. Includes audit-verify skill for HMAC hash-chain tamper-evidence inspection.",
+      "category": "security"
+    },
+    {
+      "name": "package-gate",
+      "source": "./plugins/package-gate",
+      "description": "PreToolUse advisory hook on npm/pip/uv/cargo/go/gem install. Five risk signals: existence, age, maintainer churn, typosquat (Levenshtein), download cliff. 24h URL-hash cache. Closes the supply-chain pre-install gap.",
+      "category": "security"
+    },
+    {
+      "name": "egress-monitor",
+      "source": "./plugins/egress-monitor",
+      "description": "PostToolUse advisory hook logging every WebFetch/WebSearch/Bash-network destination to append-only NDJSON. First-seen domains surface as stderr advisories.",
+      "category": "security"
+    },
+    {
+      "name": "canary",
+      "source": "./plugins/canary",
+      "description": "Prompt-injection canary harness. Seeds per-session high-entropy tokens into WebFetch advisories; PostToolUse scan flags canary leakage in subsequent tool inputs/outputs as evidence of indirect injection.",
+      "category": "security"
+    },
+    {
+      "name": "capability-fence",
+      "source": "./plugins/capability-fence",
+      "description": "Best-effort subagent-escape detection. PreToolUse hook compares the invoked tool against the active skill's allowed-tools frontmatter; logs out-of-lane invocations. Observability only — runtime sandboxing requires harness/SDK work.",
       "category": "security"
     }
   ]

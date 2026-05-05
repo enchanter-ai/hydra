@@ -20,9 +20,29 @@ graph TD
     config_shield_out(["state/audit.jsonl"])
     config_shield --> config_shield_out
     style config_shield fill:#161b22,stroke:#bc8cff,color:#e6edf3
-    audit_trail["audit-trail<br/><small>PostToolUse</small>"]
+    audit_trail["audit-trail<br/><small>PostToolUse + HMAC chain</small>"]
     CC --> audit_trail
     audit_trail_out(["state/audit.jsonl"])
     audit_trail --> audit_trail_out
     style audit_trail fill:#161b22,stroke:#3fb950,color:#e6edf3
+    package_gate["package-gate<br/><small>PreToolUse Bash/install</small>"]
+    CC --> package_gate
+    package_gate_out(["state/cache/*.json"])
+    package_gate --> package_gate_out
+    style package_gate fill:#161b22,stroke:#a371f7,color:#e6edf3
+    egress_monitor["egress-monitor<br/><small>PostToolUse WebFetch/Bash</small>"]
+    CC --> egress_monitor
+    egress_monitor_out(["state/log.ndjson"])
+    egress_monitor --> egress_monitor_out
+    style egress_monitor fill:#161b22,stroke:#ff8c00,color:#e6edf3
+    canary["canary<br/><small>PreToolUse WebFetch + PostToolUse scan</small>"]
+    CC --> canary
+    canary_out(["state/active-canaries.json"])
+    canary --> canary_out
+    style canary fill:#161b22,stroke:#ffd700,color:#e6edf3
+    capability_fence["capability-fence<br/><small>PreToolUse all-tools</small>"]
+    CC --> capability_fence
+    capability_fence_out(["state/fence-log.ndjson"])
+    capability_fence --> capability_fence_out
+    style capability_fence fill:#161b22,stroke:#ff69b4,color:#e6edf3
     style CC fill:#0d1117,stroke:#f85149,color:#e6edf3

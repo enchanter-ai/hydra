@@ -8,11 +8,25 @@ graph TB
     subgraph scanning["Scanning Layer"]
         secrets["secret-scanner<br/><small>R1: Aho-Corasick + R2: Shannon Entropy</small>"]
         vulns["vuln-detector<br/><small>R3: OWASP Graph</small>"]
-        guard["action-guard<br/><small>R4: Markov + R7: Overflow</small>"]
+        guard["action-guard<br/><small>R4: Markov + R7: Overflow (advisory)</small>"]
+    end
+    subgraph advisory["Advisory Layer (added 2026-05-05)"]
+        pkg["package-gate<br/><small>5 risk signals on install verbs</small>"]
+        egress["egress-monitor<br/><small>WebFetch / WebSearch / Bash-network destinations</small>"]
+        cnry["canary<br/><small>Prompt-injection canary tokens + leak scan</small>"]
+        fence["capability-fence<br/><small>Subagent-escape detection vs allowed-tools</small>"]
     end
     Write --> secrets
     Write --> vulns
     Bash --> guard
+    Bash --> pkg
+    Bash --> egress
+    Bash --> fence
+    Read --> fence
+    Glob --> fence
+    Write --> fence
+    Read --> cnry
+    Write --> cnry
     subgraph state["State Layer"]
         audit["audit-trail/state/audit.jsonl"]
         metrics["*/state/metrics.jsonl"]
@@ -21,6 +35,10 @@ graph TB
     secrets --> audit
     vulns --> audit
     guard --> audit
+    pkg --> audit
+    egress --> audit
+    cnry --> audit
+    fence --> audit
     Read --> audit_hook["audit-trail"]
     Glob --> audit_hook
     audit_hook --> audit

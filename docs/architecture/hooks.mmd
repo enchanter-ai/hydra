@@ -21,6 +21,29 @@ graph LR
     end
     subgraph audit_trail["audit-trail"]
         audit_trigger["PostToolUse<br/>All Tools"]
-        audit_script["log-event.sh<br/><small>timeout: 10s</small>"]
+        audit_script["log-event.sh + chain-helpers.sh<br/><small>timeout: 10s, HMAC chain</small>"]
         audit_trigger --> audit_script
+    end
+    subgraph package_gate["package-gate"]
+        pkg_trigger["PreToolUse<br/>Bash (install verbs)"]
+        pkg_script["pretooluse.sh + gate-check.py<br/><small>timeout: 5s, advisory</small>"]
+        pkg_trigger --> pkg_script
+    end
+    subgraph egress_monitor["egress-monitor"]
+        egress_trigger["PostToolUse<br/>WebFetch | WebSearch | Bash"]
+        egress_script["posttooluse.sh + egress-log.py<br/><small>timeout: 5s, advisory</small>"]
+        egress_trigger --> egress_script
+    end
+    subgraph canary["canary"]
+        canary_seed_trigger["PreToolUse<br/>WebFetch (seed)"]
+        canary_seed_script["pretooluse-webfetch.sh + canary-seed.py<br/><small>timeout: 3s, advisory</small>"]
+        canary_seed_trigger --> canary_seed_script
+        canary_scan_trigger["PostToolUse<br/>All Tools (scan)"]
+        canary_scan_script["posttooluse-scan.sh + canary-scan.py<br/><small>timeout: 3s, advisory</small>"]
+        canary_scan_trigger --> canary_scan_script
+    end
+    subgraph capability_fence["capability-fence"]
+        fence_trigger["PreToolUse<br/>All Tools"]
+        fence_script["pretooluse-fence.sh + fence-check.py<br/><small>timeout: 3s, advisory</small>"]
+        fence_trigger --> fence_script
     end

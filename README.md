@@ -247,15 +247,21 @@ Install, scan the repo, read the findings. Sixty seconds:
 
 Expected: `/hydra:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 122 signatures. `/hydra:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/hydra:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
 
-## 5 Plugins, 5 Agents, 1,844 Patterns
+## 9 Plugins, 9 Agents, 1,844 Patterns
+
+Five **scanner plugins** (the original lineup) plus four **advisory plugins** (added 2026-05-05) that close the supply-chain, exfil, prompt-injection, and capability-fence gaps surfaced in the cross-ecosystem audit.
 
 | Plugin | Command | What | Agent |
 |--------|---------|------|-------|
 | secret-scanner | `/hydra:secrets` | 319 secret patterns + entropy analysis | scanner (Haiku) |
 | vuln-detector | `/hydra:vulns` | 1,525 vulnerability patterns across 98 CWEs | analyzer (Sonnet) |
-| action-guard | `/hydra:safety` | 113 dangerous ops, command blocking | guardian (Sonnet) |
+| action-guard | `/hydra:safety` | 113 dangerous ops; **advisory** (was blocking) | guardian (Sonnet) |
 | config-shield | `/hydra:config-check` | 122 config attack signatures, 8 CVEs | inspector (Sonnet) |
-| audit-trail | `/hydra:audit` | JSONL logging, HTML reports, self-learning | chronicler (Haiku) |
+| audit-trail | `/hydra:audit` | HMAC hash-chain JSONL + audit-verify skill | chronicler (Haiku) |
+| **package-gate** | (advisory) | npm/pip/uv/cargo/go/gem pre-install: 5 risk signals | (advisory hook) |
+| **egress-monitor** | (advisory) | NDJSON log of every WebFetch/Bash-network destination | (advisory hook) |
+| **canary** | (advisory) | Per-session injection canary tokens; PostToolUse leak scan | (advisory hook) |
+| **capability-fence** | (advisory) | Subagent-escape detection vs declared `allowed-tools` | (advisory hook) |
 
 ## What You Get Per Session
 
