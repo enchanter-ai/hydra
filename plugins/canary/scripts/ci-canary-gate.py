@@ -27,6 +27,7 @@ fixture set.
 
 from __future__ import annotations
 
+import argparse
 import json
 import shutil
 import subprocess
@@ -40,6 +41,7 @@ SCAN_SCRIPT = PLUGIN_ROOT / "scripts" / "canary-scan.py"
 STATE_DIR = PLUGIN_ROOT / "state"
 ACTIVE_FILE = STATE_DIR / "active-canaries.json"
 HITS_FILE = STATE_DIR / "hits.ndjson"
+DEFAULT_BASELINE = PLUGIN_ROOT / "baseline-2026-05-06.json"
 
 
 def _load_fixtures() -> list[dict]:
@@ -140,7 +142,55 @@ def _snapshot() -> dict:
     return snap
 
 
+def _load_baseline(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        sys.stderr.write(f"WARN: cannot parse baseline {path}: {e}\n")
+        return None
+
+
+def _compare_baseline(baseline: dict, fixtures_total: int, detected: int) -> tuple[bool, str]:
+    """Return (regression, message). Regression = current rate dropped >= threshold."""
+    base_rate = float(baseline.get("detection_rate", 0.0))
+    threshold = float(baseline.get("regression_threshold_drop", 0.05))
+    cur_rate = detected / fixtures_total if fixtures_total else 0.0
+    drop = base_rate - cur_rate
+    if drop >= threshold:
+        return True, (
+            f"REGRESSION: detection_rate dropped {drop:.3f} "
+            f"(baseline={base_rate:.3f} current={cur_rate:.3f} "
+            f"threshold={threshold:.3f})"
+        )
+    return False, (
+        f"baseline OK: detection_rate {cur_rate:.3f} vs baseline {base_rate:.3f} "
+        f"(drop {drop:+.3f}, threshold {threshold:.3f})"
+    )
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(prog="ci-canary-gate")
+    parser.add_argument(
+        "--baseline",
+        nargs="?",
+        const=str(DEFAULT_BASELINE),
+        default=None,
+        help=(
+            "Compare detection rate to a recorded baseline JSON; fail if the "
+            "current rate drops by >= regression_threshold_drop. Pass the flag "
+            "alone to use the default baseline at "
+            f"{DEFAULT_BASELINE.name}."
+        ),
+    )
+    args = parser.parse_args()
+    baseline = _load_baseline(Path(args.baseline)) if args.baseline else None
+    if args.baseline and baseline is None:
+        sys.stderr.write(f"FAIL: --baseline given but file unreadable: {args.baseline}\n")
+        return 2
+
     if not SCAN_SCRIPT.exists():
         sys.stderr.write(f"FAIL: scanner missing: {SCAN_SCRIPT}\n")
         return 2
@@ -198,6 +248,15 @@ def main() -> int:
         sys.stdout.write(f"  PASS {fid}\n")
     for msg in failures:
         sys.stdout.write(f"  FAIL {msg}\n")
+
+    if baseline is not None:
+        regressed, msg = _compare_baseline(baseline, len(fixtures), len(passes))
+        sys.stdout.write(f"\n{msg}\n")
+        if regressed:
+            sys.stdout.write(
+                "F-004 CI gate FAILED: detection-rate regression vs baseline.\n"
+            )
+            return 1
 
     if failures:
         sys.stdout.write(

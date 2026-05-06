@@ -79,6 +79,24 @@
       "source": "./plugins/sbom-emitter",
       "description": "Generates CycloneDX SBOM (bom-npm.cdx.json / bom-pip.cdx.json) by detecting npm or pip ecosystem and shelling out to the matching tool. Wired into release.yml. Closes CISA SBOM / EU CRA 2027 procurement gap. Skill-invoked + release-workflow.",
       "category": "compliance"
+    },
+    {
+      "name": "egress-shield",
+      "source": "./plugins/egress-shield",
+      "description": "Opt-in PreToolUse blocking egress allowlist. Sibling of egress-monitor (advisory). When state/egress-policy.json sets enabled:true, blocks WebFetch/WebSearch/Bash-network calls whose destination host is not in the allowlist. Default disabled. Closes F-005.",
+      "category": "security"
+    },
+    {
+      "name": "capability-shield",
+      "source": "./plugins/capability-shield",
+      "description": "Opt-in PreToolUse blocking capability allowlist. Sibling of capability-fence (advisory). When state/capability-policy.json sets enabled:true, blocks any tool call whose name is not in the active skill's declared allowed-tools frontmatter list. Default disabled. Closes F-010.",
+      "category": "security"
+    },
+    {
+      "name": "reach-filter",
+      "source": "./plugins/reach-filter",
+      "description": "Reachability-aware SCA post-filter. Consumes vuln-detector audit.jsonl + lich call-graph (when available) and emits a reach-classified subset distinguishing reachable vulnerabilities from present-but-unreachable. Operator-invoked. Closes F-039.",
+      "category": "security"
     }
   ]
 }

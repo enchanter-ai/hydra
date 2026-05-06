@@ -10,7 +10,7 @@
 
 `capability-fence` is **observability** (advisory, always exits 0, prints
 to stderr, logs to `state/fence-log.ndjson`). It conforms to
-`shared/conduct/hooks.md` "Hooks inform, they don't decide". Operators
+`shared/foundations/conduct/hooks.md` "Hooks inform, they don't decide". Operators
 who want enforcement, not just signal, install **this** plugin in
 addition to (or instead of) the fence.
 
@@ -25,7 +25,7 @@ Splitting them keeps:
 ## hooks.md override (logged)
 
 This plugin **overrides** the project-wide rule in
-`shared/conduct/hooks.md` that hooks must be advisory-only. The override
+`shared/foundations/conduct/hooks.md` that hooks must be advisory-only. The override
 is bounded:
 
 1. **Off by default.** Disabled `state/capability-policy.json` ships out
@@ -97,7 +97,7 @@ plugins/capability-shield/
 
 - [`capability-fence`](../capability-fence) — advisory sibling
   (observability only).
-- `shared/conduct/hooks.md` — advisory-default rule (overridden here,
+- `shared/foundations/conduct/hooks.md` — advisory-default rule (overridden here,
   per the override-note above).
-- `wixie/shared/conduct/delegation.md` — per-role tool whitelist table.
+- `wixie/shared/foundations/conduct/delegation.md` — per-role tool whitelist table.
 - F-010 (capability-allowlist enforcement) — closed by this plugin.
