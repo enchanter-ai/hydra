@@ -1,0 +1,45 @@
+{
+  "_comment": "5-node DAG smoke fixture for reach-filter. cli_main is the entrypoint; route_request -> validate_input is the reachable chain. dead_helper and vendor_legacy are unreachable.",
+  "nodes": {
+    "src/cli.py:cli_main:1": {
+      "file": "src/cli.py",
+      "name": "cli_main",
+      "line_start": 1,
+      "line_end": 10,
+      "is_entrypoint": true
+    },
+    "src/router.py:route_request:5": {
+      "file": "src/router.py",
+      "name": "route_request",
+      "line_start": 5,
+      "line_end": 30,
+      "is_entrypoint": false
+    },
+    "src/validators.py:validate_input:1": {
+      "file": "src/validators.py",
+      "name": "validate_input",
+      "line_start": 1,
+      "line_end": 20,
+      "is_entrypoint": false
+    },
+    "src/dead.py:dead_helper:1": {
+      "file": "src/dead.py",
+      "name": "dead_helper",
+      "line_start": 1,
+      "line_end": 15,
+      "is_entrypoint": false
+    },
+    "vendor/legacy.py:vendor_legacy:1": {
+      "file": "vendor/legacy.py",
+      "name": "vendor_legacy",
+      "line_start": 1,
+      "line_end": 50,
+      "is_entrypoint": false
+    }
+  },
+  "edges": [
+    {"from": "src/cli.py:cli_main:1", "to": "src/router.py:route_request:5"},
+    {"from": "src/router.py:route_request:5", "to": "src/validators.py:validate_input:1"}
+  ],
+  "entrypoints": ["src/cli.py:cli_main:1"]
+}

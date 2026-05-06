@@ -1,0 +1,16 @@
+{
+  "description": "Hydra capability-shield: OPT-IN BLOCKING PreToolUse check that compares the invoked tool against the active skill's declared allowed-tools frontmatter list. Exits 2 (block) when the tool is out of scope and policy.enabled is true. Default disabled.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pretooluse.sh\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "_comment": "Copy this file to state/capability-policy.json and edit. The shield reads ONLY state/capability-policy.json; this .example.json is documentation. Default is disabled. Set enabled:true to enforce the active SKILL.md frontmatter allowed-tools list as a blocking allowlist. fail_on_missing_skill:true blocks any tool call when no SKILL.md can be located (strict mode); the default (false) is best-effort scope — if no skill is in scope, the shield exits 0.",
+  "enabled": false,
+  "fail_on_missing_skill": false
+}
