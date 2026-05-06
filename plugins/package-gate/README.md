@@ -1,6 +1,6 @@
 # package-gate
 
-Advisory PreToolUse gate on package install commands. Runs 5 risk checks against public registries before `npm install` / `pip install` / `pnpm add` / `yarn add` / `uv add` runs, and injects a one-block summary into the conversation as stderr advisory output. **Always exits 0; never blocks.**
+Advisory PreToolUse gate on package install commands. Runs 6 risk checks against public registries before `npm install` / `pip install` / `pnpm add` / `yarn add` / `uv add` runs, and injects a one-block summary into the conversation as stderr advisory output. **Always exits 0; never blocks.**
 
 ## Why
 
@@ -15,13 +15,14 @@ Part of the [Hydra](../..) bundle.
 /plugin install hydra-package-gate@hydra
 ```
 
-## What it checks (5 signals)
+## What it checks (6 signals)
 
 | Signal | Trigger | Severity |
 |---|---|---|
 | `slopsquat-or-typo` | Package not found in registry | HIGH |
-| `typosquat` | Levenshtein <= 2 vs. seed list of popular names | HIGH |
+| `typosquat` | Levenshtein <= 2 vs. **top-10k registry-derived list** (`state/top10k-{npm,pypi}.json`) | HIGH |
 | `recent` | First publish < 30 days ago | HIGH |
+| `cve` | Package matches an OSV.dev advisory at HIGH or CRITICAL severity (cache: `state/osv-cache.sqlite`, daily refresh) | HIGH |
 | `stale-or-handover` | No publish in > 2 years OR missing maintainer metadata | MEDIUM |
 | `low-adoption` | < 100 weekly downloads | MEDIUM |
 
@@ -46,12 +47,36 @@ Part of the [Hydra](../..) bundle.
 - `https://api.npmjs.org/downloads/point/last-week/<pkg>` — npm weekly downloads
 - `https://pypi.org/pypi/<pkg>/json` — PyPI metadata (releases, info)
 - `https://pypistats.org/api/packages/<pkg>/recent` — PyPI weekly downloads
+- `https://api.osv.dev/v1/query` — OSV advisory query (POST, used by `osv-sync.py`)
+- `https://registry.npmjs.org/-/v1/search` — npm popularity-sorted search (used by `bin/refresh-top10k.py`)
+- `https://hugovk.github.io/top-pypi-packages/top-pypi-packages.min.json` — PyPI top-list source (used by `bin/refresh-top10k.py`)
 
-All read-only GET. No package contents are fetched and nothing is written to your `node_modules` / venv during the check.
+All read-only GET (or POST for OSV query). No package contents are fetched and nothing is written to your `node_modules` / venv during the check.
 
-## Top-package seed
+## CVE feed (R6)
 
-Ships with a ~50-entry seed of frequently-attacked package names (used for typosquat distance checks). **TODO:** `bin/refresh-top10k.py` to generate a real top-10k list per ecosystem from registry stats. Until then the typosquat check is best-effort against the most-attacked names, not exhaustive.
+`scripts/osv-sync.py` POSTs each tracked package against `https://api.osv.dev/v1/query` and writes advisories to a local SQLite cache at `state/osv-cache.sqlite`. `gate-check.py` opens the cache read-only and emits a HIGH `cve` finding for any package matching an advisory at severity `HIGH` or `CRITICAL`.
+
+- **Refresh schedule:** daily via `.github/workflows/osv-refresh.yml` (cron `0 3 * * *`). The workflow opens a PR when the SQLite cache changes so a human reviews advisory churn.
+- **Cache freshness:** R6 tolerates up to 7 days of staleness before going silent — a one-day missed cron does not blind the check.
+- **Manual sync:**
+  - Sample (smoke test): `python scripts/osv-sync.py --sample`
+  - Full sync: `python scripts/osv-sync.py --ecosystem both`
+  - Specific packages: `python scripts/osv-sync.py --packages lodash,minimist`
+
+## Top-10k registry-derived seed
+
+The typosquat check runs Levenshtein distance against the live top-10k lists for each ecosystem, refreshed monthly:
+
+- `state/top10k-npm.json` — populated from `https://registry.npmjs.org/-/v1/search` (popularity-weighted, paged 250-at-a-time)
+- `state/top10k-pypi.json` — populated from the community-maintained `top-pypi-packages` JSON (PyPI does not expose a download-ranked API)
+
+If those files are missing (clean install, never refreshed, or offline), `gate-check.py` falls back to a ~50-entry static seed so the check still produces *some* signal.
+
+- **Refresh schedule:** monthly via `.github/workflows/osv-refresh.yml` (cron `0 4 1 * *`).
+- **Manual refresh:**
+  - Test run: `python bin/refresh-top10k.py --limit 100`
+  - Full refresh: `python bin/refresh-top10k.py --ecosystem both`
 
 ## Skill
 

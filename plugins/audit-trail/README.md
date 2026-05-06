@@ -32,6 +32,41 @@ JSONL entries in `state/audit.jsonl`:
 - 10MB rotation (keeps last 1000 entries)
 - Dark-themed HTML report generation
 - Cross-session learning via EMA
+- HMAC hash chain for tamper evidence (`scripts/chain-helpers.sh`)
+- OTLP/JSON exporter for Datadog/Sentry observability (`scripts/otel-exporter.py`)
+
+## OTLP Export — Datadog / Sentry bridge
+
+Closes audit findings **F-021** (OTLP traces) and **F-024** (Sentry / Datadog
+LLM Observability parity) from the security closure synthesis. The local
+HMAC chain is forensically sound but offline; production deployments stream
+spans into a real observability backend.
+
+The exporter is stdlib-only — **no OpenTelemetry SDK dependency** — so it
+runs in air-gapped environments. It emits OTLP/JSON; the operator's
+collector handles protobuf encoding and vendor routing.
+
+```bash
+# follow mode — stream new audit events into a local OTLP/HTTP collector
+python scripts/otel-exporter.py state/audit.jsonl --follow \
+  | curl -s -XPOST http://localhost:4318/v1/traces \
+         -H 'content-type: application/json' --data-binary @-
+```
+
+Span fields (per closure F-021/F-024): `agent.id`, `tool.name`,
+`tool.duration_ms`, `tool.bytes_in/out`, `network.dest_host`,
+`policy.outcome`, `error.type`, `trace_id` (derived from `prev_hash` when
+absent so forensic correlation back to `state/audit.jsonl` stays
+joinable), `span_id` (UUID v4).
+
+**Required env vars:** `DD_API_KEY`, `SENTRY_DSN`,
+`OTEL_EXPORTER_OTLP_ENDPOINT`. Sample collector config with Datadog +
+Sentry pipelines: [`scripts/otel-config.example.yaml`](scripts/otel-config.example.yaml).
+
+**Limitation:** JSON only — protobuf encoding is the operator's collector's
+job. This is the deliberate offline-first tradeoff.
+
+See the `audit-otlp` skill for an interactive walkthrough.
 
 ## Command
 `/hydra:audit` — event timeline, severity filters, report generation

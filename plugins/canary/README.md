@@ -56,6 +56,45 @@ hydra/plugins/canary/
 
 `/skill canary-awareness` (Haiku) — reads `state/active-canaries.json` + `state/hits.ndjson`, reports session status, recommends rotation after a hit.
 
+## CI gate (F-004 closure)
+
+Beyond the runtime advisory hook, a **CI gate** verifies the detection
+surface against a fixture set on every PR and every push to `main`.
+
+| Surface | Mode | Source of truth |
+|---|---|---|
+| Runtime hook (`posttooluse-scan.sh`) | **Advisory only — always exit 0** | `shared/conduct/hooks.md` |
+| CI gate (`ci-canary-gate.py`) | **Blocking — non-zero on miss** | `.github/workflows/canary-ci.yml` |
+
+The CI gate loads every JSON fixture under `fixtures/injection/` (10
+indirect-injection cases drawn from OWASP LLM01:2025 — fake `<system>`
+tags, markdown-quote impersonation, hidden HTML comments, tool-result
+spoofing, zero-width unicode, base64 smuggle, citation impersonation,
+roleplay jailbreaks, etc.). For each fixture it:
+
+1. Seeds a temporary `state/active-canaries.json` with the fixture's
+   `canary_token`.
+2. Builds a synthetic PostToolUse payload from `fixture.input` +
+   `fixture.output`.
+3. Pipes it into `scripts/canary-scan.py`.
+4. Asserts the scanner emits `HIT: canary <TOKEN>` on stderr **and**
+   appends a finding to `state/hits.ndjson`.
+5. Restores the original state files before exit.
+
+Any fixture missing a detection fails the workflow check. **The runtime
+hook contract is unchanged** — it still exits 0 unconditionally. The CI
+gate verifies the *detection* surface; the runtime surface stays advisory
+per `shared/conduct/hooks.md`.
+
+This closes ecosystem-audit finding **F-004** (advisory → CI-blocked
+detection of indirect prompt-injection canary leakage).
+
+Run locally:
+
+```bash
+python plugins/canary/scripts/ci-canary-gate.py
+```
+
 ## Relationship to other Hydra plugins
 
 - `canary` (this) — runtime detection of successful indirect injection.

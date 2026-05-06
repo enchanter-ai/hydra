@@ -1,0 +1,26 @@
+name: canary CI gate (F-004)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  canary-gate:
+    name: Prompt-injection canary detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run canary CI gate
+        run: |
+          python plugins/canary/scripts/ci-canary-gate.py

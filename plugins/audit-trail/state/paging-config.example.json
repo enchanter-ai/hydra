@@ -1,0 +1,22 @@
+{
+  "enabled": false,
+  "webhook_url": "",
+  "min_severity": "HIGH",
+  "rate_limit_per_min": 5,
+  "timeout_seconds": 5,
+  "max_retries": 3,
+
+  "_comment_enabled": "Set to true to actually POST to webhook_url. When false, pager.py classifies events but does not deliver — undelivered.jsonl stays empty.",
+  "_comment_webhook_url": "Generic JSON-POST endpoint. Tested shapes: PagerDuty Events API v2, Opsgenie webhook, Slack incoming webhook (will need a transformer for Slack's expected shape — pager posts the generic event payload).",
+  "_comment_min_severity": "One of DEBUG | INFO | LOW | MEDIUM | HIGH | CRITICAL. Pages fire when audit row severity >= this floor. Default HIGH per F-011 audit finding.",
+  "_comment_rate_limit_per_min": "Token bucket per minute. Excess events are SUPPRESSED (not enqueued to undelivered) — suppression is intentional, not a delivery failure.",
+  "_comment_max_retries": "After this many retry attempts on an undelivered event, the entry is dropped from paging-undelivered.jsonl and logged as exhausted.",
+
+  "_setup": [
+    "1. Copy this file to paging-config.json (gitignored — contains your webhook URL).",
+    "2. Set enabled=true, paste your webhook URL.",
+    "3. Pick min_severity. HIGH means HIGH and CRITICAL trigger; CRITICAL means only CRITICAL.",
+    "4. Wire pager.py into a periodic runner (cron, systemd timer, audit hook). Suggested cadence: every 30s during business hours, every 5m off-hours.",
+    "5. Smoke-test: run pager.py --dry-run after seeding a HIGH-severity row in audit.jsonl."
+  ]
+}

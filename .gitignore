@@ -19,3 +19,9 @@ __pycache__/
 docs/assets/node_modules/
 docs/assets/package.json
 docs/assets/package-lock.json
+plugins/*/state/*.sqlite
+plugins/package-gate/state/top10k-*.json
+plugins/audit-trail/state/paging-config.json
+plugins/audit-trail/state/paging-cursor.json
+plugins/audit-trail/state/paging-undelivered.jsonl
+plugins/audit-trail/state/paging-runs.log

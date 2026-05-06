@@ -1,0 +1,101 @@
+name: OSV + Top-10K Refresh
+
+# Daily OSV.dev sync (closes audit F-009: continuous CVE feed ingestion).
+# Monthly top-10k refresh from npm + PyPI registries (closes F-023:
+# typosquat seed list registry-derived).
+#
+# When the cached state files change, opens a PR so a human reviews any
+# advisory or top-package churn before it lands on main.
+
+on:
+  schedule:
+    # OSV daily at 03:00 UTC.
+    - cron: "0 3 * * *"
+    # Top-10k monthly on the 1st at 04:00 UTC.
+    - cron: "0 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Which job to run (osv | top10k | both)"
+        required: false
+        default: "both"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  osv-sync:
+    name: OSV daily sync
+    # Runs on the daily cron OR on a manual dispatch with job in {osv, both}.
+    if: >-
+      github.event.schedule == '0 3 * * *'
+      || (github.event_name == 'workflow_dispatch'
+          && (github.event.inputs.job == 'osv' || github.event.inputs.job == 'both'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run osv-sync
+        run: |
+          python plugins/package-gate/scripts/osv-sync.py --ecosystem both
+
+      - name: Open PR if cache changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(package-gate): refresh OSV advisory cache"
+          title: "chore(package-gate): refresh OSV advisory cache"
+          body: |
+            Automated daily OSV.dev sync (closes audit F-009).
+
+            Diff is the SQLite cache at
+            `plugins/package-gate/state/osv-cache.sqlite`.
+            Review the affected packages + new advisories before merging.
+          branch: chore/osv-refresh
+          delete-branch: true
+          add-paths: |
+            plugins/package-gate/state/osv-cache.sqlite
+
+  top10k-refresh:
+    name: Top-10k monthly refresh
+    if: >-
+      github.event.schedule == '0 4 1 * *'
+      || (github.event_name == 'workflow_dispatch'
+          && (github.event.inputs.job == 'top10k' || github.event.inputs.job == 'both'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Refresh top-10k lists
+        run: |
+          python plugins/package-gate/bin/refresh-top10k.py --ecosystem both
+
+      - name: Open PR if lists changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(package-gate): refresh top-10k package lists"
+          title: "chore(package-gate): refresh top-10k npm + PyPI lists"
+          body: |
+            Automated monthly top-10k refresh (closes audit F-023).
+
+            Sources:
+            - npm: https://registry.npmjs.org/-/v1/search (popularity-sorted)
+            - PyPI: https://hugovk.github.io/top-pypi-packages/
+
+            Reviewers: skim the diff for surprising churn (mass-removals,
+            spam pollution, mojibake names).
+          branch: chore/top10k-refresh
+          delete-branch: true
+          add-paths: |
+            plugins/package-gate/state/top10k-npm.json
+            plugins/package-gate/state/top10k-pypi.json

@@ -2,7 +2,7 @@
 """
 package-gate: advisory pre-install supply-chain check.
 
-Reads a shell command, extracts package install targets, runs 5 risk checks
+Reads a shell command, extracts package install targets, runs 6 risk checks
 against public registries, and prints an advisory block to STDERR. Always
 exits 0 — this script's caller (pretooluse.sh) is the hook contract surface.
 
@@ -13,6 +13,8 @@ Risk signals (per plugin spec):
                        maintainer churn indicators
   R4 typosquat       — Levenshtein <= 2 to top list  → typosquat
   R5 download cliff  — weekly downloads < 100        → low-adoption
+  R6 cve             — package version intersects an OSV advisory at
+                       severity HIGH or CRITICAL              → cve
 
 Reuses levenshtein_distance from hydra/shared/scripts/supply-chain.py.
 
@@ -28,6 +30,7 @@ import json
 import os
 import re
 import shlex
+import sqlite3
 import sys
 import time
 import urllib.error
@@ -71,27 +74,50 @@ except Exception:
 
 
 # ── Constants ──────────────────────────────────────────────────────────────
-CACHE_DIR = os.path.join(SCRIPT_DIR, "..", "state", "cache")
+STATE_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "state"))
+CACHE_DIR = os.path.join(STATE_DIR, "cache")
+OSV_DB_PATH = os.path.join(STATE_DIR, "osv-cache.sqlite")
+TOP_NPM_PATH = os.path.join(STATE_DIR, "top10k-npm.json")
+TOP_PYPI_PATH = os.path.join(STATE_DIR, "top10k-pypi.json")
 CACHE_TTL_SECONDS = 24 * 3600
 HTTP_TIMEOUT = 3.0
 USER_AGENT = "hydra-package-gate/0.1 (+advisory)"
 
-# Stub seed of frequently-attacked names (top-targeted, not top-by-downloads).
-# TODO(bin/refresh-top10k.py): replace with a refreshed top-10k list per
-# ecosystem, generated offline and shipped as data/top10k-{npm,pypi}.txt.
-TOP_PACKAGES_NPM = {
+# Fallback seed used when state/top10k-{npm,pypi}.json is absent (clean
+# install, refresh-top10k.py never run, or offline). The full lists ship
+# in state/ once `bin/refresh-top10k.py` has been executed via the monthly
+# CI cron — see .github/workflows/osv-refresh.yml.
+_FALLBACK_TOP_NPM = {
     "react", "react-dom", "lodash", "axios", "express", "vue", "next",
     "typescript", "webpack", "babel-core", "@babel/core", "eslint",
     "moment", "jquery", "chalk", "commander", "debug", "minimist",
     "left-pad", "request", "underscore", "uuid", "yargs", "rxjs",
 }
-TOP_PACKAGES_PYPI = {
+_FALLBACK_TOP_PYPI = {
     "requests", "numpy", "pandas", "tensorflow", "torch", "scipy",
     "django", "flask", "pytest", "pillow", "matplotlib", "scikit-learn",
     "boto3", "click", "pyyaml", "setuptools", "wheel", "urllib3",
     "cryptography", "sqlalchemy", "fastapi", "pydantic", "beautifulsoup4",
     "openai", "anthropic", "langchain",
 }
+
+
+def _load_top_list(path: str, fallback: set[str]) -> set[str]:
+    """Load top-10k list from disk; fall back to the seed on any error."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, list):
+            return {p.lower() for p in data if isinstance(p, str)}
+        if isinstance(data, dict) and isinstance(data.get("packages"), list):
+            return {p.lower() for p in data["packages"] if isinstance(p, str)}
+    except (OSError, json.JSONDecodeError):
+        pass
+    return {n.lower() for n in fallback}
+
+
+TOP_PACKAGES_NPM = _load_top_list(TOP_NPM_PATH, _FALLBACK_TOP_NPM)
+TOP_PACKAGES_PYPI = _load_top_list(TOP_PYPI_PATH, _FALLBACK_TOP_PYPI)
 
 ADVISORY_HEADER = "=== package-gate (advisory) ==="
 ADVISORY_FOOTER = (
@@ -240,6 +266,67 @@ def _days_since(iso_str: str) -> int | None:
     return int((datetime.now(timezone.utc) - dt).total_seconds() // 86400)
 
 
+# ── R6 CVE check via OSV cache ────────────────────────────────────────────
+# The cache is built by scripts/osv-sync.py (cron: daily). gate-check.py is
+# read-only on the SQLite DB; if the file is missing or stale, R6 emits no
+# false positives — it simply skips, matching the rest of the script's
+# offline-tolerant behavior.
+_OSV_HIGH_SEVERITIES = {"HIGH", "CRITICAL"}
+
+
+def _osv_cache_fresh() -> bool:
+    """24h TTL on the SQLite file's mtime."""
+    try:
+        st = os.stat(OSV_DB_PATH)
+    except OSError:
+        return False
+    return (time.time() - st.st_mtime) <= (7 * 24 * 3600)
+    # Note: 7d outer freshness bound — daily refresh is a soft target; we
+    # tolerate up to a week so a missed cron doesn't blind R6 immediately.
+
+
+def _osv_advisories(pkg: str, ecosystem: str) -> list[dict]:
+    """Return list of HIGH/CRITICAL advisories for (pkg, ecosystem)."""
+    if not os.path.isfile(OSV_DB_PATH):
+        return []
+    out: list[dict] = []
+    try:
+        conn = sqlite3.connect(f"file:{OSV_DB_PATH}?mode=ro", uri=True)
+        try:
+            rows = conn.execute(
+                "SELECT id, severity, summary FROM advisories "
+                "WHERE ecosystem = ? AND package = ?",
+                (ecosystem, pkg.lower()),
+            ).fetchall()
+        finally:
+            conn.close()
+    except sqlite3.Error:
+        return []
+    for row in rows:
+        osv_id, severity, summary = row
+        if (severity or "").upper() in _OSV_HIGH_SEVERITIES:
+            out.append({"id": osv_id, "severity": severity, "summary": summary or ""})
+    return out
+
+
+def check_cve(pkg: str, ecosystem: str) -> list[tuple[str, str, str]]:
+    """Emit one HIGH finding per matching OSV advisory at HIGH+ severity."""
+    if not _osv_cache_fresh():
+        return []
+    advs = _osv_advisories(pkg, ecosystem)
+    findings: list[tuple[str, str, str]] = []
+    # Cap at 3 per package so a heavily-affected lib doesn't flood the block.
+    for adv in advs[:3]:
+        reason = f"{adv['id']} ({adv['severity']})"
+        if adv["summary"]:
+            short = adv["summary"][:80].rstrip()
+            reason = f"{reason}: {short}"
+        findings.append(("HIGH", "cve", reason))
+    if len(advs) > 3:
+        findings.append(("HIGH", "cve", f"+{len(advs) - 3} more advisories"))
+    return findings
+
+
 def check_npm(pkg: str) -> list[tuple[str, str, str]]:
     """Return list of (severity, signal, reason) tuples."""
     findings: list[tuple[str, str, str]] = []
@@ -373,8 +460,11 @@ def main() -> int:
     for pkg in pkgs[:20]:  # cap defensive: don't probe a 100-pkg one-liner
         if eco == "npm":
             results = check_npm(pkg)
+            results.extend(check_cve(pkg, "npm"))
         elif eco == "pypi":
             results = check_pypi(pkg)
+            # OSV uses ecosystem name 'PyPI' (case-sensitive in the API)
+            results.extend(check_cve(pkg, "PyPI"))
         else:
             results = check_unsupported(pkg, eco)
         for sev, signal, reason in results:

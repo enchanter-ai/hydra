@@ -1,0 +1,90 @@
+# otel-config.example.yaml
+#
+# Sample OpenTelemetry Collector config that consumes the OTLP/JSON
+# stream emitted by scripts/otel-exporter.py and forwards it to
+# Datadog LLM Observability and Sentry AI Agent Monitoring.
+#
+# Closes audit findings F-021 + F-024. The exporter is offline-first and
+# emits OTLP/JSON over stdout; this collector handles protobuf encoding,
+# retries, and vendor routing.
+#
+# Required environment variables
+# ------------------------------
+#   DD_API_KEY                       Datadog API key (LLM Observability)
+#   DD_SITE                          Datadog site (defaults to datadoghq.com)
+#   SENTRY_DSN                       Sentry DSN for the AI Monitoring project
+#   OTEL_EXPORTER_OTLP_ENDPOINT      Optional override; defaults to
+#                                    http://localhost:4318 for receivers below
+#
+# Run
+# ---
+#   # 1. start the collector
+#   otelcol --config=scripts/otel-config.example.yaml
+#
+#   # 2. stream audit events into it
+#   python scripts/otel-exporter.py state/audit.jsonl --follow \
+#     | curl -s -XPOST http://localhost:4318/v1/traces \
+#            -H 'content-type: application/json' --data-binary @-
+#
+# Notes
+# -----
+# - Datadog accepts OTLP natively via the otlp exporter on Agent v7.42+.
+#   Older Agents need the datadog exporter directly (shown below).
+# - Sentry's OTLP traces ingest is in public beta as of 2026-Q1; verify
+#   the endpoint in your project settings before relying on it in prod.
+# - The HMAC chain field (audit.prev_hash) rides as a span attribute so
+#   forensic correlation back to state/audit.jsonl stays possible from
+#   either backend.
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+processors:
+  batch:
+    send_batch_size: 256
+    timeout: 5s
+
+  # Tag every span with deployment metadata so multi-environment dashboards
+  # can split by env. Override via collector environment.
+  resource:
+    attributes:
+      - key: deployment.environment
+        value: ${env:DEPLOY_ENV:-production}
+        action: upsert
+      - key: service.version
+        value: ${env:HYDRA_VERSION:-unknown}
+        action: upsert
+
+exporters:
+  # Datadog: LLM Observability product picks up spans whose service.name
+  # starts with the agent's configured prefix. hydra.audit-trail matches.
+  datadog:
+    api:
+      site: ${env:DD_SITE:-datadoghq.com}
+      key: ${env:DD_API_KEY}
+    traces:
+      compute_stats_by_span_kind: true
+
+  # Sentry: AI Agent Monitoring consumes OTLP/HTTP traces. The DSN encodes
+  # the project; the OTLP endpoint URL pattern is documented in Sentry's
+  # AI Monitoring setup guide.
+  otlphttp/sentry:
+    endpoint: https://o0.ingest.sentry.io/api/0/envelope/
+    headers:
+      x-sentry-auth: "Sentry sentry_key=${env:SENTRY_DSN}"
+
+  # Always-on debug logger — comment out in production.
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [datadog, otlphttp/sentry, debug]
