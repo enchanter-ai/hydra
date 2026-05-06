@@ -1,0 +1,24 @@
+{
+  "recorded": "2026-05-06",
+  "fixtures_total": 40,
+  "detection_count": 40,
+  "detection_rate": 1.0,
+  "regression_threshold_drop": 0.05,
+  "per_class": {
+    "core10": {"total": 10, "detected": 10, "avg_latency_ms": 150.7},
+    "direct-injection": {"total": 5, "detected": 5, "avg_latency_ms": 142.1},
+    "indirect-injection": {"total": 5, "detected": 5, "avg_latency_ms": 155.4},
+    "jailbreak": {"total": 3, "detected": 3, "avg_latency_ms": 153.7},
+    "token-smuggling": {"total": 3, "detected": 3, "avg_latency_ms": 153.4},
+    "encoding-bypass": {"total": 2, "detected": 2, "avg_latency_ms": 145.7},
+    "tool-misuse": {"total": 2, "detected": 2, "avg_latency_ms": 140.4},
+    "multi-turn-pressure": {"total": 2, "detected": 2, "avg_latency_ms": 130.9},
+    "output-manipulation": {"total": 2, "detected": 2, "avg_latency_ms": 135.6},
+    "context-overflow": {"total": 2, "detected": 2, "avg_latency_ms": 130.2},
+    "memory-poisoning": {"total": 2, "detected": 2, "avg_latency_ms": 132.1},
+    "refusal-bypass": {"total": 2, "detected": 2, "avg_latency_ms": 148.3}
+  },
+  "avg_latency_ms": 146.0,
+  "p50_latency_ms": 143.7,
+  "max_latency_ms": 171.5
+}

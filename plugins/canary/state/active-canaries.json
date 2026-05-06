@@ -1,1 +1,8 @@
-{"sessions": {"ci-fixture": {"token": "CANARY-TEST-033", "created_ts": 0}}}
+{
+  "sessions": {
+    "test1": {
+      "created_at": 1778005886,
+      "token": "CANARY-QFGV6XA2"
+    }
+  }
+}
