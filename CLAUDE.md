@@ -6,18 +6,18 @@ Audience: Claude. Hydra intercepts secrets, OWASP vulnerabilities, dangerous com
 
 These apply to every skill in every plugin. Load once; do not re-derive.
 
-- @shared/conduct/discipline.md — coding conduct: think-first, simplicity, surgical edits, goal-driven loops
-- @shared/conduct/context.md — attention-budget hygiene, U-curve placement, checkpoint protocol
-- @shared/conduct/verification.md — independent checks, baseline snapshots, dry-run for destructive ops
-- @shared/conduct/doubt-engine.md — adversarial self-check before agreement; four-step pass against F01 sycophancy
-- @shared/conduct/delegation.md — subagent contracts, tool whitelisting, parallel vs. serial rules
-- @shared/conduct/failure-modes.md — 14-code taxonomy for accumulated-learning logs
-- @shared/conduct/tool-use.md — tool-choice hygiene, error payload contract, parallel-dispatch rules
-- @shared/conduct/skill-authoring.md — SKILL.md frontmatter discipline, discovery test
-- @shared/conduct/hooks.md — advisory-only hooks, injection over denial, fail-open
-- @shared/conduct/precedent.md — log self-observed failures to `state/precedent-log.md`; consult before risky steps
-- @shared/conduct/tier-sizing.md — prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent
-- @shared/conduct/web-fetch.md — external URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only
+- @shared/foundations/conduct/discipline.md — coding conduct: think-first, simplicity, surgical edits, goal-driven loops
+- @shared/foundations/conduct/context.md — attention-budget hygiene, U-curve placement, checkpoint protocol
+- @shared/foundations/conduct/verification.md — independent checks, baseline snapshots, dry-run for destructive ops
+- @shared/foundations/conduct/doubt-engine.md — adversarial self-check before agreement; four-step pass against F01 sycophancy
+- @shared/foundations/conduct/delegation.md — subagent contracts, tool whitelisting, parallel vs. serial rules
+- @shared/foundations/conduct/failure-modes.md — 14-code taxonomy for accumulated-learning logs
+- @shared/foundations/conduct/tool-use.md — tool-choice hygiene, error payload contract, parallel-dispatch rules
+- @shared/foundations/conduct/skill-authoring.md — SKILL.md frontmatter discipline, discovery test
+- @shared/foundations/conduct/hooks.md — advisory-only hooks, injection over denial, fail-open
+- @shared/foundations/conduct/precedent.md — log self-observed failures to `state/precedent-log.md`; consult before risky steps
+- @shared/foundations/conduct/tier-sizing.md — prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent
+- @shared/foundations/conduct/web-fetch.md — external URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only
 
 When a module conflicts with a plugin-local instruction, the plugin wins — but log the override.
 

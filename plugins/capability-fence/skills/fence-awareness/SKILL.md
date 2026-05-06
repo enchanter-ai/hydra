@@ -68,7 +68,7 @@ enforcement requires a harness-level capability overlay (F-050).
 <constraints>
 1. NEVER claim the hook blocked anything — it cannot.
 2. NEVER edit SKILL.md frontmatter without showing the diff first.
-3. ALWAYS cross-reference `wixie/shared/conduct/delegation.md` for the
+3. ALWAYS cross-reference `wixie/shared/foundations/conduct/delegation.md` for the
    canonical per-role tool whitelist.
 4. ALWAYS note that absence of evidence in fence-log.ndjson is not
    evidence of compliance — the hook only fires when a SKILL.md is in

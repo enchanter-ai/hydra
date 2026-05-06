@@ -26,7 +26,7 @@ steps.
 1. NEVER claim injection succeeded based on absence of hits — absence
    only means no canary leaked, not that the session is safe.
 2. NEVER block any tool call; canary is advisory by design (per
-   shared/conduct/hooks.md).
+   shared/foundations/conduct/hooks.md).
 3. NEVER fabricate hit data — read state/hits.ndjson literally.
 4. ALWAYS show token, tool, where (input or output), timestamp.
 5. ALWAYS recommend rotation after a confirmed hit.

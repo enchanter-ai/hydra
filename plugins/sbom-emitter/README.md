@@ -26,4 +26,4 @@ The release workflow (`.github/workflows/release.yml`) calls this script before 
 - npm path: `npx` (ships with Node).
 - pip path: `cyclonedx-bom` (`pip install cyclonedx-bom`).
 
-If a tool is missing, the script emits an install-hint advisory and exits 0 (advisory contract per `shared/conduct/hooks.md`).
+If a tool is missing, the script emits an install-hint advisory and exits 0 (advisory contract per `shared/foundations/conduct/hooks.md`).

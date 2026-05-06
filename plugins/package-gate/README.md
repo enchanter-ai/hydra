@@ -29,9 +29,9 @@ Part of the [Hydra](../..) bundle.
 ## Hook
 
 - **PreToolUse** on `Bash` — pre-filters for install verbs (npm/pnpm/yarn/pip/uv/cargo/go/gem/bundle) before invoking the python checker.
-- **Always exits 0.** Hook contract is observe-and-inject, never deny. See `wixie/shared/conduct/hooks.md`.
+- **Always exits 0.** Hook contract is observe-and-inject, never deny. See `wixie/shared/foundations/conduct/hooks.md`.
 - **Latency budget:** ~5 seconds. Wider than the typical PreToolUse <50ms because installs themselves take multiple seconds; the advisory check fits inside the user's existing wait. Documented exception, not a precedent.
-- **Cache:** `state/cache/<sha1-of-url>.json`, 24-hour mtime TTL, atomic `os.replace` write — per `wixie/shared/conduct/web-fetch.md`.
+- **Cache:** `state/cache/<sha1-of-url>.json`, 24-hour mtime TTL, atomic `os.replace` write — per `wixie/shared/foundations/conduct/web-fetch.md`.
 
 ## Ecosystem coverage
 

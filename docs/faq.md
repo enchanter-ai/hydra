@@ -28,4 +28,4 @@ Each pattern belongs to exactly one rule class — Config / Action / Secret / Vu
 
 ## Does Hydra block dangerous commands or just advise?
 
-Advisory. Per the shared [hooks contract](../shared/conduct/hooks.md), Hydra's hooks inform — they don't decide. `action-guard` emits a severity-tagged warning on `PreToolUse(Bash)` matches; the user or orchestrator decides whether to proceed. The same is true of `config-shield`, `secret-scanner`, and `vuln-detector`. The audit trail records everything — finding, severity, verdict, user decision — for forensic review or compliance reporting.
+Advisory. Per the shared [hooks contract](../shared/foundations/conduct/hooks.md), Hydra's hooks inform — they don't decide. `action-guard` emits a severity-tagged warning on `PreToolUse(Bash)` matches; the user or orchestrator decides whether to proceed. The same is true of `config-shield`, `secret-scanner`, and `vuln-detector`. The audit trail records everything — finding, severity, verdict, user decision — for forensic review or compliance reporting.

@@ -9,7 +9,7 @@ Audit finding F-043 flagged the missing per-plugin egress allowlist surface acro
 ## Hook
 
 - **PostToolUse** matcher `WebFetch|WebSearch|Bash`.
-- **Always exits 0** (per `shared/conduct/hooks.md`). Advisory output goes to stderr; nothing is denied.
+- **Always exits 0** (per `shared/foundations/conduct/hooks.md`). Advisory output goes to stderr; nothing is denied.
 - **Pre-filter** in bash: non-network `Bash` returns in ~5ms without invoking python.
 - **Latency budget** ~50ms hot path, ~150ms when python runs.
 
