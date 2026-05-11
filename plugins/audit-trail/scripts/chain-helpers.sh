@@ -1,22 +1,71 @@
 #!/usr/bin/env bash
-# audit-trail: hash-chain helpers for tamper-evident JSONL.
+# audit-trail: HMAC-SHA-256 hash-chain helpers for tamper-evident JSONL.
 #
-# Each audit line carries a `prev_hash` field — the SHA-256 (base64) of the
-# canonical-JSON of the previous line, or the literal string "GENESIS" for
-# the first line in the file. A consumer can re-compute the chain to detect
-# in-place edits, deletes, or insertions.
+# HARDENING (post pentest finding F-PT-16, 2026-05-11):
+#   Earlier revision used plain `openssl dgst -sha256` which an attacker
+#   with write access could re-compute trivially. Now uses HMAC-SHA-256
+#   with a secret key, sourced in priority order:
+#     1. $HYDRA_AUDIT_HMAC_KEY env var (operator-rotated, preferred)
+#     2. state/hmac-key.bin (auto-generated 256-bit key, mode 0600)
+#     3. fall through to plain SHA-256 with a LOUD WARNING (last-resort,
+#        only when key file can't be created — surfaces the gap rather
+#        than silently weakening the chain).
 #
-# Provides two functions:
-#   compute_prev_hash <file>   → echoes base64(sha256(canonical_json(last_line)))
-#                                or "GENESIS" if the file is empty/missing
-#   verify_chain <file>        → walks the log; returns 0 on intact chain,
-#                                non-zero with offending line number + hash
-#                                mismatch on stderr otherwise
+# Each audit line carries a `prev_hash` field — base64(hmac_sha256(KEY, canonical_json(prev))).
+# First line: literal "GENESIS".
 #
-# Both are pure shell + standard tools (jq, openssl). No state outside argv.
+# Provides:
+#   compute_prev_hash <file>   → base64(hmac_sha256(KEY, canonical_json(last_line))) | "GENESIS"
+#   verify_chain <file>        → 0 on intact chain, non-zero on first mismatch
+#
+# Pure shell + jq + openssl. State only in state/hmac-key.bin.
+
+# ── Key resolution ─────────────────────────────────────────────────────────
+_audit_key() {
+  if [[ -n "${HYDRA_AUDIT_HMAC_KEY:-}" ]]; then
+    printf "%s" "$HYDRA_AUDIT_HMAC_KEY"
+    return 0
+  fi
+
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local state_dir="$script_dir/../state"
+  local key_file="$state_dir/hmac-key.bin"
+
+  if [[ -r "$key_file" && -s "$key_file" ]]; then
+    cat "$key_file"
+    return 0
+  fi
+
+  # Try to generate one.
+  if mkdir -p "$state_dir" 2>/dev/null && \
+     openssl rand -hex 32 > "$key_file" 2>/dev/null && \
+     chmod 0600 "$key_file" 2>/dev/null; then
+    cat "$key_file"
+    return 0
+  fi
+
+  # Last resort: emit a loud warning and return empty (caller falls back to plain sha256).
+  echo "audit-trail: WARNING — no HMAC key available (env unset, state/hmac-key.bin uncreatable). Falling back to plain sha256 — chain is NOT cryptographically tamper-evident. Set HYDRA_AUDIT_HMAC_KEY env var or grant write to state/." >&2
+  return 1
+}
+
+_hash_canonical() {
+  local canonical="$1"
+  local key
+  if key="$(_audit_key)"; then
+    printf "%s" "$canonical" \
+      | openssl dgst -sha256 -mac hmac -macopt "key:$key" -binary \
+      | openssl base64 -A
+  else
+    printf "%s" "$canonical" \
+      | openssl dgst -sha256 -binary \
+      | openssl base64 -A
+  fi
+}
 
 # Compute the prev_hash a NEW appended line should carry.
-# Reads the last non-empty line, canonicalises via `jq -c -S`, sha256sums,
+# Reads the last non-empty line, canonicalises via `jq -c -S`, HMACs with key,
 # emits base64 (no newline). If the file is missing or empty → "GENESIS".
 compute_prev_hash() {
   local file="$1"
@@ -41,14 +90,12 @@ compute_prev_hash() {
     canonical="$last"
   fi
 
-  printf "%s" "$canonical" \
-    | openssl dgst -sha256 -binary \
-    | openssl base64 -A
+  _hash_canonical "$canonical"
 }
 
 # Walk the chain from the top. For each line N (1-indexed):
 #   line 1 must have prev_hash == "GENESIS"
-#   line N (N>1) must have prev_hash == base64(sha256(canonical_json(line N-1)))
+#   line N (N>1) must have prev_hash == base64(hmac_sha256(KEY, canonical_json(line N-1)))
 #
 # Returns 0 if every line passes, non-zero on the first mismatch. On failure
 # emits a one-line diagnostic to stderr:
@@ -64,7 +111,6 @@ verify_chain() {
   fi
 
   local lineno=0
-  local prev_canonical=""
   local expected="GENESIS"
   local actual
   local canonical
@@ -90,10 +136,7 @@ verify_chain() {
     else
       canonical="$line"
     fi
-    expected=$(printf "%s" "$canonical" \
-      | openssl dgst -sha256 -binary \
-      | openssl base64 -A)
-    prev_canonical="$canonical"
+    expected=$(_hash_canonical "$canonical")
   done < "$file"
 
   return 0

