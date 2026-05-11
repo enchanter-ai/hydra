@@ -1,0 +1,12 @@
+{
+  "_doc": "Canonical baseline of expected defense-state file paths + their HMAC signatures. Paths are repo-relative (resolved against the parent dir containing hydra/, pech/, etc.). Operator runs scripts/sign-state.sh --all at install time to populate expected_sigs.",
+  "watched_paths": [
+    "hydra/plugins/canary/state/active-canaries.json",
+    "hydra/plugins/egress-shield/state/egress-policy.json",
+    "hydra/plugins/capability-shield/state/capability-policy.json",
+    "pech/plugins/rate-shield/state/rate-policy.json",
+    "hydra/plugins/audit-trail/state/audit.jsonl",
+    ".claude/settings.json"
+  ],
+  "expected_sigs": {}
+}

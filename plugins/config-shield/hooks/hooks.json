@@ -1,5 +1,5 @@
 {
-  "description": "Hydra config-shield: scans repository config files at session start",
+  "description": "Hydra config-shield: scans repository config files at session start; verifies signed-config integrity; warns on writes to signed configs.",
   "hooks": {
     "SessionStart": [
       {
@@ -8,6 +8,23 @@
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start/scan-config.sh\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start/verify-signatures.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pretooluse-config-write.sh\"",
+            "timeout": 5
           }
         ]
       }

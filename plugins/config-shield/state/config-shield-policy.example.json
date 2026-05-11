@@ -1,0 +1,5 @@
+{
+  "verify_at_session_start": true,
+  "warn_on_signed_config_write": true,
+  "fail_on_signature_mismatch": false
+}

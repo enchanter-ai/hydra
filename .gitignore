@@ -25,3 +25,9 @@ plugins/audit-trail/state/paging-config.json
 plugins/audit-trail/state/paging-cursor.json
 plugins/audit-trail/state/paging-undelivered.jsonl
 plugins/audit-trail/state/paging-runs.log
+plugins/capability-shield/state/hmac-key.bin
+plugins/capability-shield/state/*.sig
+plugins/config-shield/state/hmac-key.bin
+plugins/config-shield/state/*.sig
+plugins/state-integrity/state/hmac-key.bin
+plugins/state-integrity/state/integrity-events.ndjson

@@ -31,12 +31,14 @@ import fnmatch
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PLUGIN_ROOT = Path(os.environ.get("CLAUDE_PLUGIN_ROOT") or SCRIPT_DIR.parent)
 POLICY_PATH = PLUGIN_ROOT / "state" / "capability-policy.json"
+VERIFY_SCRIPT = SCRIPT_DIR / "verify-skill.sh"
 
 BLOCK_HEADER = "=== capability-shield (BLOCKED) ==="
 
@@ -182,6 +184,36 @@ def is_tool_allowed(tool_name: str, tool_input: dict, allowed: list[str]) -> boo
     return any(tool_matches_decl(tool_name, tool_input, d) for d in allowed)
 
 
+# ── signed-SKILL.md verification (R-018) ───────────────────────────────────
+
+
+def verify_skill_signature(skill_path: Path) -> int:
+    """
+    Run verify-skill.sh as a subprocess. Returns its exit code:
+      0 → verified (sig present and matches)
+      1 → mismatch (file mutated since signing)
+      2 → no sidecar (.sig absent)
+      other → tool-invocation problem (treated as mismatch by callers).
+
+    Pure subprocess call; no policy logic here. The caller decides whether
+    a non-zero return is a block (require_signed_skills:true) or a no-op
+    (require_signed_skills:false, default).
+    """
+    if not VERIFY_SCRIPT.is_file():
+        return 3
+    try:
+        proc = subprocess.run(
+            ["bash", str(VERIFY_SCRIPT), str(skill_path)],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=5,
+        )
+        return int(proc.returncode)
+    except Exception:
+        return 3
+
+
 # ── policy loading ─────────────────────────────────────────────────────────
 
 
@@ -209,6 +241,7 @@ def main() -> int:
     if not bool(policy.get("enabled", False)):
         return 0
     fail_on_missing = bool(policy.get("fail_on_missing_skill", False))
+    require_signed = bool(policy.get("require_signed_skills", False))
 
     raw = sys.stdin.read()
     if not raw.strip():
@@ -235,6 +268,27 @@ def main() -> int:
             )
             return 2
         return 0
+
+    # R-018: verify-before-eval. When require_signed_skills:true (opt-in),
+    # refuse to evaluate frontmatter for a SKILL.md whose signed manifest
+    # is missing or mismatched. Closes F-PT-14 / F-PT-15 / F-PT-46.
+    if require_signed:
+        rc = verify_skill_signature(skill_md)
+        if rc != 0:
+            reason = {
+                1: "signature MISMATCH (SKILL.md mutated since signing)",
+                2: "NO SIGNATURE sidecar (.sig) found",
+            }.get(rc, f"verify tool failed (rc={rc})")
+            print(BLOCK_HEADER, file=sys.stderr)
+            print(
+                f"Tool {tool_name} blocked: SKILL.md at {skill_md} failed "
+                f"signature verification — {reason}. policy.require_signed_skills "
+                f"is true. To unblock: re-sign with "
+                f"scripts/sign-skill.sh '{skill_md}', or set "
+                "require_signed_skills:false in state/capability-policy.json.",
+                file=sys.stderr,
+            )
+            return 2
 
     try:
         text = skill_md.read_text(encoding="utf-8")

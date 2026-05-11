@@ -1,0 +1,12 @@
+{
+  "_doc": "Example operator policy. Copy to integrity-policy.json to customize scan behaviour. The plugin works without this file — it's optional tuning, not a hard dependency.",
+  "scan_on_events": ["Write", "Edit", "MultiEdit"],
+  "severity_floor": "HIGH",
+  "max_violations_per_event": 50,
+  "key_rotation_hint": "Set HYDRA_STATE_INTEGRITY_HMAC_KEY in the operator's shell. After rotation, re-run scripts/sign-state.sh --all to refresh expected_sigs.",
+  "channel_separation": {
+    "primary_audit": "hydra/plugins/audit-trail/state/audit.jsonl",
+    "integrity_channel": "hydra/plugins/state-integrity/state/integrity-events.ndjson",
+    "rationale": "Even if primary audit.jsonl is corrupted (the very class of attack this plugin defends against), integrity-events.ndjson remains a usable forensic record."
+  }
+}

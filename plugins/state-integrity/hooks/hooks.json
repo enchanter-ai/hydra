@@ -1,0 +1,17 @@
+{
+  "description": "Hydra state-integrity: meta-canary scans defense-state files on every Write/Edit; logs HIGH-severity drift to a separate write-only audit channel.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/posttooluse-write.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

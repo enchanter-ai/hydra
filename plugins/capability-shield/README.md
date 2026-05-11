@@ -44,12 +44,90 @@ is bounded:
 cp state/capability-policy.example.json state/capability-policy.json
 
 # 2) Edit to enable.
-# {"enabled": true, "fail_on_missing_skill": false}
+# {"enabled": true, "fail_on_missing_skill": false, "require_signed_skills": false}
 
 # 3) Restart Claude Code so the hook is registered.
 
 # 4) Reverse anytime by setting enabled:false.
 ```
+
+## Signed SKILL.md (R-018, closes F-PT-14 / F-PT-15 / F-PT-46)
+
+Out of the box the shield's allowed-tools list is read from whichever
+SKILL.md the mtime-walk happens to surface. The 2026-05 pentest showed
+that an attacker with write access (or a compromised earlier turn) can
+self-mutate SKILL.md between trust-check and re-read — a TOCTOU primitive
+against the capability trust root. The fix is a signed sidecar verified
+*before* the frontmatter is parsed.
+
+### Install-time signing
+
+After authoring or editing each SKILL.md, run:
+
+```bash
+scripts/sign-skill.sh path/to/skills/<name>/SKILL.md
+# → writes path/to/skills/<name>/SKILL.md.sig
+```
+
+Sign every SKILL.md that the shield might surface (anywhere under your
+project's `skills/` tree, plus any plugin's `skills/` you've installed).
+The script uses the **same HMAC key as `audit-trail`**:
+
+1. `$HYDRA_AUDIT_HMAC_KEY` env var (preferred — operator-rotated)
+2. `state/hmac-key.bin` (auto-generated 256-bit hex, mode 0600)
+3. plain-SHA-256 fallback with a loud stderr warning (last resort)
+
+### Policy opt-in
+
+After every SKILL.md has a sidecar, flip the gate:
+
+```jsonc
+{
+  "enabled": true,
+  "fail_on_missing_skill": false,
+  "require_signed_skills": true
+}
+```
+
+With `require_signed_skills:true` the shield runs `verify-skill.sh` on
+the located SKILL.md **before** parsing its frontmatter. On exit code:
+
+- `0` → signature matches → continue to allowed-tools evaluation.
+- `1` → mismatch (SKILL.md changed without re-signing) → block with advisory.
+- `2` → no sidecar (.sig missing) → block with advisory.
+
+With `require_signed_skills:false` (default) the verify step is skipped
+entirely — behavior is identical to today's release. Operators who can't
+yet sign all their SKILL.mds keep the legacy flow.
+
+### Re-signing on edit
+
+Editing a SKILL.md invalidates its sidecar. Re-run `sign-skill.sh` on the
+edited file before the next tool call, or the shield will block. A wrapper
+in CI / pre-commit (signs every modified `SKILL.md` before staging) is the
+recommended ergonomic.
+
+### Key rotation
+
+Rotating the HMAC key invalidates every existing sidecar. To rotate:
+
+```bash
+# 1) Pick a new key.
+export HYDRA_AUDIT_HMAC_KEY="$(openssl rand -hex 32)"
+#    (or regenerate state/hmac-key.bin: rm state/hmac-key.bin and the next
+#     sign-skill.sh run will create a fresh one.)
+
+# 2) Re-sign every SKILL.md in scope.
+find . -name SKILL.md -type f \
+  -exec scripts/sign-skill.sh {} \;
+
+# 3) Verify a sample to confirm the new key matches.
+scripts/verify-skill.sh -v skills/<name>/SKILL.md
+```
+
+Rotation cadence: align with `audit-trail` rotation (the same key gates
+the audit chain). Stale sidecars are a hard block, not a silent weakness,
+so rotation churn surfaces immediately — no quiet failure modes.
 
 ## Behavior
 
@@ -89,6 +167,8 @@ plugins/capability-shield/
 ├── hooks/hooks.json                    (PreToolUse registration)
 ├── hooks/pretooluse.sh                 (recursion guard, fail-safe, propagates exit 2)
 ├── scripts/shield-check.py             (frontmatter parse, matcher, exit 2 on block)
+├── scripts/sign-skill.sh               (R-018: HMAC-sign a SKILL.md → sidecar .sig)
+├── scripts/verify-skill.sh             (R-018: verify SKILL.md against its sidecar)
 ├── skills/shield-awareness/SKILL.md    (interpretation + opt-in flow)
 └── state/capability-policy.example.json (default-disabled template)
 ```

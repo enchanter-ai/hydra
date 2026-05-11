@@ -1,0 +1,20 @@
+{
+  "name": "hydra-state-integrity",
+  "description": "Defense-of-defense: signed state files + meta-canary on state file integrity + separate audit channel for state mutations.",
+  "version": "1.0.0",
+  "author": {
+    "name": "enchanter-ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "integrity",
+    "defense-in-depth",
+    "hmac",
+    "tamper-evident",
+    "state",
+    "canary"
+  ],
+  "skills": [
+    "./skills/state-integrity-awareness/"
+  ]
+}

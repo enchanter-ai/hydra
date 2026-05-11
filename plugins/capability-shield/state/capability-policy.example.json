@@ -1,5 +1,6 @@
 {
-  "_comment": "Copy this file to state/capability-policy.json and edit. The shield reads ONLY state/capability-policy.json; this .example.json is documentation. Default is disabled. Set enabled:true to enforce the active SKILL.md frontmatter allowed-tools list as a blocking allowlist. fail_on_missing_skill:true blocks any tool call when no SKILL.md can be located (strict mode); the default (false) is best-effort scope — if no skill is in scope, the shield exits 0.",
+  "_comment": "Copy this file to state/capability-policy.json and edit. The shield reads ONLY state/capability-policy.json; this .example.json is documentation. Default is disabled. Set enabled:true to enforce the active SKILL.md frontmatter allowed-tools list as a blocking allowlist. fail_on_missing_skill:true blocks any tool call when no SKILL.md can be located (strict mode); the default (false) is best-effort scope — if no skill is in scope, the shield exits 0. require_signed_skills:true (R-018, closes F-PT-14/F-PT-15/F-PT-46) refuses to evaluate frontmatter for a SKILL.md that lacks a matching <SKILL.md>.sig sidecar; operator must run scripts/sign-skill.sh on every SKILL.md before flipping this to true. Default false keeps today's behavior. fail_on_missing_skill and require_signed_skills compose — both are evaluated when enabled:true.",
   "enabled": false,
-  "fail_on_missing_skill": false
+  "fail_on_missing_skill": false,
+  "require_signed_skills": false
 }
