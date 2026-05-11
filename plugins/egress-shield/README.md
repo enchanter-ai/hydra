@@ -11,7 +11,7 @@ operator opts in, the shield exits 2 on any `WebFetch` / `WebSearch` /
 
 ## Why this plugin exists separately from egress-monitor
 
-[`shared/foundations/conduct/hooks.md`](../../shared/foundations/conduct/hooks.md) codifies the
+[`../enchanter-foundations/packages/core/conduct/hooks.md`](../../../enchanter-foundations/packages/core/conduct/hooks.md) codifies the
 project rule **"Hooks inform, they don't decide."** The right pattern
 for adding enforcement is *not* to promote `egress-monitor` from
 advisory to blocking — that would silently break the contract every
@@ -30,7 +30,7 @@ Both plugins can run side-by-side. Observability flows to
 ## Explicit hooks.md override
 
 This plugin **explicitly overrides** the advisory-only contract in
-`shared/foundations/conduct/hooks.md`. Per `wixie/CLAUDE.md`:
+`../enchanter-foundations/packages/core/conduct/hooks.md`. Per `wixie/CLAUDE.md`:
 
 > "When a module conflicts with a plugin-local instruction, the plugin
 > wins — but log the override."
@@ -90,7 +90,7 @@ or any unhandled exception fires inside `shield-check.py`, the shield
   enforcement was attempted-and-skipped, surfacing the broken state
   without holding the session hostage.
 
-This is the same fail-open posture `shared/foundations/conduct/hooks.md` § Fail-open
+This is the same fail-open posture `../enchanter-foundations/packages/core/conduct/hooks.md` § Fail-open
 recommends for advisory hooks. The shield is opt-in; the cost of being
 overly strict on a bad config exceeds the benefit.
 
@@ -166,6 +166,6 @@ echo '{"tool_name":"WebFetch","tool_input":{"url":"https://anything.example.org"
 
 - `hydra-egress-monitor` — advisory sibling; logs every destination,
   never blocks.
-- `shared/foundations/conduct/hooks.md` — the contract this plugin overrides.
+- `../enchanter-foundations/packages/core/conduct/hooks.md` — the contract this plugin overrides.
 - `wixie/CLAUDE.md` § Shared behavioral modules — override-logging
   clause that authorizes this divergence.

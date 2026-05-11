@@ -25,7 +25,7 @@ without checking the policy file.
 </purpose>
 
 <override_note>
-This shield exists as an explicit override of shared/foundations/conduct/hooks.md
+This shield exists as an explicit override of ../enchanter-foundations/packages/core/conduct/hooks.md
 "Hooks inform, they don't decide". The override is documented in this
 plugin's README and is permitted by wixie/CLAUDE.md: "When a module
 conflicts with a plugin-local instruction, the plugin wins — but log
@@ -77,6 +77,6 @@ IF developer wants to disable the shield:
 | ... | ... | ... | ... |
 
 The shield is opt-in blocking; observability without enforcement lives in
-hydra-egress-monitor. Override of shared/foundations/conduct/hooks.md is logged in
+hydra-egress-monitor. Override of ../enchanter-foundations/packages/core/conduct/hooks.md is logged in
 this plugin's README.
 </output_format>

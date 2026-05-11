@@ -30,7 +30,7 @@ each signal means and what the developer should do next.
 1. NEVER claim a package is malicious — package-gate findings are
    probabilistic risk signals, not verdicts.
 2. NEVER block or refuse the install; package-gate is advisory by
-   design (per shared/foundations/conduct/hooks.md). Recommend, do not gate.
+   design (per ../enchanter-foundations/packages/core/conduct/hooks.md). Recommend, do not gate.
 3. NEVER fabricate registry data — if metadata is missing, say so.
 4. ALWAYS show severity, signal name, and recommended next step.
 5. ALWAYS recommend the developer verify a flagged package on the

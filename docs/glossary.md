@@ -19,7 +19,7 @@ Rule classes are a **mutual-exclusion partition** — a rule cannot be both an a
 
 ## Severity
 
-Each finding carries a severity. Severities are advisory (per [shared/foundations/conduct/hooks.md](../shared/foundations/conduct/hooks.md) — hooks inform, never decide), but they shape how the finding is surfaced.
+Each finding carries a severity. Severities are advisory (per [../enchanter-foundations/packages/core/conduct/hooks.md](../../enchanter-foundations/packages/core/conduct/hooks.md) — hooks inform, never decide), but they shape how the finding is surfaced.
 
 | Severity | Meaning | Surfacing |
 |----------|---------|-----------|
@@ -100,7 +100,7 @@ Hydra does not issue DEPLOY / HOLD / FAIL like Wixie. It issues **findings**:
 | `ADVISORY` | One or more matches surfaced; nothing blocked. |
 | `AUDIT` | Logged-only matches recorded in the audit trail. |
 
-The decision to proceed is always the human's or the orchestrator's — see [shared/foundations/conduct/hooks.md](../shared/foundations/conduct/hooks.md) § Injection over denial.
+The decision to proceed is always the human's or the orchestrator's — see [../enchanter-foundations/packages/core/conduct/hooks.md](../../enchanter-foundations/packages/core/conduct/hooks.md) § Injection over denial.
 
 ## See also
 
