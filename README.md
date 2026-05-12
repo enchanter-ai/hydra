@@ -237,16 +237,13 @@ bash <(curl -s https://raw.githubusercontent.com/enchanter-ai/hydra/main/install
 
 ## Quickstart
 
-Install, scan the repo, read the findings. Sixty seconds:
-
-```
-/plugin install full@hydra
-/hydra:config-check
-/hydra:vulns
+```bash
+git clone https://github.com/enchanter-ai/hydra
+cd hydra
+./scripts/bootstrap.sh    # canonical first command — installs enchanter-foundations sibling
 ```
 
-Expected: `/hydra:config-check` flags poisoned `.claude/settings.json` hooks, suspicious MCP servers, and `.cursorrules` obfuscations matched against 122 signatures. `/hydra:vulns` reports OWASP + CWE findings across the working tree with severity and suggested remediation. Both are advisory; every event lands in `/hydra:audit`. See [docs/getting-started.md](docs/getting-started.md) for the full guided first run.
-
+Without `./scripts/bootstrap.sh`, conduct imports will silently miss and Claude Code's `@`-loader will fail-soft. Always bootstrap first.
 ## 11 Plugins, 11 Agents, 1,844 Patterns
 
 Five **scanner plugins** (the original lineup), four **advisory hook plugins** (added 2026-05-05) that close supply-chain, exfil, prompt-injection, and capability-fence gaps, plus two **compliance plugins** (license-gate, sbom-emitter — added 2026-05-05, originally drafted in pech then re-homed here as supply-chain belongs under security).
