@@ -11,7 +11,7 @@ Part of the [Hydra](../..) bundle. The simplest install is the `full` meta-plugi
 /plugin install full@hydra
 ```
 
-To install this plugin on its own: `/plugin install hydra-action-guard@hydra`. `action-guard` operates under the advisory-only hook contract from [`../enchanter-foundations/packages/core/conduct/hooks.md`](../../../enchanter-foundations/packages/core/conduct/hooks.md): when a Bash command matches a dangerous-ops pattern or trips the subcommand-overflow heuristic, the hook emits a stderr advisory (`=== action-guard (advisory) ===` block with `Would have blocked: …` + `Hint: …`) and lets the tool proceed. Block semantics belong to a deliberate Skill invocation, not a runtime gate. The advisory is only useful if `secret-scanner` catches the exfil payload on disk, `config-shield` catches the poisoned config that would mute it, `vuln-detector` catches the RCE bug upstream, and `audit-trail` records every advisory event for incident review.
+To install this plugin on its own: `/plugin install hydra-action-guard@hydra`. `action-guard` operates under the advisory-only hook contract from [`../foundations/packages/core/conduct/hooks.md`](../../../foundations/packages/core/conduct/hooks.md): when a Bash command matches a dangerous-ops pattern or trips the subcommand-overflow heuristic, the hook emits a stderr advisory (`=== action-guard (advisory) ===` block with `Would have blocked: …` + `Hint: …`) and lets the tool proceed. Block semantics belong to a deliberate Skill invocation, not a runtime gate. The advisory is only useful if `secret-scanner` catches the exfil payload on disk, `config-shield` catches the poisoned config that would mute it, `vuln-detector` catches the RCE bug upstream, and `audit-trail` records every advisory event for incident review.
 
 ## Algorithms
 - **R4: Markov Action Classification** — classify commands as SAFE/WARN/BLOCK
@@ -19,7 +19,7 @@ To install this plugin on its own: `/plugin install hydra-action-guard@hydra`. `
 
 ## Hook
 - **PreToolUse** on Bash — classifies command BEFORE execution
-- **Advisory only** — emits a stderr advisory block (`=== action-guard (advisory) ===` / `Would have blocked: …` / `Hint: …`) and exits 0. Never blocks tool execution. See [`../enchanter-foundations/packages/core/conduct/hooks.md`](../../../enchanter-foundations/packages/core/conduct/hooks.md).
+- **Advisory only** — emits a stderr advisory block (`=== action-guard (advisory) ===` / `Would have blocked: …` / `Hint: …`) and exits 0. Never blocks tool execution. See [`../foundations/packages/core/conduct/hooks.md`](../../../foundations/packages/core/conduct/hooks.md).
 
 ## Strictness Modes
 | Mode | Block patterns | Warn patterns |

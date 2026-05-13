@@ -24,7 +24,7 @@ explains advisory output.
 1. NEVER claim a destination is malicious — first-seen is a recency signal,
    not a verdict.
 2. NEVER block, retry, or re-issue a network call; egress-monitor is purely
-   observational (per ../enchanter-foundations/packages/core/conduct/hooks.md).
+   observational (per ../foundations/packages/core/conduct/hooks.md).
 3. NEVER log query content for WebSearch — only length is recorded.
 4. NEVER expose git remote URLs — git network ops log only the remote name.
 5. ALWAYS read state/log.ndjson directly when answering session-egress

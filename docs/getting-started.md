@@ -42,7 +42,7 @@ Aho-Corasick pattern matching + entropy scoring. High-entropy strings in newly-w
 
 ## 5. See action-guard in action
 
-Ask Claude to run a dangerous command (`rm -rf`, `git reset --hard`, `DROP TABLE`, etc.). The `action-guard` PreToolUse hook intercepts and emits an advisory warning with the matched risk class. The hook is advisory — see [../enchanter-foundations/packages/core/conduct/hooks.md](../../enchanter-foundations/packages/core/conduct/hooks.md) § Injection over denial — so you can still proceed, but you've been warned.
+Ask Claude to run a dangerous command (`rm -rf`, `git reset --hard`, `DROP TABLE`, etc.). The `action-guard` PreToolUse hook intercepts and emits an advisory warning with the matched risk class. The hook is advisory — see [../foundations/packages/core/conduct/hooks.md](../../foundations/packages/core/conduct/hooks.md) § Injection over denial — so you can still proceed, but you've been warned.
 
 ## 6. Scan for vulnerabilities
 
