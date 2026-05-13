@@ -20,7 +20,7 @@ spec G), so post-hoc review and trend analysis are possible.
 
 ## Why
 
-`wixie/../foundations/packages/core/conduct/delegation.md` codifies a per-role tool whitelist
+`wixie/../vis/packages/core/conduct/delegation.md` codifies a per-role tool whitelist
 ("Format translator: Read, Write (target only)"; "Red-team: Read, Grep,
 Glob — never Write or Edit"). Today these whitelists live as prose in
 SKILL.md frontmatter — the runtime does not enforce them. Prompt
@@ -56,7 +56,7 @@ Part of the [Hydra](../..) bundle.
      Skill <name> is invoking <tool> which is NOT in its declared allowed-tools list (<list>). Possible subagent escape. Review delegation.md.
      ```
    - Appends a row to `state/fence-log.ndjson` via locked append.
-3. **Always exits 0.** Per `wixie/../foundations/packages/core/conduct/hooks.md`, advisory
+3. **Always exits 0.** Per `wixie/../vis/packages/core/conduct/hooks.md`, advisory
    hooks never block.
 4. **Subagent recursion guard** (`$CLAUDE_SUBAGENT`) — same template as
    `package-gate`.
@@ -111,8 +111,8 @@ plugins/capability-fence/
 
 ## See also
 
-- `wixie/../foundations/packages/core/conduct/hooks.md` — advisory contract (no exit-2).
-- `wixie/../foundations/packages/core/conduct/delegation.md` — per-role tool whitelist table.
+- `wixie/../vis/packages/core/conduct/hooks.md` — advisory contract (no exit-2).
+- `wixie/../vis/packages/core/conduct/delegation.md` — per-role tool whitelist table.
 - `wixie/prompts/ecosystem-audit/results/opus-4-7.json` — F-010, F-050.
 - `wixie/prompts/ecosystem-audit/specs/templates.md` § G — locked
   JSONL append helper.

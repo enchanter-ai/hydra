@@ -17,7 +17,7 @@ Outputs:
   state/top10k-npm.json   — JSON list of package names
   state/top10k-pypi.json  — JSON list of package names
 
-Atomic write via tempfile + os.replace per shared/foundations/conduct/web-fetch.md.
+Atomic write via tempfile + os.replace per shared/vis/conduct/web-fetch.md.
 
 Cron:
   Monthly — see .github/workflows/osv-refresh.yml.

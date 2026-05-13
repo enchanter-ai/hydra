@@ -39,7 +39,7 @@ tools: [Read, Bash]
 
 - `<project>` — positional, defaults to cwd.
 - `--policy <path>` — override the default policy.json.
-- `--fail-on-deny` — exit non-zero if any DENY hits found. **PR/release context ONLY — never wire this into a hook** (advisory-only contract per `../foundations/packages/core/conduct/hooks.md`).
+- `--fail-on-deny` — exit non-zero if any DENY hits found. **PR/release context ONLY — never wire this into a hook** (advisory-only contract per `../vis/packages/core/conduct/hooks.md`).
 - `--json` — emit structured summary on stdout.
 
 ## Outputs

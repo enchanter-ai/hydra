@@ -20,7 +20,7 @@ Contract:
     non-zero exit, which fails the GitHub Actions check.
 
 Runtime hook semantics are unchanged: posttooluse-scan.sh still exits 0
-unconditionally (advisory-only per shared/foundations/conduct/hooks.md). This gate
+unconditionally (advisory-only per shared/vis/conduct/hooks.md). This gate
 only verifies that the *detection* surface fires correctly against the
 fixture set.
 """

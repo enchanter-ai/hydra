@@ -94,7 +94,7 @@ def main() -> int:
 
     # Emit the advisory to stderr — visible to Claude per the hook contract.
     # The instruction is wrapped in a <system> block so the model treats it
-    # as a directive, not as content. Per shared/foundations/conduct/hooks.md § Injection
+    # as a directive, not as content. Per shared/vis/conduct/hooks.md § Injection
     # over denial, this is information for the model to act on, not a gate.
     sys.stderr.write(
         "=== canary (advisory) ===\n"

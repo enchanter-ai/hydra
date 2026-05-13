@@ -48,7 +48,7 @@ hydra/plugins/canary/
 
 ## Hook contract
 
-- **Always exit 0.** Per `wixie/../foundations/packages/core/conduct/hooks.md`.
+- **Always exit 0.** Per `wixie/../vis/packages/core/conduct/hooks.md`.
 - **Inject, never deny.** Output goes to stderr (visible to Claude); never to stdout.
 - **Fail-open.** Missing `python3`, malformed JSON, I/O errors — all silently skipped. The hook never breaks the underlying tool call.
 
@@ -63,7 +63,7 @@ surface against a fixture set on every PR and every push to `main`.
 
 | Surface | Mode | Source of truth |
 |---|---|---|
-| Runtime hook (`posttooluse-scan.sh`) | **Advisory only — always exit 0** | `../foundations/packages/core/conduct/hooks.md` |
+| Runtime hook (`posttooluse-scan.sh`) | **Advisory only — always exit 0** | `../vis/packages/core/conduct/hooks.md` |
 | CI gate (`ci-canary-gate.py`) | **Blocking — non-zero on miss** | `.github/workflows/canary-ci.yml` |
 
 The CI gate loads every JSON fixture under `fixtures/injection/` (10
@@ -84,7 +84,7 @@ roleplay jailbreaks, etc.). For each fixture it:
 Any fixture missing a detection fails the workflow check. **The runtime
 hook contract is unchanged** — it still exits 0 unconditionally. The CI
 gate verifies the *detection* surface; the runtime surface stays advisory
-per `../foundations/packages/core/conduct/hooks.md`.
+per `../vis/packages/core/conduct/hooks.md`.
 
 This closes ecosystem-audit finding **F-004** (advisory → CI-blocked
 detection of indirect prompt-injection canary leakage).

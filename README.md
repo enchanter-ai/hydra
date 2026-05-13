@@ -39,7 +39,7 @@ Built from blood — every pattern traces back to a real CVE, a real breach, or 
 
 **In plain English:** Your AI just typed an AWS key into a committed file, ran `rm -rf ~/`, and pip-installed a typosquatted package. Hydra blocks each one before it lands.
 
-**Technically:** R1 Aho-Corasick pattern engine scans 1,844 patterns across 20 databases (310 secret patterns + 156 OWASP/CWE-mapped vulns + 105 dangerous-ops + more) on every Write/Edit; R2 Shannon entropy analysis catches high-entropy strings that evade regex; R4 Markov Action Classification classifies Bash subcommands and surfaces dangerous ops at PreToolUse via advisory injection (exit 0 + stderr per `../foundations/packages/core/conduct/hooks.md`). Every finding is keyed to a real CVE or CWE; no finding is fabricated from heuristics alone.
+**Technically:** R1 Aho-Corasick pattern engine scans 1,844 patterns across 20 databases (310 secret patterns + 156 OWASP/CWE-mapped vulns + 105 dangerous-ops + more) on every Write/Edit; R2 Shannon entropy analysis catches high-entropy strings that evade regex; R4 Markov Action Classification classifies Bash subcommands and surfaces dangerous ops at PreToolUse via advisory injection (exit 0 + stderr per `../vis/packages/core/conduct/hooks.md`). Every finding is keyed to a real CVE or CWE; no finding is fabricated from heuristics alone.
 
 ---
 
@@ -58,7 +58,7 @@ The question this plugin answers: *Is it safe?*
 Not for:
 
 - Replacing your language-native linter / type-checker — Hydra complements them, doesn't duplicate them.
-- Environments where advisory warnings are insufficient — Hydra's hooks inform, they don't silently block (see [../foundations/packages/core/conduct/hooks.md](../foundations/packages/core/conduct/hooks.md)).
+- Environments where advisory warnings are insufficient — Hydra's hooks inform, they don't silently block (see [../vis/packages/core/conduct/hooks.md](../vis/packages/core/conduct/hooks.md)).
 
 ## Contents
 
@@ -240,7 +240,7 @@ bash <(curl -s https://raw.githubusercontent.com/enchanter-ai/hydra/main/install
 ```bash
 git clone https://github.com/enchanter-ai/hydra
 cd hydra
-./scripts/bootstrap.sh    # canonical first command — installs foundations sibling
+./scripts/bootstrap.sh    # canonical first command — installs vis sibling
 ```
 
 Without `./scripts/bootstrap.sh`, conduct imports will silently miss and Claude Code's `@`-loader will fail-soft. Always bootstrap first.
@@ -430,17 +430,17 @@ Every skill inherits a reusable behavioral contract from [shared/](shared/) — 
 
 | Module | What it governs |
 |--------|-----------------|
-| [discipline.md](../foundations/packages/core/conduct/discipline.md) | Coding conduct: think-first, simplicity, surgical edits, goal-driven loops |
-| [context.md](../foundations/packages/core/conduct/context.md) | Attention-budget hygiene, U-curve placement, checkpoint protocol |
-| [verification.md](../foundations/packages/core/conduct/verification.md) | Independent checks, baseline snapshots, dry-run for destructive ops |
-| [delegation.md](../foundations/packages/core/conduct/delegation.md) | Subagent contracts, tool whitelisting, parallel vs. serial rules |
-| [failure-modes.md](../foundations/packages/core/conduct/failure-modes.md) | 14-code taxonomy for accumulated-learning logs |
-| [tool-use.md](../foundations/packages/core/conduct/tool-use.md) | Tool-choice hygiene, error payload contract, parallel-dispatch rules |
-| [skill-authoring.md](../foundations/packages/skills/conduct/skill-authoring.md) | SKILL.md frontmatter discipline, discovery test |
-| [hooks.md](../foundations/packages/core/conduct/hooks.md) | Advisory-only hooks, injection over denial, fail-open |
-| [precedent.md](../foundations/packages/core/conduct/precedent.md) | Log self-observed failures to `state/precedent-log.md`; consult before risky steps |
-| [tier-sizing.md](../foundations/packages/core/conduct/tier-sizing.md) | Prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent |
-| [web-fetch.md](../foundations/packages/web/conduct/web-fetch.md) | External URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only |
+| [discipline.md](../vis/packages/core/conduct/discipline.md) | Coding conduct: think-first, simplicity, surgical edits, goal-driven loops |
+| [context.md](../vis/packages/core/conduct/context.md) | Attention-budget hygiene, U-curve placement, checkpoint protocol |
+| [verification.md](../vis/packages/core/conduct/verification.md) | Independent checks, baseline snapshots, dry-run for destructive ops |
+| [delegation.md](../vis/packages/core/conduct/delegation.md) | Subagent contracts, tool whitelisting, parallel vs. serial rules |
+| [failure-modes.md](../vis/packages/core/conduct/failure-modes.md) | 14-code taxonomy for accumulated-learning logs |
+| [tool-use.md](../vis/packages/core/conduct/tool-use.md) | Tool-choice hygiene, error payload contract, parallel-dispatch rules |
+| [skill-authoring.md](../vis/packages/skills/conduct/skill-authoring.md) | SKILL.md frontmatter discipline, discovery test |
+| [hooks.md](../vis/packages/core/conduct/hooks.md) | Advisory-only hooks, injection over denial, fail-open |
+| [precedent.md](../vis/packages/core/conduct/precedent.md) | Log self-observed failures to `state/precedent-log.md`; consult before risky steps |
+| [tier-sizing.md](../vis/packages/core/conduct/tier-sizing.md) | Prompt verbosity scales inversely with model tier; Haiku needs mechanical steps, Opus runs on intent |
+| [web-fetch.md](../vis/packages/web/conduct/web-fetch.md) | External URL handling: cache, dedup, budget; WebFetch is Haiku-tier-only |
 
 ## Architecture
 
@@ -465,7 +465,7 @@ bash tests/run-all.sh
 
 ## Acknowledgments
 
-Hydra builds on foundations laid by others:
+Hydra builds on substrate laid by others:
 
 - **[Claude Code](https://github.com/anthropics/claude-code)** (Anthropic) — the plugin surface this work extends.
 - **[OWASP](https://owasp.org/)** — LLM Top 10 coverage and CWE reference material.

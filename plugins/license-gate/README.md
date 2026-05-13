@@ -56,7 +56,7 @@ Add a step to `.github/workflows/release.yml`:
 
 Place this **before** the artifact-build / signing steps so a deny verdict blocks the release before any tag is published.
 
-**Do not** wire `--fail-on-deny` into any PreToolUse / PostToolUse hook — it would violate the advisory-only hook contract (`../foundations/packages/core/conduct/hooks.md`). Hooks should run the scanner without `--fail-on-deny` and inject the advisory lines as stderr context.
+**Do not** wire `--fail-on-deny` into any PreToolUse / PostToolUse hook — it would violate the advisory-only hook contract (`../vis/packages/core/conduct/hooks.md`). Hooks should run the scanner without `--fail-on-deny` and inject the advisory lines as stderr context.
 
 ## Skill discovery
 
