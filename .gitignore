@@ -31,3 +31,9 @@ plugins/config-shield/state/hmac-key.bin
 plugins/config-shield/state/*.sig
 plugins/state-integrity/state/hmac-key.bin
 plugins/state-integrity/state/integrity-events.ndjson
+
+# Windows null-device artifact: `> NUL` under a POSIX shell creates a real file
+NUL
+
+# pytest cache
+.pytest_cache/
